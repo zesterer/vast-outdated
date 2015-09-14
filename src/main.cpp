@@ -15,6 +15,9 @@ int main(int argc, char* argv[])
 	LibVolume::Engine::Realm realm;
 	realm.setEventManager(&window.event_manager);
 
+	LibVolume::Render::Structures::Light sun(LibVolume::Render::Structures::LightType::Directional, glm::vec3(0.5, 0.5, -1.0), glm::vec3(1.0, 1.0, 0.9), 0.5);
+	realm.light_list.push_back(&sun);
+
 	LibVolume::Engine::VoxelActor asteroid(glm::ivec3(16, 16, 16));
 	asteroid.state.scale = glm::vec3(200.0, 200.0, 200.0);
 	asteroid.state.position = glm::vec3(3000.0, 0.0, 0.0);
