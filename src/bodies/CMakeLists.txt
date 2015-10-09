@@ -2,17 +2,11 @@
 #### CONFIGURATION ####
 #######################
 
-#settings.h header file
-configure_file(
-"settings.h.in"
-"settings.h"
-)
-
 ########################
 #### Subdirectories ####
 ########################
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/bodies")
+#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/data")
 
 #################
 #### SOURCES ####
@@ -29,6 +23,6 @@ PARENT_SCOPE
 #Add the appropriate source files
 set(APPLICATION_SOURCE_FILES
 ${APPLICATION_SOURCE_FILES}
-${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/planet.cpp
 PARENT_SCOPE
 )
