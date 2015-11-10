@@ -1,0 +1,223 @@
+enum IlluminationModel
+	Phong;
+	GGX;
+
+enum LightType
+	Directional;
+	Point;
+
+enum ParticleType
+	Flame;
+	Smoke;
+	Flare;
+	Exhaust;
+	Liquid;
+	Spark;
+	?
+
+struct Pixel
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+
+class Bufferable
+	private int gl_identifier;
+	private bool buffered;
+	
+	void setGLidentifier(int identifier);
+	int getGLidentifier();
+	virtual bool buffer();
+
+class Identifiable
+	private string identifier;
+	
+	void setIdentifier(string identifier);
+	string getIdentifier();
+
+class Renderable
+	private bool visible;
+	
+	void setVisible(bool visible);
+	bool getVisible();
+
+class Framebuffer : Bufferable
+	int buffer_gl_identifiers[];
+	
+	void updateSize(int width, int height);
+
+class RenderContext
+	class ResourceManager resource_manager;
+		class Mesh : Bufferable , Identifiable meshes[];
+			struct Polygon polygons[];
+				struct Vertex vertices[3];
+					private Vector3 position;
+					private Vector3 colour;
+					private Vector3 normal;
+					private Vector2 texture_position;
+					
+					void setPosition(Vector3 position);
+					void setColour(Vector3 colour);
+					void setNormal(Vector3 normal);
+					void setTexturePosition(Vector2 position);
+					
+					Vector3 getPosition();
+					Vector3 getColour();
+					Vector3 getNormal();
+					Vector2 getTexturePosition();
+			
+			bool loadFromFile(string filename);
+			private bool loadFromObj(string filename);
+			void addPolygon(Polygon polygon);
+			Polygon* getPolygon(unsigned long index);
+		
+		class Texture : Bufferable , Identifiable textures[];
+			private SFMLImage data;
+			
+			bool loadFromFile(string filename);
+			unsigned char* getPixels();
+			Pixel getPixel(iVector2 position);
+			void setPixel(iVector2 position, Pixel pixel);
+		
+		class Material , Identifiable materials[];
+			private Vector3 ambient_colour;
+			private Vector3 diffuse_colour;
+			private Vector3 specular_colour;
+			private float smoothness;
+			private float transparency;
+			private IlluminationModel model;
+			
+			void loadFromFile(string filename);
+			void setAmbientColour(Vector3 colour);
+			void setDiffuseColour(Vector3 colour);
+			void setSpecularColour(Vector3 colour);
+			void setSmoothness(float exponent);
+			void setTransparency(float transparency);
+			void setIlluminationModel(IlluminationModel model);
+			
+			Vector3 getAmbientColour();
+			Vector3 getDiffuseColour();
+			Vector3 getSpecularColour();
+			float getSmoothness();
+			float getTransparency();
+			IlluminationModel getIlluminationModel();
+		
+		class Font : Identifiable fonts[];
+			?
+		
+		Mesh& newMesh(string identifier);
+		Texture& newTexture(string identifier);
+		Material& newMaterial(string identifier);
+		Font& newFont(string identifier);
+		
+		Mesh& addMesh(Mesh mesh);
+		Texture& addTexture(Texture texture);
+		Material& addMaterial(Material material);
+		Font& addFont(Font font);
+		
+		Mesh& newMeshFromFile(string identifier, string filename);
+		Texture& newTextureFromFile(string identifier, string filename);
+		Material& newMaterialFromFile(string identifier, string filename);
+		Font& newFontFromFile(string identifier, string filename);
+		
+		Mesh& getMesh(string identifier);
+		Texture& getTexture(string identifier);
+		Material& getMaterial(string identifier);
+		Font& getFont(string identifier);
+		
+		void clearMeshes();
+		void clearTextures();
+		void clearMaterials();
+		void clearFonts();
+		void clearAll();
+	
+	class EntityManager entity_manager;
+		class Entity entities[];
+			private bool visible;
+			class State state;
+				private Vector3 position;
+				private Quaternion orientation;
+				private Vector3 scale;
+				
+				void setPosition(Vector3 position);
+				void setOrientation(Quaternion orientation);
+				void setScale(Vector3 scale);
+				
+				Vector3 getPosition();
+				Vector3 getOrientation();
+				Vector3 getScale();
+			
+			class Part : Renderable parts[];
+				private State state;
+				private Mesh mesh;
+				private Texture texture;
+				private Texture bump_map;
+				private Texture normal_map;
+				private Material material;
+				
+				void setState(State state);
+				void setMesh(const Mesh& mesh);
+				void setTexture(const Texture& texture);
+				void setBumpMap(const Texture& bump_map);
+				void setNormalMap(const Texture& normal_map);
+				void setMaterial(const Material& material);
+				
+				State& getState();
+				Mesh& getMesh();
+				Texture& getTexture();
+				Texture& getBumpMap();
+				Texture& getNormalMap();
+				Material& getMaterial();
+			
+			Part& newPart();
+			Part& addPart(Part part);
+			bool removePart(Part& part);
+			bool getVisible();
+	class LightManager light_manager;
+		class Light lights[];
+			private LightType type;
+			private Vector3 position;
+			private Vector3 direction;
+			private Vector3 colour;
+			private float size; //If the light is directional, this value represents the angular size)
+			
+			void setType(LightType type);
+			void setPosition(Vector3 position);
+			void setDirection(Vector3 direction);
+			void setColour(Vector3 colour);
+			void setSize(float size);
+			
+			LightType getType();
+			Vector3 getPosition();
+			Vector3 getDirection();
+			Vector3 getColour();
+			float getSize();
+		
+	class ParticleManager particle_manager;
+		struct Particle particles[];
+			private Vector3 position;
+			private Vector3 colour;
+			private ParticleType type;
+			
+			void setPosition(Vector3 position);
+			void setColour(Vector3 colour);
+			void setType(ParticleType type);
+			
+			Vector3 getPosition();
+			Vector3 getColour();
+			ParticleType getType();
+	
+	void render();
+
+################################
+# List of effects to implement #
+################################
+
+- HDR
+- Texturing
+- Bump-mapping
+- Normal-mapping
+- Phong lighting
+- Transparency (sort transparent objects by depth using quicksort, and then draw them to a seperate RGBA buffer which is then combined with the standard buffer during post-processing)
+- FXAA anti-aliasing
+- Motion Blur (overlaying previous with current)
+- Distance fog

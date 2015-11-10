@@ -1,8 +1,14 @@
-# Custom files and directories
+# Custom
+build
 build-linux
+build-linux32
+build-linux64
+build-macos
 build-win32
 build-win64
-build-macos
+build-android
+build-bsd
+build-ios
 
 # Compiled Object files
 *.slo
