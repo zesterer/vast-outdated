@@ -13,11 +13,6 @@
 ########################
 
 #add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/data")
-#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/window")
-#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/render")
-#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/engine")
-#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/common")
-#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/generation")
 
 #################
 #### SOURCES ####

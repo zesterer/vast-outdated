@@ -14,6 +14,8 @@ configure_file(
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/render")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/application")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/common")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/window")
 
 #################
 #### SOURCES ####

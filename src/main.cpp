@@ -2,11 +2,13 @@
 #include "stdio.h"
 
 //----LOCAL----
+#include "common/basictypes.h"
 #include "settings.h"
+#include "application/application.h"
 
-int main(int argc, char* argv[])
+int main(int32 argc, char* argv[])
 {
-	printf("Hello, World!\n");
+	Vast::Application::Application application(argc, argv);
 
-	return 0;
+	return application.run();
 }
