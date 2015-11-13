@@ -131,8 +131,7 @@ class RenderContext
 		void clearAll();
 	
 	class EntityManager entity_manager;
-		class Entity entities[];
-			private bool visible;
+		class Entity : Renderable entities[];
 			class State state;
 				private Vector3 position;
 				private Quaternion orientation;
@@ -146,32 +145,25 @@ class RenderContext
 				Vector3 getOrientation();
 				Vector3 getScale();
 			
-			class Part : Renderable parts[];
-				private State state;
-				private Mesh mesh;
-				private Texture texture;
-				private Texture bump_map;
-				private Texture normal_map;
-				private Material material;
+			private Mesh mesh;
+			private Texture texture;
+			private Texture bump_map;
+			private Texture normal_map;
+			private Material material;
 				
-				void setState(State state);
-				void setMesh(const Mesh& mesh);
-				void setTexture(const Texture& texture);
-				void setBumpMap(const Texture& bump_map);
-				void setNormalMap(const Texture& normal_map);
-				void setMaterial(const Material& material);
+			void setState(State state);
+			void setMesh(const Mesh& mesh);
+			void setTexture(const Texture& texture);
+			void setBumpMap(const Texture& bump_map);
+			void setNormalMap(const Texture& normal_map);
+			void setMaterial(const Material& material);
 				
-				State& getState();
-				Mesh& getMesh();
-				Texture& getTexture();
-				Texture& getBumpMap();
-				Texture& getNormalMap();
-				Material& getMaterial();
-			
-			Part& newPart();
-			Part& addPart(Part part);
-			bool removePart(Part& part);
-			bool getVisible();
+			State& getState();
+			Mesh& getMesh();
+			Texture& getTexture();
+			Texture& getBumpMap();
+			Texture& getNormalMap();
+			Material& getMaterial();
 	class LightManager light_manager;
 		class Light lights[];
 			private LightType type;

@@ -36,6 +36,7 @@ namespace Vast
 
 			//Set up the main window
 			this->main_window.initiate();
+			this->render_context.initiate();
 
 			bool closed = false;
 			while (!closed)

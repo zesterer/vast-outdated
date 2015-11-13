@@ -12,7 +12,7 @@
 #### Subdirectories ####
 ########################
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/resources")
+#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/data")
 
 #################
 #### SOURCES ####
@@ -28,6 +28,7 @@ PARENT_SCOPE
 #Add the appropriate source files
 set(APPLICATION_SOURCE_FILES
 ${APPLICATION_SOURCE_FILES}
-"${CMAKE_CURRENT_SOURCE_DIR}/rendercontext.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/resourcemanager.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/texture.cpp"
 PARENT_SCOPE
 )
