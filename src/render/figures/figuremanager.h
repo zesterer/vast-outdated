@@ -19,6 +19,8 @@ namespace Vast
 					std::vector<Figure> figures;
 				public:
 					FigureManager();
+
+					Figure& newFigure();
 			};
 		}
 	}

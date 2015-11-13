@@ -22,6 +22,8 @@ namespace Vast
 					std::vector<Part> parts;
 				public:
 					Figure();
+
+					Part& newPart();
 			};
 		}
 	}

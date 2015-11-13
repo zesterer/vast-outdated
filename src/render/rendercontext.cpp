@@ -19,8 +19,15 @@ namespace Vast
 		{
 			glbinding::Binding::initialize();
 
-			this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/bowser.bmp").buffer();
-			this->resource_manager.newMeshFromFile("/home/barry/Documents/Projects/starclock/bowser.obj").buffer();
+			auto tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/bowser.bmp");
+			auto mesh = this->resource_manager.newMeshFromFile("/home/barry/Documents/Projects/starclock/bowser.obj");
+
+			tex.buffer();
+			mesh.buffer();
+
+			auto part = this->figure_manager.newFigure().newPart();
+			part.setMesh(&mesh);
+			part.setTexture(&tex);
 		}
 
 		bool RenderContext::render()

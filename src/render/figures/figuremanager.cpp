@@ -12,6 +12,12 @@ namespace Vast
 			{
 				IO::output("Created figure manager");
 			}
+
+			Figure& FigureManager::newFigure()
+			{
+				this->figures.emplace_back();
+				return this->figures.back();
+			}
 		}
 	}
 }

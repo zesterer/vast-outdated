@@ -11,6 +11,12 @@ namespace Vast
 			{
 				//Constructor
 			}
+
+			Part& Figure::newPart()
+			{
+				this->parts.emplace_back();
+				return this->parts.back();
+			}
 		}
 	}
 }
