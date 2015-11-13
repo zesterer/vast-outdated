@@ -15,9 +15,12 @@ namespace Vast
 		class Bufferable
 		{
 			private:
+			public:
 				glid gl_id;
 				bool buffered = false;
-			public:
+
+				virtual void buffer();
+				virtual void discard();
 		};
 	}
 }

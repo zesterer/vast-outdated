@@ -1,5 +1,10 @@
+//----LIBRARY----
+#include "glbinding/gl/gl.h"
+#include "glbinding/Binding.h"
+
 //----LOCAL----
 #include "texture.h"
+#include "common/io.h"
 
 namespace Vast
 {
@@ -33,13 +38,38 @@ namespace Vast
 			//Create a texture from the data contained within a given file
 			bool Texture::loadFromFile(std::string filename)
 			{
-				return this->internal_image.loadFromFile(filename);
+				bool success = this->internal_image.loadFromFile(filename);
+				IO::test(success, "Loading texture from file '" + filename + "'");
+
+				return success;
 			}
 
 			//Find the size of the texture
 			sf::Vector2u Texture::getSize()
 			{
 				return this->internal_image.getSize();
+			}
+
+			const uint8* Texture::getPixelData()
+			{
+				return this->internal_image.getPixelsPtr();
+			}
+
+			//Buffer the texture into GPU memory
+			void Texture::buffer()
+			{
+				this->buffered = true;
+
+				//Generate the texture
+				if (!this->buffered)
+					gl::glGenTextures(1, &this->gl_id);
+
+				//Bind the texture ready to write data
+				gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_id);
+
+				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLuint)gl::GL_RGB, this->getSize().x, this->getSize().y, 0, gl::GL_BGR, gl::GL_UNSIGNED_BYTE, this->getPixelData());
+
+				gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
 			}
 		}
 	}

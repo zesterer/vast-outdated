@@ -18,6 +18,8 @@ namespace Vast
 		void RenderContext::initiate()
 		{
 			glbinding::Binding::initialize();
+
+			//this->resource_manager.newTextureFromFile("/home/barry/Pictures/tuxedo.png").buffer();
 		}
 
 		bool RenderContext::render()

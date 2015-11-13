@@ -22,6 +22,7 @@ namespace Vast
 					void close();
 
 					Texture& newTexture();
+					Texture& newTextureFromBlank(uint16 width, uint16 height, const uint8* pixels = nullptr);
 					Texture& newTextureFromFile(std::string filename);
 			};
 		}
