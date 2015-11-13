@@ -6,6 +6,7 @@
 
 //----LOCAL----
 #include "render/bufferable.h"
+#include "common/generics.h"
 
 namespace Vast
 {
@@ -28,6 +29,8 @@ namespace Vast
 
 					sf::Vector2u getSize();
 					const uint8* getPixelData();
+					Pixel getPixel(uint16 x, uint16 y);
+					void setPixel(uint16 x, uint16 y, Pixel pixel);
 
 					void buffer() override;
 			};

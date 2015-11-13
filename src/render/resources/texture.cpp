@@ -50,9 +50,22 @@ namespace Vast
 				return this->internal_image.getSize();
 			}
 
+			//Find a pointer to the pixel data contained within the texture
 			const uint8* Texture::getPixelData()
 			{
 				return this->internal_image.getPixelsPtr();
+			}
+
+			//Find a pixel value within the texture
+			Pixel Texture::getPixel(uint16 x, uint16 y)
+			{
+				return Pixel(this->internal_image.getPixel(x, y));
+			}
+
+			//Set a pixel value within the texture
+			void Texture::setPixel(uint16 x, uint16 y, Pixel pixel)
+			{
+				return this->internal_image.setPixel(x, y, sf::Color(pixel.r, pixel.g, pixel.b, pixel.a));
 			}
 
 			//Buffer the texture into GPU memory
