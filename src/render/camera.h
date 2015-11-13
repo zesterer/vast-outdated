@@ -14,6 +14,8 @@ namespace Vast
 				State state;
 			public:
 				Camera();
+				void update();
+				void tick();
 		};
 	}
 }

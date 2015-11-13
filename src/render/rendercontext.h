@@ -4,6 +4,7 @@
 //----LOCAL----
 #include "resources/resourcemanager.h"
 #include "common/basictypes.h"
+#include "camera.h"
 
 namespace Vast
 {
@@ -14,6 +15,7 @@ namespace Vast
 			private:
 				uint32 time = 0;
 
+				Camera camera;
 				Resources::ResourceManager resource_manager;
 			public:
 				RenderContext();

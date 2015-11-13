@@ -28,6 +28,9 @@ namespace Vast
 				IO::output("Rendering context, time = " + std::to_string(this->time) + ".");
 			bool closed = false;
 
+			//Update the camera
+			this->camera.update();
+
 			//Rendering goes here
 			gl::glClearColor(0.0f, 0.4f, 0.0f, 1.0f);
 			gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);

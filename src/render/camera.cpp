@@ -9,5 +9,15 @@ namespace Vast
 		{
 			//Constructor
 		}
+
+		void Camera::update()
+		{
+			this->state.update();
+		}
+
+		void Camera::tick()
+		{
+			this->state.tick();
+		}
 	}
 }

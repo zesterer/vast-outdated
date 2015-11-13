@@ -23,6 +23,9 @@ namespace Vast
 		glm::quat spin = glm::quat();
 
 		glm::mat4 matrix;
+
+		void update();
+		void tick();
 	};
 }
 
