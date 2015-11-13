@@ -20,6 +20,20 @@ namespace Vast
 				this->textures.clear();
 			}
 
+			//Create a new mesh and load it into the resource manager
+			Mesh& ResourceManager::newMesh()
+			{
+				this->meshes.emplace_back();
+				return this->meshes.back();
+			}
+
+			//Create a new mesh from a given file and load it into the resource manager
+			Mesh& ResourceManager::newMeshFromFile(std::string filename)
+			{
+				this->meshes.emplace_back(filename);
+				return this->meshes.back();
+			}
+
 			//Create a new texture and load it into the resource manager
 			Texture& ResourceManager::newTexture()
 			{

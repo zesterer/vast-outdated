@@ -16,6 +16,7 @@ namespace Vast
 					Vertex a, b, c;
 
 					void invert();
+					void calculateFlatNormals(float curvature_bias = 0.0f);
 			};
 		}
 	}

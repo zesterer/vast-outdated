@@ -6,6 +6,7 @@
 
 //----LOCAL----
 #include "texture.h"
+#include "mesh.h"
 
 namespace Vast
 {
@@ -16,10 +17,14 @@ namespace Vast
 			class ResourceManager
 			{
 				private:
+					std::vector<Mesh> meshes;
 					std::vector<Texture> textures;
 				public:
 					ResourceManager();
 					void close();
+
+					Mesh& newMesh();
+					Mesh& newMeshFromFile(std::string filename);
 
 					Texture& newTexture();
 					Texture& newTextureFromBlank(uint16 width, uint16 height, const uint8* pixels = nullptr);
