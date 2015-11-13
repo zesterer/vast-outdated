@@ -205,6 +205,8 @@ class RenderContext
 			Vector3 getPosition();
 			Vector3 getColour();
 			ParticleType getType();
+	class Camera camera;
+		State state;
 	
 	void render();
 

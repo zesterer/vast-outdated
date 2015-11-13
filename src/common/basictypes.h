@@ -5,6 +5,9 @@
 #include "glbinding/gl/gl.h"
 #include "glbinding/Binding.h"
 
+#include "glm/glm.hpp"
+#include "glm/vec3.hpp"
+
 typedef char int8;
 typedef short int16;
 typedef int int32;
@@ -16,5 +19,10 @@ typedef unsigned int uint32;
 typedef unsigned long uint64;
 
 typedef gl::GLuint glid;
+
+typedef glm::vec4 v4;
+typedef glm::vec3 v3;
+typedef glm::vec2 v2;
+typedef float v1;
 
 #endif

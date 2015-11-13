@@ -7,6 +7,7 @@
 //----LOCAL----
 #include "texture.h"
 #include "mesh.h"
+#include "material.h"
 
 namespace Vast
 {
@@ -19,6 +20,7 @@ namespace Vast
 				private:
 					std::vector<Mesh> meshes;
 					std::vector<Texture> textures;
+					std::vector<Material> materials;
 				public:
 					ResourceManager();
 					void close();
@@ -29,6 +31,8 @@ namespace Vast
 					Texture& newTexture();
 					Texture& newTextureFromBlank(uint16 width, uint16 height, const uint8* pixels = nullptr);
 					Texture& newTextureFromFile(std::string filename);
+
+					Material& newMaterial();
 			};
 		}
 	}

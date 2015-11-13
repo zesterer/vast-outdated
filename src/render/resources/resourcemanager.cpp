@@ -17,7 +17,9 @@ namespace Vast
 			{
 				IO::output("Closing resource manager");
 
+				this->meshes.clear();
 				this->textures.clear();
+				this->materials.clear();
 			}
 
 			//Create a new mesh and load it into the resource manager
@@ -53,6 +55,13 @@ namespace Vast
 			{
 				this->textures.emplace_back(filename);
 				return this->textures.back();
+			}
+
+			//Create a new material and load it into the resource manager
+			Material& ResourceManager::newMaterial()
+			{
+				this->materials.emplace_back();
+				return this->materials.back();
 			}
 		}
 	}
