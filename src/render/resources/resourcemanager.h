@@ -8,6 +8,7 @@
 #include "texture.h"
 #include "mesh.h"
 #include "material.h"
+#include "shader.h"
 
 namespace Vast
 {
@@ -21,6 +22,7 @@ namespace Vast
 					std::vector<Mesh> meshes;
 					std::vector<Texture> textures;
 					std::vector<Material> materials;
+					std::vector<Shader> shaders;
 				public:
 					ResourceManager();
 					void close();
@@ -33,6 +35,10 @@ namespace Vast
 					Texture& newTextureFromFile(std::string filename);
 
 					Material& newMaterial();
+
+					Shader& newShader();
+					Shader& newShaderFromStrings(std::string vertex_shader_code, std::string fragment_shader_code);
+					Shader& newShaderFromFiles(std::string vertex_shader_filename, std::string fragment_shader_filename);
 			};
 		}
 	}

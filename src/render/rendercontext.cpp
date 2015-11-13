@@ -17,17 +17,17 @@ namespace Vast
 
 		void RenderContext::initiate()
 		{
-			glbinding::Binding::initialize();
+			this->renderer.initiate();
 
+			///Testing
 			auto tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/bowser.bmp");
 			auto mesh = this->resource_manager.newMeshFromFile("/home/barry/Documents/Projects/starclock/bowser.obj");
-
-			tex.buffer();
-			mesh.buffer();
 
 			auto part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
 			part.setTexture(&tex);
+			part.bufferAll();
+			///Testing
 		}
 
 		bool RenderContext::render()
@@ -54,6 +54,16 @@ namespace Vast
 			IO::output("Closing render context");
 
 			this->resource_manager.close();
+		}
+
+		Resources::ResourceManager& RenderContext::getResourceManager()
+		{
+			return this->resource_manager;
+		}
+
+		Figures::FigureManager& RenderContext::getFigureManager()
+		{
+			return this->figure_manager;
 		}
 	}
 }

@@ -83,6 +83,8 @@ namespace Vast
 				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLuint)gl::GL_RGB, this->getSize().x, this->getSize().y, 0, gl::GL_BGR, gl::GL_UNSIGNED_BYTE, this->getPixelData());
 
 				gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
+
+				IO::output("Buffered texture with size " + std::to_string(this->getSize().x) + "x" + std::to_string(this->getSize().y) + ".");
 			}
 		}
 	}

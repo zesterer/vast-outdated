@@ -28,10 +28,6 @@ PARENT_SCOPE
 #Add the appropriate source files
 set(APPLICATION_SOURCE_FILES
 ${APPLICATION_SOURCE_FILES}
-"${CMAKE_CURRENT_SOURCE_DIR}/resourcemanager.cpp"
-"${CMAKE_CURRENT_SOURCE_DIR}/texture.cpp"
-"${CMAKE_CURRENT_SOURCE_DIR}/mesh.cpp"
-"${CMAKE_CURRENT_SOURCE_DIR}/material.cpp"
-"${CMAKE_CURRENT_SOURCE_DIR}/shader.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/renderer.cpp"
 PARENT_SCOPE
 )

@@ -15,6 +15,7 @@
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/resources")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/structures")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/figures")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/renderer")
 
 #################
 #### SOURCES ####
@@ -33,5 +34,6 @@ ${APPLICATION_SOURCE_FILES}
 "${CMAKE_CURRENT_SOURCE_DIR}/rendercontext.cpp"
 "${CMAKE_CURRENT_SOURCE_DIR}/bufferable.cpp"
 "${CMAKE_CURRENT_SOURCE_DIR}/camera.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/renderable.cpp"
 PARENT_SCOPE
 )

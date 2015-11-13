@@ -6,6 +6,7 @@
 #include "figures/figuremanager.h"
 #include "common/basictypes.h"
 #include "camera.h"
+#include "renderer/renderer.h"
 
 namespace Vast
 {
@@ -17,6 +18,7 @@ namespace Vast
 				uint32 time = 0;
 
 				Camera camera;
+				Renderer::Renderer renderer;
 				Resources::ResourceManager resource_manager;
 				Figures::FigureManager figure_manager;
 			public:
@@ -24,6 +26,9 @@ namespace Vast
 				void initiate();
 				bool render();
 				void close();
+
+				Resources::ResourceManager& getResourceManager();
+				Figures::FigureManager& getFigureManager();
 		};
 	}
 }

@@ -6,6 +6,8 @@
 #include "resources/mesh.h"
 #include "resources/texture.h"
 #include "resources/material.h"
+#include "resources/shader.h"
+#include "renderable.h"
 
 namespace Vast
 {
@@ -13,7 +15,7 @@ namespace Vast
 	{
 		namespace Figures
 		{
-			class Part
+			class Part : public Renderable
 			{
 				private:
 					State state;
@@ -23,6 +25,7 @@ namespace Vast
 					Resources::Texture* bump_map = nullptr;
 					Resources::Texture* normal_map = nullptr;
 					Resources::Material* material = nullptr;
+					Resources::Shader* shader = nullptr;
 				public:
 					Part();
 
@@ -31,6 +34,16 @@ namespace Vast
 					void setBumpMap(Resources::Texture* bump_map);
 					void setNormalMap(Resources::Texture* normal_map);
 					void setMaterial(Resources::Material* material);
+					void setShader(Resources::Shader* shader);
+
+					Resources::Mesh& getMesh();
+					Resources::Texture& getTexture();
+					Resources::Texture& getBumpMap();
+					Resources::Texture& getNormalMap();
+					Resources::Material& getMaterial();
+					Resources::Shader& getShader();
+
+					void bufferAll();
 			};
 		}
 	}

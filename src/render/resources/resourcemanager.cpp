@@ -63,6 +63,26 @@ namespace Vast
 				this->materials.emplace_back();
 				return this->materials.back();
 			}
+
+			Shader& ResourceManager::newShader()
+			{
+				this->shaders.emplace_back();
+				return this->shaders.back();
+			}
+
+			Shader& ResourceManager::newShaderFromStrings(std::string vertex_shader_string, std::string fragment_shader_string)
+			{
+				this->shaders.emplace_back();
+				this->shaders.back().loadFromStrings(vertex_shader_string, fragment_shader_string);
+				return this->shaders.back();
+			}
+
+			Shader& ResourceManager::newShaderFromFiles(std::string vertex_shader_filename, std::string fragment_shader_filename)
+			{
+				this->shaders.emplace_back();
+				this->shaders.back().loadFromFiles(vertex_shader_filename, fragment_shader_filename);
+				return this->shaders.back();
+			}
 		}
 	}
 }
