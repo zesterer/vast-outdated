@@ -130,8 +130,8 @@ class RenderContext
 		void clearFonts();
 		void clearAll();
 	
-	class EntityManager entity_manager;
-		class Entity entities[];
+	class FigureManager figure_manager;
+		class Figure figures[];
 			private bool visible;
 			class State state;
 				private Vector3 position;

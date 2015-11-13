@@ -3,6 +3,10 @@
 #include "stdio.h"
 #include "fstream"
 
+//----LIBRARY----
+#include "glbinding/gl/gl.h"
+#include "glbinding/Binding.h"
+
 //----LOCAL----
 #include "mesh.h"
 #include "common/io.h"
@@ -43,7 +47,7 @@ namespace Vast
 				std::ifstream file (filename);
 
 				//Return false if the read operation failed
-				if (!IO::test(file.is_open(), "Opening '" + filename + "'"))
+				if (!IO::test(file.is_open(), "Loading mesh from file '" + filename + "'"))
 					return false;
 
 				//We'll be using this later...
@@ -164,7 +168,7 @@ namespace Vast
 					}
 				}
 
-				IO::output("Collected faces from file " + filename);
+				IO::output("Collected faces, now generating mesh");
 
 				for (unsigned long face_id = 0; face_id < tmp_face.size(); face_id ++)
 				{
@@ -208,6 +212,31 @@ namespace Vast
 				}
 
 				return true;
+			}
+
+			void Mesh::buffer()
+			{
+				gl::glGenVertexArrays(1, &this->gl_id);
+				gl::glBindVertexArray(this->gl_id);
+
+				gl::glGenBuffers(1, &this->gl_id);
+				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_id);
+
+				gl::glBufferData(gl::GL_ARRAY_BUFFER, this->polygons.size() * sizeof(Structures::Polygon), &this->polygons[0], gl::GL_STATIC_DRAW);
+
+				this->buffered = true;
+
+				IO::output("Buffered mesh with " + std::to_string(this->polygons.size()) + " polygons.");
+			}
+
+			void Mesh::discard()
+			{
+				if (this->buffered)
+				{
+					gl::glDeleteBuffers(1, &this->gl_id);
+
+					this->buffered = false;
+				}
 			}
 		}
 	}

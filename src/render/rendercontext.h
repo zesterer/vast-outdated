@@ -3,6 +3,7 @@
 
 //----LOCAL----
 #include "resources/resourcemanager.h"
+#include "figures/figuremanager.h"
 #include "common/basictypes.h"
 #include "camera.h"
 
@@ -17,6 +18,7 @@ namespace Vast
 
 				Camera camera;
 				Resources::ResourceManager resource_manager;
+				Figures::FigureManager figure_manager;
 			public:
 				RenderContext();
 				void initiate();

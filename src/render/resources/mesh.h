@@ -34,6 +34,9 @@ namespace Vast
 					Mesh(std::string filename);
 					void addPolygon(Structures::Polygon polygon);
 					bool loadFromFile(std::string filename);
+
+					void buffer() override;
+					void discard() override;
 			};
 		}
 	}
