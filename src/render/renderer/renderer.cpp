@@ -46,6 +46,21 @@ namespace Vast
 
 				IO::output("Buffered screen quad array");
 			}
+
+			void Renderer::renderFigure(Figures::Figure& figure)
+			{
+				//Render figure
+			}
+
+			void Renderer::renderPart(Figures::Part& part)
+			{
+				//Render part
+			}
+
+			void Renderer::renderFigureMultiple(std::vector<Figures::Figure>& figures)
+			{
+				//Render multiple figures
+			}
 		}
 	}
 }

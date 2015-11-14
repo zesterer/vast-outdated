@@ -3,6 +3,8 @@
 
 //----LOCAL----
 #include "common/basictypes.h"
+#include "figure/figure.h"
+#include "figure/part.h"
 
 namespace Vast
 {
@@ -18,6 +20,10 @@ namespace Vast
 					Renderer();
 					void initiate();
 					void bufferScreenQuad();
+
+					void renderFigure(Figures::Figure& figure);
+					void renderPart(Figures::Part& part);
+					void renderFigureMultiple(std::vector<Figures::Figure>& figures);
 			};
 		}
 	}
