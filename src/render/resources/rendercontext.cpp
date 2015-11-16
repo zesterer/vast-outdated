@@ -5,6 +5,7 @@
 //----LOCAL----
 #include "rendercontext.h"
 #include "common/io.h"
+#include "shaders/postprocessvertexGLSL.h"
 
 namespace Vast
 {
@@ -20,7 +21,7 @@ namespace Vast
 			this->renderer.initiate();
 
 			//Set up the default shaders
-			this->getResourceManager().newShaderFromFiles("../data/shaders/postprocess.vert", "../data/shaders/postprocess.frag");
+			this->getResourceManager().newShadersFromFiles("../data/shaders/postprocess.vert", "../data/shaders/postprocess.frag");
 
 			///Testing
 			auto tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/bowser.bmp");

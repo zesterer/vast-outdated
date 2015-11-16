@@ -99,7 +99,8 @@ namespace Vast
 				gl::glGetProgramiv(ProgramID, gl::GL_INFO_LOG_LENGTH, &InfoLogLength);
 				std::vector<char> ProgramErrorMessage(std::max(InfoLogLength, int(1)));
 				gl::glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-				std::fprintf(stdout, "%s", &ProgramErrorMessage[0]);
+				if (ProgramErrorMessage.size() > 1)
+					std::fprintf(stdout, "%s\n", &ProgramErrorMessage[0]);
 
 				//Delete the individual shaders (they're now packaged as part of a shader 'program')
 				gl::glDeleteShader(VertexShaderID);

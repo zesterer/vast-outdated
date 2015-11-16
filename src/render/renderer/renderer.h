@@ -3,8 +3,8 @@
 
 //----LOCAL----
 #include "common/basictypes.h"
-#include "figure/figure.h"
-#include "figure/part.h"
+#include "figures/figure.h"
+#include "figures/part.h"
 
 namespace Vast
 {
