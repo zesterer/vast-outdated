@@ -18,13 +18,14 @@ namespace Vast
 				uint32 time = 0;
 
 				Camera camera;
+
 				Renderer::Renderer renderer;
 				Resources::ResourceManager resource_manager;
 				Figures::FigureManager figure_manager;
 			public:
 				RenderContext();
 				void initiate();
-				bool render();
+				bool render(double fps);
 				void close();
 
 				Resources::ResourceManager& getResourceManager();

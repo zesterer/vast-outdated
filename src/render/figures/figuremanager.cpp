@@ -15,8 +15,13 @@ namespace Vast
 
 			Figure& FigureManager::newFigure()
 			{
-				this->figures.emplace_back();
+				this->figures.emplace_back(this);
 				return this->figures.back();
+			}
+			
+			std::vector<Figure>& FigureManager::getFigures()
+			{
+				return this->figures;
 			}
 		}
 	}

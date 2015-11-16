@@ -19,6 +19,7 @@ namespace Vast
 					glid gl_id;
 				public:
 					void enable();
+					glid getGLID();
 					void loadFromFiles(std::string vertex_file_path, std::string fragment_file_path);
 					void loadFromStrings(std::string vertex_shader_code, std::string fragment_shader_code);
 			};

@@ -15,10 +15,14 @@ namespace Vast
 	{
 		namespace Figures
 		{
+			class Figure;
+			
 			class Part : public Renderable
 			{
 				private:
 					State state;
+					
+					Figure* parent;
 
 					Resources::Mesh* mesh = nullptr;
 					Resources::Texture* texture = nullptr;
@@ -27,7 +31,7 @@ namespace Vast
 					Resources::Material* material = nullptr;
 					Resources::Shader* shader = nullptr;
 				public:
-					Part();
+					Part(Figure* parent);
 
 					void setMesh(Resources::Mesh* mesh);
 					void setTexture(Resources::Texture* texture);

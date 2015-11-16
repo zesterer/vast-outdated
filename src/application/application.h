@@ -24,6 +24,8 @@ namespace Vast
 		{
 			private:
 				ApplicationConfig config;
+				
+				double fps;
 
 				Window::Window main_window;
 				Render::RenderContext render_context;

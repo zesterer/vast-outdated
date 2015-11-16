@@ -14,16 +14,22 @@ namespace Vast
 	{
 		namespace Figures
 		{
+			class FigureManager;
+			
 			class Figure
 			{
 				private:
 					State state;
+					
+					FigureManager* manager;
 
 					std::vector<Part> parts;
 				public:
-					Figure();
+					Figure(FigureManager* manager);
 
 					Part& newPart();
+					
+					std::vector<Part>& getParts();
 			};
 		}
 	}

@@ -1,5 +1,6 @@
 //----LOCAL----
 #include "part.h"
+#include "figure.h"
 
 namespace Vast
 {
@@ -7,9 +8,9 @@ namespace Vast
 	{
 		namespace Figures
 		{
-			Part::Part()
+			Part::Part(Figure* parent)
 			{
-				//Constructor
+				this->parent = parent;
 			}
 
 			void Part::setMesh(Resources::Mesh* mesh)

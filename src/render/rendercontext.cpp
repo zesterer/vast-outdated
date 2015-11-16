@@ -17,10 +17,7 @@ namespace Vast
 
 		void RenderContext::initiate()
 		{
-			this->renderer.initiate();
-
-			//Set up the default shaders
-			this->getResourceManager().newShaderFromFiles("../data/shaders/postprocess.vert", "../data/shaders/postprocess.frag");
+			this->renderer.initiate(*this);
 
 			///Testing
 			auto tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/bowser.bmp");
@@ -33,7 +30,7 @@ namespace Vast
 			///Testing
 		}
 
-		bool RenderContext::render()
+		bool RenderContext::render(double fps)
 		{
 			if (this->time % 60 == 0)
 				IO::output("Rendering context, time = " + std::to_string(this->time) + ".");
@@ -45,6 +42,8 @@ namespace Vast
 			//Rendering goes here
 			gl::glClearColor(0.0f, 0.4f, 0.0f, 1.0f);
 			gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+			
+			this->renderer.renderPostProcess(this->time);
 
 			//Increment time
 			this->time ++;

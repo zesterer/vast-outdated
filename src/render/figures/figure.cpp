@@ -1,5 +1,6 @@
 //----LOCAL----
 #include "figure.h"
+#include "figuremanager.h"
 
 namespace Vast
 {
@@ -7,15 +8,20 @@ namespace Vast
 	{
 		namespace Figures
 		{
-			Figure::Figure()
+			Figure::Figure(FigureManager* manager)
 			{
-				//Constructor
+				this->manager = manager;
 			}
 
 			Part& Figure::newPart()
 			{
-				this->parts.emplace_back();
+				this->parts.emplace_back(this);
 				return this->parts.back();
+			}
+			
+			std::vector<Part>& Figure::getParts()
+			{
+				return this->parts;
 			}
 		}
 	}

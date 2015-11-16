@@ -21,6 +21,8 @@ namespace Vast
 					FigureManager();
 
 					Figure& newFigure();
+					
+					std::vector<Figure>& getFigures();
 			};
 		}
 	}

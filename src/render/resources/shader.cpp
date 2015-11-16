@@ -19,8 +19,13 @@ namespace Vast
 		{
 			void Shader::enable()
 			{
-				IO::output("Enabled shader program");
+				//IO::output("Enabled shader program");
 				gl::glUseProgram(this->gl_id);
+			}
+			
+			glid Shader::getGLID()
+			{
+				return this->gl_id;
 			}
 
 			void Shader::loadFromFiles(std::string vertex_file_path, std::string fragment_file_path)

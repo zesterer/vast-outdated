@@ -1,3 +1,7 @@
+//----STANDARD----
+#include "iomanip"
+#include "sstream"
+
 //----LOCAL----
 #include "window.h"
 #include "common/io.h"
@@ -19,21 +23,53 @@ namespace Vast
 
 			this->internal_window.create(sf::VideoMode(640, 480), "Window", sf::Style::Default, this->settings);
 
-			this->internal_window.setVerticalSyncEnabled(true);
-			this->internal_window.setFramerateLimit(60);
+			this->internal_window.setFramerateLimit(500);
+			
+			this->setTitle("Vast Main Window");
+			this->setVSync(true);
 
 			IO::output("Initiated window");
+		}
+		
+		void Window::setVSync(bool vsync)
+		{
+			this->vsync = vsync;
+			this->internal_window.setVerticalSyncEnabled(this->vsync);
+		}
+		
+		bool Window::getVSync()
+		{
+			return this->vsync;
 		}
 
 		void Window::setTitle(std::string title)
 		{
 			this->title = title;
-			this->internal_window.setTitle(title);
+			this->updateTitle();
 		}
 
 		std::string Window::getTitle()
 		{
 			return this->title;
+		}
+		
+		void Window::updateTitle()
+		{
+			std::ostringstream fps_string;
+			fps_string << std::setprecision(4) << this->fps;
+			
+			this->internal_window.setTitle(title + " | FPS: " + fps_string.str());
+		}
+		
+		void Window::setShowFPS(bool show_fps)
+		{
+			this->show_fps = show_fps;
+			this->updateTitle();
+		}
+		
+		bool Window::getShowFPS()
+		{
+			return this->show_fps;
 		}
 
 		void Window::setFPS(uint16 fps)
@@ -56,9 +92,12 @@ namespace Vast
 			return this->internal_window.setActive(active);
 		}
 
-		bool Window::tick()
+		bool Window::tick(double fps)
 		{
 			bool closed = false;
+			
+			//Update the current state of the fps
+			this->fps = fps;
 
 			sf::Event event;
 			while (this->internal_window.pollEvent(event))
@@ -75,6 +114,9 @@ namespace Vast
 			}
 
 			this->internal_window.display();
+			
+			//Set window FPS display
+			this->updateTitle();
 
 			return closed;
 		}
