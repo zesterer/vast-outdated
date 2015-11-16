@@ -26,7 +26,7 @@ namespace Vast
 			void Shader::loadFromFiles(std::string vertex_file_path, std::string fragment_file_path)
 			{
 				// Read the Vertex Shader code from the file
-				IO::output("Loading Vertex Shader Code from:" + vertex_file_path);
+				IO::output("Loading vertex shader code from '" + vertex_file_path + "'");
 				std::string VertexShaderCode;
 				std::ifstream VertexShaderStream(vertex_file_path.c_str(), std::ios::in);
 				if(VertexShaderStream.is_open())
@@ -36,9 +36,14 @@ namespace Vast
 						VertexShaderCode += Line + "\n";
 					VertexShaderStream.close();
 				}
+				else
+				{
+					IO::output("Vertex shader location '" + vertex_file_path + "' cannot be opened", IO::OutputType::Error);
+					return;
+				}
 
 				// Read the Fragment Shader code from the file
-				IO::output("Loading Fragment Shader Code from: " + fragment_file_path);
+				IO::output("Loading fragment shader code from '" + fragment_file_path + "'");
 				std::string FragmentShaderCode;
 				std::ifstream FragmentShaderStream(fragment_file_path.c_str(), std::ios::in);
 				if(FragmentShaderStream.is_open())
@@ -47,6 +52,11 @@ namespace Vast
 					while(std::getline(FragmentShaderStream, Line))
 						FragmentShaderCode += Line + "\n";
 					FragmentShaderStream.close();
+				}
+				else
+				{
+					IO::output("Fragment shader location '" + fragment_file_path + "' cannot be opened", IO::OutputType::Error);
+					return;
 				}
 
 				this->loadFromStrings(VertexShaderCode, FragmentShaderCode);
@@ -62,7 +72,7 @@ namespace Vast
 				int InfoLogLength;
 
 				// Compile Vertex Shader
-				IO::output("Compiling Vertex Shader");
+				IO::output("Compiling vertex shader");
 				char const * VertexSourcePointer = vertex_shader_code.c_str();
 				gl::glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
 				gl::glCompileShader(VertexShaderID);
@@ -75,7 +85,7 @@ namespace Vast
 				std::fprintf(stdout, "%s", &VertexShaderErrorMessage[0]);
 
 				// Compile Fragment Shader
-				IO::output("Compiling Fragment Shader");
+				IO::output("Compiling fragment shader");
 				char const * FragmentSourcePointer = fragment_shader_code.c_str();
 				gl::glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
 				gl::glCompileShader(FragmentShaderID);
@@ -88,7 +98,7 @@ namespace Vast
 				std::fprintf(stdout, "%s", &FragmentShaderErrorMessage[0]);
 
 				// Link the program
-				IO::output("Linking program");
+				IO::output("Linking shader program");
 				gl::GLuint ProgramID = gl::glCreateProgram();
 				gl::glAttachShader(ProgramID, VertexShaderID);
 				gl::glAttachShader(ProgramID, FragmentShaderID);
