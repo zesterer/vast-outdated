@@ -18,8 +18,8 @@ namespace Vast
 					glid gl_texture_id;
 					glid gl_depth_id;
 					
-					uint32 width = 1;
-					uint32 height = 1;
+					uint32 width = 640;
+					uint32 height = 480;
 				public:
 					DrawBuffer();
 					void initialise();

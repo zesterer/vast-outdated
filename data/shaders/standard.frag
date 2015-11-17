@@ -24,11 +24,11 @@ smooth in highp vec4 F_M_POSITION;
 smooth in lowp vec4 F_M_NORMAL;
 
 //----OUTPUTS----
-layout (location = 0) out mediump vec3 COLOUR_BUFFER;
-layout (location = 1) out highp vec3 DEPTH_BUFFER;
+layout (location = 0) out mediump vec4 COLOUR_BUFFER;
+//layout (location = 1) out highp float DEPTH_BUFFER;
 
 //----GLOBALS----
-          lowp    vec4      MOD_NORM;
+lowp vec4 MOD_NORM;
 
 float getSpecular(vec4 vector)
 {
@@ -125,5 +125,5 @@ void main()
 	}*/
 
 	//COLOUR_BUFFER = getTexture() * diffuse + specular;
-	COLOUR_BUFFER = vec3(1.0, 0.0, 0.0);
+	COLOUR_BUFFER = vec4(1.0, 0.0, 0.0, 1.0);
 }

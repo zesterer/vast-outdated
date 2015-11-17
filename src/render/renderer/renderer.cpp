@@ -78,15 +78,13 @@ namespace Vast
 
 				//Ready the depth texture
 				gl::GLuint depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
-				//gl::glActiveTexture(gl::GL_TEXTURE1);
+				gl::glActiveTexture(gl::GL_TEXTURE1);
 				gl::glUniform1i(depth_id, 0);
 				gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
 				
 				//Send the current time
 				gl::GLuint time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
 				gl::glUniform1ui(time_id, time);
-
-				this->postprocess_shader->enable();
 
 				gl::glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
@@ -102,7 +100,7 @@ namespace Vast
 					case (RenderMethod::Standard):
 					{
 						//Enable backface culling
-						//gl::glEnable(gl::GL_CULL_FACE);
+						gl::glDisable(gl::GL_CULL_FACE);
 
 						//Enable the depth buffer
 						gl::glEnable(gl::GL_DEPTH_TEST);
@@ -115,6 +113,8 @@ namespace Vast
 						//Blank the screen
 						gl::glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 						gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+						
+						this->standard_shader->enable();
 					}
 					break;
 					
@@ -132,6 +132,8 @@ namespace Vast
 						//Set up the viewport
 						gl::glViewport(0, 0, this->width, this->height);
 						
+						this->postprocess_shader->enable();
+						
 						//Blank the screen
 						gl::glClearColor(0.0f, 0.4f, 0.0f, 0.0f);
 						gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
@@ -143,15 +145,13 @@ namespace Vast
 			void Renderer::renderPart(Figures::Part& part, uint32 time)
 			{
 				//What is the buffer array composed of?
-				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2), sizeof(glm::vec3)};
+				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2)};
 				
 				//Make sure the part mesh is buffered
 				part.getMesh().buffer();
 				
 				//Bind the vertex buffer
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, part.getMesh().getGLID());
-				
-				this->standard_shader->enable();
 				
 				//Set up the vertex attributes
 				gl::GLuint offset = 0;

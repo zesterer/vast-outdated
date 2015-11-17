@@ -1,5 +1,6 @@
 //----LOCAL----
 #include "camera.h"
+#include "common/io.h"
 
 namespace Vast
 {
@@ -7,7 +8,9 @@ namespace Vast
 	{
 		Camera::Camera()
 		{
-			this->state.orientation = quat(glm::vec3(0.0, 3.141592 / 2.0, 3.141592 / 1.0));
+			this->state.orientation = quat(glm::vec3(0.0, 3.141592 / 2.0, 3.141592 / 2.0));
+			
+			this->update(1.0f);
 		}
 
 		void Camera::update(float screen_ratio)

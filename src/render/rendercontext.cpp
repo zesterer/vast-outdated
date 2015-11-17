@@ -29,9 +29,9 @@ namespace Vast
 			part.setTexture(&tex);
 			part.bufferAll();
 			
-			this->figure_manager.getFigure(0).getState().position = v3(2.0, 0.0, 0.0);
-			this->figure_manager.getFigure(0).getState().scale = v3(0.3, 0.3, 0.3);
-			//this->figure_manager.getFigure(0).getPart(0).getState().update();
+			this->figure_manager.getFigure(0).getState().position = v3(0.0, 0.0, 0.0);
+			this->figure_manager.getFigure(0).getState().scale = v3(5.0, 5.0, 5.0);
+			this->figure_manager.getFigure(0).getPart(0).getState().update();
 			this->figure_manager.getFigure(0).getState().update();
 			///Testing
 		}

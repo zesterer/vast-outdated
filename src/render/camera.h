@@ -15,8 +15,8 @@ namespace Vast
 				mat4 perspective_matrix;
 				
 				float fov = 1.0;
-				float min_render = 0.001;
-				float max_render = 1000.0;
+				float min_render = 0.01;
+				float max_render = 10000.0;
 				float screen_ratio = 1.0;
 				float fog_distance = 0.0f; //Make equal to 0.0 to remove fog
 				

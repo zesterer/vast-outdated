@@ -66,7 +66,7 @@ void main()
 	//COLOUR += getPerlin(vec4(pos, TIME / 500.0, 0.0), 2.0, 5.0, 1.0) * 0.3 - 0.3;
 
 	//Faded corners
-	//COLOUR *= mix(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), min(1, 1.5 - length(UV)));
+	COLOUR *= mix(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), min(1, 1.5 - length(UV)));
 
 
 }
