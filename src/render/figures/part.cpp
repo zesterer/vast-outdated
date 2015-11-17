@@ -1,6 +1,7 @@
 //----LOCAL----
 #include "part.h"
 #include "figure.h"
+#include "common/io.h"
 
 namespace Vast
 {
@@ -11,6 +12,16 @@ namespace Vast
 			Part::Part(Figure* parent)
 			{
 				this->parent = parent;
+			}
+			
+			State& Part::getState()
+			{
+				return this->state;
+			}
+			
+			Figure& Part::getParent()
+			{
+				return *this->parent;
 			}
 
 			void Part::setMesh(Resources::Mesh* mesh)

@@ -31,6 +31,21 @@ namespace Vast
 			{
 				this->polygons.push_back(polygon);
 			}
+			
+			void Mesh::setMode(gl::GLenum mode)
+			{
+				this->mode = mode;
+			}
+			
+			gl::GLenum Mesh::getMode()
+			{
+				return this->mode;
+			}
+			
+			uint32 Mesh::getSize()
+			{
+				return this->polygons.size();
+			}
 
 			bool Mesh::loadFromFile(std::string filename)
 			{
@@ -214,19 +229,22 @@ namespace Vast
 				return true;
 			}
 
-			void Mesh::buffer()
+			void Mesh::buffer(bool force)
 			{
-				gl::glGenVertexArrays(1, &this->gl_id);
-				gl::glBindVertexArray(this->gl_id);
+				if (force || !this->buffered)
+				{
+					gl::glGenVertexArrays(1, &this->gl_id);
+					gl::glBindVertexArray(this->gl_id);
 
-				gl::glGenBuffers(1, &this->gl_id);
-				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_id);
+					gl::glGenBuffers(1, &this->gl_id);
+					gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_id);
 
-				gl::glBufferData(gl::GL_ARRAY_BUFFER, this->polygons.size() * sizeof(Structures::Polygon), &this->polygons[0], gl::GL_STATIC_DRAW);
+					gl::glBufferData(gl::GL_ARRAY_BUFFER, this->polygons.size() * sizeof(Structures::Polygon), &this->polygons[0], gl::GL_STATIC_DRAW);
 
-				this->buffered = true;
+					this->buffered = true;
 
-				IO::output("Buffered mesh with " + std::to_string(this->polygons.size()) + " polygons.");
+					IO::output("Buffered mesh with " + std::to_string(this->polygons.size()) + " polygons.");
+				}
 			}
 
 			void Mesh::discard()

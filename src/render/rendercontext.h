@@ -25,7 +25,7 @@ namespace Vast
 			public:
 				RenderContext();
 				void initiate();
-				bool render(double fps);
+				bool render(double fps, uint32 width, uint32 height);
 				void close();
 
 				Resources::ResourceManager& getResourceManager();

@@ -18,13 +18,23 @@ namespace Vast
 			{
 				IO::output("Initiating renderer");
 
+				//Initialise and set up everything
 				glbinding::Binding::initialize();
+				this->draw_buffer.initialise();
 
 				this->bufferScreenQuad();
 
 				//Set up the default shaders
 				this->standard_shader = &context.getResourceManager().newShaderFromFiles("../data/shaders/standard.vert", "../data/shaders/standard.frag");
 				this->postprocess_shader = &context.getResourceManager().newShaderFromFiles("../data/shaders/postprocess.vert", "../data/shaders/postprocess.frag");
+			}
+			
+			void Renderer::update(uint32 width, uint32 height)
+			{
+				this->width = width;
+				this->height = height;
+				
+				this->draw_buffer.setSize(this->width, this->height);
 			}
 
 			void Renderer::bufferScreenQuad()
@@ -54,31 +64,25 @@ namespace Vast
 
 			void Renderer::renderPostProcess(uint32 time)
 			{
-				//Disable backface culling
-				gl::glDisable(gl::GL_CULL_FACE);
-
-				//Disable the depth buffer
-				gl::glDisable(gl::GL_DEPTH_TEST);
-				gl::glDepthFunc(gl::GL_NONE);
-
-				//Bind the framebuffer ready
-				gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
-				gl::glViewport(0, 0, 640 * 1.4, 480 * 1.4); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_screen_quad_id);
 
 				//Tell the shaders what different parts of the buffer mean using the above array
 				gl::glEnableVertexAttribArray(0);
 				gl::glVertexAttribPointer(0, 3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(gl::GLfloat) * 3, (void*)(unsigned long)0);
 
-				//GLuint tex_id = glGetUniformLocation(framebuffer->shader->gl_id, "RENDER_TEXTURE");
-				//glUniform1i(tex_id, 0);
-				//glBindTexture(GL_TEXTURE_2D, framebuffer->gl_tex_id);
+				//Ready the COLOUR texture
+				gl::GLuint tex_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "RENDER_TEXTURE");
+				gl::glActiveTexture(gl::GL_TEXTURE0);
+				gl::glUniform1i(tex_id, 0);
+				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 
-				//GLuint depth_id = glGetUniformLocation(framebuffer->shader->gl_id, "RENDER_DEPTH");
-				//glUniform1i(depth_id, 0);
-				//glBindTexture(GL_TEXTURE_2D, framebuffer->gl_depth_id);
+				//Ready the depth texture
+				gl::GLuint depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
+				//gl::glActiveTexture(gl::GL_TEXTURE1);
+				gl::glUniform1i(depth_id, 0);
+				gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
 				
+				//Send the current time
 				gl::GLuint time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
 				gl::glUniform1ui(time_id, time);
 
@@ -90,26 +94,121 @@ namespace Vast
 
 				gl::glDisableVertexAttribArray(0);
 			}
-
-			void Renderer::renderPart(Figures::Part& part)
+			
+			void Renderer::preRender(RenderMethod method)
 			{
-				//Render part
+				switch (method)
+				{
+					case (RenderMethod::Standard):
+					{
+						//Enable backface culling
+						//gl::glEnable(gl::GL_CULL_FACE);
+
+						//Enable the depth buffer
+						gl::glEnable(gl::GL_DEPTH_TEST);
+						gl::glDepthFunc(gl::GL_LESS);
+
+						// Render to our framebuffer
+						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, this->draw_buffer.getGLID());
+						gl::glViewport(0, 0, this->width, this->height);
+						
+						//Blank the screen
+						gl::glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+						gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+					}
+					break;
+					
+					case (RenderMethod::PostProcess):
+					{
+						//Disable backface culling
+						gl::glDisable(gl::GL_CULL_FACE);
+
+						//Disable the depth buffer
+						gl::glDisable(gl::GL_DEPTH_TEST);
+						gl::glDepthFunc(gl::GL_NONE);
+
+						//Bind the framebuffer ready
+						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
+						//Set up the viewport
+						gl::glViewport(0, 0, this->width, this->height);
+						
+						//Blank the screen
+						gl::glClearColor(0.0f, 0.4f, 0.0f, 0.0f);
+						gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+					}
+					break;
+				}
 			}
 
-			void Renderer::renderFigures(Figures::FigureManager& figure_manager)
+			void Renderer::renderPart(Figures::Part& part, uint32 time)
 			{
-				std::vector<Figures::Figure>& figures = figure_manager.getFigures();
+				//What is the buffer array composed of?
+				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2), sizeof(glm::vec3)};
 				
-				for (uint32 figure_count = 0; figure_count < figures.size(); figure_count ++)
+				//Make sure the part mesh is buffered
+				part.getMesh().buffer();
+				
+				//Bind the vertex buffer
+				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, part.getMesh().getGLID());
+				
+				this->standard_shader->enable();
+				
+				//Set up the vertex attributes
+				gl::GLuint offset = 0;
+				for (gl::GLuint array_id = 0; array_id < 4; array_id ++)
 				{
-					Figures::Figure& current_figure = figures[figure_count];
-					std::vector<Figures::Part>& parts = current_figure.getParts();
+					gl::glEnableVertexAttribArray(array_id);
+					gl::glVertexAttribPointer(array_id, attribute_array[array_id] / sizeof(gl::GLfloat), gl::GL_FLOAT, gl::GL_FALSE, sizeof(Structures::Vertex), (void*)(unsigned long)offset);
+					offset += attribute_array[array_id];
+				}
+				
+				//Find the uniform camera matrix, then assign it
+				gl::GLuint perspective_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "PERSPECTIVE_MATRIX");
+				gl::glUniformMatrix4fv(perspective_matrix_id, 1, gl::GL_FALSE, &this->camera->getPerspective()[0][0]);
+
+				//Find the uniform camera matrix, then assign it
+				gl::GLuint camera_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "CAMERA_MATRIX");
+				gl::glUniformMatrix4fv(camera_matrix_id, 1, gl::GL_FALSE, &this->camera->getMatrix()[0][0]);
+				
+				//Find the uniform model vector, then assign it
+				gl::GLuint model_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "MODEL_MATRIX");
+				State modified = part.getParent().getState();
+				modified.position -= this->camera->getState().position;
+				modified.update();
+				mat4 sum = glm::f32mat4(1.0f);
+				sum = (glm::f32mat4)modified.matrix * (glm::f32mat4)part.getState().matrix * sum;
+				gl::glUniformMatrix4fv(model_matrix_id, 1, gl::GL_FALSE, &sum[0][0]);
+				
+				//Send the current time
+				gl::GLuint time_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TIME");
+				gl::glUniform1ui(time_id, time);
+				
+				//Draw the part
+				glDrawArrays(part.getMesh().getMode(), 0, part.getMesh().getSize() * 3);
+				
+				//Disable all the vertex attribute arrays again
+				for (int i = 0; i < 4; i ++)
+					gl::glDisableVertexAttribArray(i);
+			}
+
+			void Renderer::renderFigures(Figures::FigureManager& figure_manager, uint32 time)
+			{
+				for (uint32 figure_count = 0; figure_count < figure_manager.getNumber(); figure_count ++)
+				{
+					Figures::Figure& current_figure = figure_manager.getFigure(figure_count);
 					
-					for (uint32 part_count = 0; part_count < parts.size(); part_count ++)
+					for (uint32 part_count = 0; part_count < current_figure.getPartNumber(); part_count ++)
 					{
-						this->renderPart(parts[part_count]);
+						Figures::Part& part = current_figure.getPart(part_count);
+						
+						this->renderPart(part, time);
 					}
 				}
+			}
+			
+			void Renderer::setCamera(Camera& camera)
+			{
+				this->camera = &camera;
 			}
 		}
 	}

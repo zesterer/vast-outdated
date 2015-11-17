@@ -18,31 +18,39 @@ namespace Vast
 		void RenderContext::initiate()
 		{
 			this->renderer.initiate(*this);
+			this->renderer.setCamera(this->camera);
 
 			///Testing
-			auto tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/bowser.bmp");
-			auto mesh = this->resource_manager.newMeshFromFile("/home/barry/Documents/Projects/starclock/bowser.obj");
+			Resources::Texture& tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/mickey.bmp");
+			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("/home/barry/Documents/Projects/starclock/mickey.obj");
 
-			auto part = this->figure_manager.newFigure().newPart();
+			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
 			part.setTexture(&tex);
 			part.bufferAll();
+			
+			this->figure_manager.getFigure(0).getState().position = v3(2.0, 0.0, 0.0);
+			this->figure_manager.getFigure(0).getState().scale = v3(0.3, 0.3, 0.3);
+			//this->figure_manager.getFigure(0).getPart(0).getState().update();
+			this->figure_manager.getFigure(0).getState().update();
 			///Testing
 		}
 
-		bool RenderContext::render(double fps)
+		bool RenderContext::render(double fps, uint32 width, uint32 height)
 		{
 			if (this->time % 60 == 0)
-				IO::output("Rendering context, time = " + std::to_string(this->time) + ".");
+				IO::output("Rendering context | time = " + std::to_string(this->time) + ".");
 			bool closed = false;
 
-			//Update the camera
-			this->camera.update();
+			//Update things
+			this->camera.update((float)width / (float)height);
+			this->renderer.update(width, height);
 
 			//Rendering goes here
-			gl::glClearColor(0.0f, 0.4f, 0.0f, 1.0f);
-			gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+			this->renderer.preRender(Renderer::RenderMethod::Standard);
+			this->renderer.renderFigures(this->figure_manager, this->time);
 			
+			this->renderer.preRender(Renderer::RenderMethod::PostProcess);
 			this->renderer.renderPostProcess(this->time);
 
 			//Increment time

@@ -69,22 +69,25 @@ namespace Vast
 			}
 
 			//Buffer the texture into GPU memory
-			void Texture::buffer()
+			void Texture::buffer(bool force)
 			{
-				this->buffered = true;
+				if (force || !this->buffered)
+				{
+					this->buffered = true;
 
-				//Generate the texture
-				if (!this->buffered)
-					gl::glGenTextures(1, &this->gl_id);
+					//Generate the texture
+					if (!this->buffered)
+						gl::glGenTextures(1, &this->gl_id);
 
-				//Bind the texture ready to write data
-				gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_id);
+					//Bind the texture ready to write data
+					gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_id);
 
-				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLuint)gl::GL_RGB, this->getSize().x, this->getSize().y, 0, gl::GL_BGR, gl::GL_UNSIGNED_BYTE, this->getPixelData());
+					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLuint)gl::GL_RGB, this->getSize().x, this->getSize().y, 0, gl::GL_BGR, gl::GL_UNSIGNED_BYTE, this->getPixelData());
 
-				gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
+					gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
 
-				IO::output("Buffered texture with size " + std::to_string(this->getSize().x) + "x" + std::to_string(this->getSize().y) + ".");
+					IO::output("Buffered texture with size " + std::to_string(this->getSize().x) + "x" + std::to_string(this->getSize().y) + ".");
+				}
 			}
 		}
 	}

@@ -29,7 +29,11 @@ namespace Vast
 
 					Part& newPart();
 					
+					State& getState();
+					
 					std::vector<Part>& getParts();
+					Part& getPart(uint32 id);
+					uint32 getPartNumber();
 			};
 		}
 	}

@@ -18,8 +18,11 @@ namespace Vast
 			public:
 				glid gl_id;
 				bool buffered = false;
+				
+				virtual void setGLID(glid gl_id);
+				virtual glid getGLID();
 
-				virtual void buffer();
+				virtual void buffer(bool force = false);
 				virtual void discard();
 		};
 	}

@@ -29,13 +29,20 @@ namespace Vast
 			{
 				private:
 					std::vector<Structures::Polygon> polygons;
+					
+					gl::GLenum mode = gl::GL_TRIANGLES;
 				public:
 					Mesh();
 					Mesh(std::string filename);
 					void addPolygon(Structures::Polygon polygon);
 					bool loadFromFile(std::string filename);
+					
+					void setMode(gl::GLenum mode);
+					
+					gl::GLenum getMode();
+					uint32 getSize();
 
-					void buffer() override;
+					void buffer(bool force = false) override;
 					void discard() override;
 			};
 		}

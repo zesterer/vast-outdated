@@ -46,15 +46,15 @@ namespace Vast
 			bool closed = false;
 			while (!closed)
 			{
-				closed |= this->render_context.render(fps);
+				closed |= this->render_context.render(fps, this->main_window.getSize().x, this->main_window.getSize().y);
 				closed |= this->main_window.tick(fps);
 				
 				//Calculate FPS
 				double new_fps = 1.0 / fps_timer.getLap();
-				if (abs(this->fps - new_fps) > new_fps / 10.0)
+				if (abs(this->fps - new_fps) > new_fps / 5.0)
 					this->fps = new_fps;
 				else //Use a smoothing system to make sure the FPS doesn't flicker about like crazy
-					this->fps = this->fps * (1.0 - 1.0 / this->fps) + (1.0 / this->fps) * new_fps;
+					this->fps = this->fps * (1.0 - 5.0 / this->fps) + (5.0 / this->fps) * new_fps;
 			}
 
 			//Close everything down

@@ -22,7 +22,9 @@ namespace Vast
 
 					Figure& newFigure();
 					
+					Figure& getFigure(uint32 id);
 					std::vector<Figure>& getFigures();
+					uint32 getNumber();
 			};
 		}
 	}

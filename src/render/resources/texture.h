@@ -32,7 +32,7 @@ namespace Vast
 					Pixel getPixel(uint16 x, uint16 y);
 					void setPixel(uint16 x, uint16 y, Pixel pixel);
 
-					void buffer() override;
+					void buffer(bool force = false) override;
 			};
 		}
 	}

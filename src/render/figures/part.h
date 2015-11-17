@@ -40,6 +40,9 @@ namespace Vast
 					void setMaterial(Resources::Material* material);
 					void setShader(Resources::Shader* shader);
 
+					State& getState();
+					Figure& getParent();
+					
 					Resources::Mesh& getMesh();
 					Resources::Texture& getTexture();
 					Resources::Texture& getBumpMap();

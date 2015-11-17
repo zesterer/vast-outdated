@@ -11,11 +11,24 @@ namespace Vast
 		class Camera
 		{
 			private:
+				mat4 matrix;
+				mat4 perspective_matrix;
+				
+				float fov = 1.0;
+				float min_render = 0.001;
+				float max_render = 1000.0;
+				float screen_ratio = 1.0;
+				float fog_distance = 0.0f; //Make equal to 0.0 to remove fog
+				
 				State state;
 			public:
 				Camera();
-				void update();
+				void update(float screen_ratio);
 				void tick();
+				
+				State& getState();
+				mat4& getMatrix();
+				mat4& getPerspective();
 		};
 	}
 }

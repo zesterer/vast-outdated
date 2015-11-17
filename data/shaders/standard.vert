@@ -5,8 +5,7 @@ uniform highp mat4  PERSPECTIVE_MATRIX;
 uniform highp mat4  CAMERA_MATRIX;
 uniform highp mat4  MODEL_MATRIX;
 
-uniform highp float NEAR_DIST;
-uniform highp float FAR_DIST;
+uniform uint TIME;
 
 //----INPUTS----
 in highp vec3 VERTEX_POS;
@@ -28,8 +27,8 @@ void main()
 	F_M_POSITION = vec4(VERTEX_POS, 1.0);
 
 	gl_Position = PERSPECTIVE_MATRIX * CAMERA_MATRIX * F_W_POSITION;
-	gl_Position.z *= 1000.0;
-	gl_Position.z = (gl_Position.z) / (1.0 - gl_Position.z);
+	//gl_Position.z *= 1000.0;
+	//gl_Position.z = (gl_Position.z) / (1.0 - gl_Position.z);
 
 	F_W_NORMAL = normalize(MODEL_MATRIX * vec4(VERTEX_NORM, 0.0));
 	F_M_NORMAL = normalize(vec4(VERTEX_NORM, 0.0));

@@ -19,9 +19,24 @@ namespace Vast
 				return this->parts.back();
 			}
 			
+			State& Figure::getState()
+			{
+				return this->state;
+			}
+			
 			std::vector<Part>& Figure::getParts()
 			{
 				return this->parts;
+			}
+			
+			Part& Figure::getPart(uint32 id)
+			{
+				return this->parts[id];
+			}
+			
+			uint32 Figure::getPartNumber()
+			{
+				return this->parts.size();
 			}
 		}
 	}

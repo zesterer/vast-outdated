@@ -19,9 +19,19 @@ namespace Vast
 				return this->figures.back();
 			}
 			
+			Figure& FigureManager::getFigure(uint32 id)
+			{
+				return this->figures[id];
+			}
+			
 			std::vector<Figure>& FigureManager::getFigures()
 			{
 				return this->figures;
+			}
+			
+			uint32 FigureManager::getNumber()
+			{
+				return this->figures.size();
 			}
 		}
 	}

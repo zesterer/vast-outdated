@@ -7,6 +7,9 @@
 
 #include "glm/glm.hpp"
 #include "glm/vec3.hpp"
+#include "glm/gtx/quaternion.hpp"
+#include "glm/mat4x4.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 typedef char int8;
 typedef short int16;
@@ -19,6 +22,9 @@ typedef unsigned int uint32;
 typedef unsigned long uint64;
 
 typedef gl::GLuint glid;
+
+typedef glm::mat4 mat4;
+typedef glm::quat quat;
 
 typedef glm::vec4 v4;
 typedef glm::vec3 v3;

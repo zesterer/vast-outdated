@@ -19,10 +19,10 @@ namespace Vast
 		v3 velocity = v3(0.0, 0.0, 0.0);
 		v3 scale = v3(1.0, 1.0, 1.0);
 
-		glm::quat orientation = glm::quat();
-		glm::quat spin = glm::quat();
+		quat orientation = quat();
+		quat spin = quat();
 
-		glm::mat4 matrix;
+		mat4 matrix = mat4(1.0);
 
 		void update();
 		void tick();

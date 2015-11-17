@@ -16,15 +16,16 @@ uniform int MATERIAL_EFFECTS;
 uniform sampler2D TEXTURE_SAMPLER;
 
 //----INPUTS----
-smooth in highp vec4 FRAG_M_POS;
-smooth in highp vec4 FRAG_POS;
-smooth in lowp vec3 FRAG_COL;
-smooth in mediump vec2 FRAG_UV;
-smooth in lowp vec4 FRAG_NORM;
+smooth in highp vec4 F_W_POSITION;
+smooth in lowp vec3 F_W_COLOUR;
+smooth in mediump vec2 F_W_UV;
+smooth in lowp vec4 F_W_NORMAL;
+smooth in highp vec4 F_M_POSITION;
+smooth in lowp vec4 F_M_NORMAL;
 
 //----OUTPUTS----
-out lowp vec3 COLOUR;
-//out       lowp    vec3      FRAMEBUFFER_COLOR;
+layout (location = 0) out mediump vec3 COLOUR_BUFFER;
+layout (location = 1) out highp vec3 DEPTH_BUFFER;
 
 //----GLOBALS----
           lowp    vec4      MOD_NORM;
@@ -40,7 +41,7 @@ float getSpecular(vec4 vector)
 	lowp vec3 N = normalize((cam_normal).xyz);
 	lowp vec3 L = normalize((CAMERA_MATRIX * vector).xyz);
 	lowp vec3 R = normalize(2.0 * N * dot(N, L) - L);
-	lowp vec3 V = normalize(FRAG_POS.xyz / 2.0);
+	lowp vec3 V = normalize(F_W_POSITION.xyz / 2.0);
 
 	lowp float specular = (dot(R, V) - (1.0 - specular_amount)) * 1.0 / specular_amount;
 	specular = min(specular_cap, pow(max(0.0, specular), max(0.00001, specular_shininess)) * specular_shininess * 0.2);
@@ -69,7 +70,7 @@ vec3 getTexture()
 vec4 getVector(vec4 vector)
 {
 	if (vector.w == 1.0) //It's a point light
-		return normalize(vec4((MODEL_MATRIX * FRAG_M_POS).xyz - vector.xyz, 0.0));
+		return normalize(vec4((MODEL_MATRIX * F_M_POSITION).xyz - vector.xyz, 0.0));
 	else //It's a directional light
 		return normalize(vector);
 }
@@ -89,7 +90,7 @@ void main()
 	lowp vec3 diffuse  = vec3(0.0, 0.0, 0.0);
 
 	//Initialise the normal
-	MOD_NORM = normalize(FRAG_NORM);
+	MOD_NORM = normalize(F_W_NORMAL);
 
 	//Loop through all the lights
 	/*for (int count = 0; count < 16; count ++)
@@ -123,6 +124,6 @@ void main()
 		specular = floor(specular * 2.0) / 2.0;
 	}*/
 
-	COLOUR = getTexture() * diffuse + specular;
-	COLOUR = vec3(1.0, 0.0, 0.0);
+	//COLOUR_BUFFER = getTexture() * diffuse + specular;
+	COLOUR_BUFFER = vec3(1.0, 0.0, 0.0);
 }

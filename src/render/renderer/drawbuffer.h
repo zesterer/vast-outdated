@@ -14,8 +14,21 @@ namespace Vast
 			{
 				private:
 					glid gl_id;
+					
+					glid gl_texture_id;
+					glid gl_depth_id;
+					
+					uint32 width = 1;
+					uint32 height = 1;
 				public:
 					DrawBuffer();
+					void initialise();
+					
+					void setSize(uint32 width, uint32 height);
+					
+					glid getGLID();
+					glid getTextureGLID();
+					glid getDepthGLID();
 			};
 		}
 	}

@@ -4,8 +4,8 @@ smooth in vec2 UV;
 
 out vec3 COLOUR;
 
-uniform sampler2D RENDER_TEXTURE;
-uniform sampler2D RENDER_DEPTH;
+uniform sampler2D COLOUR_TEXTURE;
+uniform sampler2D DEPTH_TEXTURE;
 
 uniform uint TIME;
 
@@ -58,13 +58,15 @@ void main()
 {
 	vec2 pos = (vec2(1.0, 1.0) + UV) / 2.0;
 
-	COLOUR = vec3(0.9, 0.9, 1.0);//texture2D(RENDER_TEXTURE, pos).rgb;
+	COLOUR = texture2D(COLOUR_TEXTURE, pos).rgb;
+	
+	//COLOUR = vec3( + mod(TIME * 0.01, 1.0), 0.0, 0.0);
 	
 	//Just an effect
-	COLOUR += getPerlin(vec4(pos, TIME / 500.0, 0.0), 2.0, 3.0, 1.0) * 0.3 - 0.3;
+	//COLOUR += getPerlin(vec4(pos, TIME / 500.0, 0.0), 2.0, 5.0, 1.0) * 0.3 - 0.3;
 
 	//Faded corners
-	COLOUR *= mix(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), min(1, 1.5 - length(UV + 0.3)));
+	//COLOUR *= mix(vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0), min(1, 1.5 - length(UV)));
 
 
 }
