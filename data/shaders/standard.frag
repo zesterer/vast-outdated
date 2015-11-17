@@ -7,13 +7,13 @@ uniform lowp mat4 PERSPECTIVE_MATRIX;
 uniform lowp mat4 CAMERA_MATRIX;
 uniform lowp mat4 MODEL_MATRIX;
 
-uniform lowp vec4 LIGHT_VECTOR[16];
-uniform lowp vec4 LIGHT_COLOUR[16];
+//uniform lowp vec4 LIGHT_VECTOR[16];
+//uniform lowp vec4 LIGHT_COLOUR[16];
 
-uniform lowp vec4 MATERIAL_DATA;
-uniform int MATERIAL_EFFECTS;
+//uniform lowp vec4 MATERIAL_DATA;
+//uniform int MATERIAL_EFFECTS;
 
-uniform sampler2D TEXTURE_SAMPLER;
+//uniform sampler2D TEXTURE_SAMPLER;
 
 //----INPUTS----
 smooth in highp vec4 F_W_POSITION;
@@ -24,13 +24,13 @@ smooth in highp vec4 F_M_POSITION;
 smooth in lowp vec4 F_M_NORMAL;
 
 //----OUTPUTS----
-layout (location = 0) out mediump vec4 COLOUR_BUFFER;
+layout (location = 0) out highp vec3 COLOUR_BUFFER;
 //layout (location = 1) out highp float DEPTH_BUFFER;
 
 //----GLOBALS----
 lowp vec4 MOD_NORM;
 
-float getSpecular(vec4 vector)
+/*float getSpecular(vec4 vector)
 {
 	lowp float specular_shininess = MATERIAL_DATA[0];
 	lowp float specular_amount = MATERIAL_DATA[1];
@@ -57,14 +57,14 @@ vec3 getTexture()
 {
 	return mix(vec3(0.7, 0.35, 0.05), vec3(0.0, 1.0, 0.0), dot((normalize(MODEL_MATRIX * MOD_NORM)).xyz, vec3(0.0, 0.0, 1.0)));
 
-	/*//No proper texture has been loaded in, so revert to colours
+	//No proper texture has been loaded in, so revert to colours
 	if (textureSize(TEXTURE_SAMPLER, 0) == ivec2(1, 1))
 		return FRAG_COL;
 
 	if (FRAG_UV == vec2(-1.0, -1.0)) //If there's no texture
 		return FRAG_COL;
 	else //It's got a texture!
-		return FRAG_COL * texture2DProjLod(TEXTURE_SAMPLER, vec3(FRAG_UV, 1.0), 0.0).rgb;*/
+		return FRAG_COL * texture2DProjLod(TEXTURE_SAMPLER, vec3(FRAG_UV, 1.0), 0.0).rgb;
 }
 
 vec4 getVector(vec4 vector)
@@ -81,7 +81,7 @@ bool getEffect(int x)
 	if (int(MATERIAL_EFFECTS / pow(2, x)) % 2 == 1)
 		return true;
 	return false;
-}
+}*/
 
 void main()
 {
@@ -125,5 +125,5 @@ void main()
 	}*/
 
 	//COLOUR_BUFFER = getTexture() * diffuse + specular;
-	COLOUR_BUFFER = vec4(1.0, 0.0, 0.0, 1.0);
+	COLOUR_BUFFER = vec3(1.0, 0.0, 0.0);
 }

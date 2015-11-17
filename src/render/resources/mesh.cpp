@@ -236,8 +236,8 @@ namespace Vast
 					gl::glGenVertexArrays(1, &this->gl_id);
 					gl::glBindVertexArray(this->gl_id);
 
-					gl::glGenBuffers(1, &this->gl_id);
-					gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_id);
+					gl::glGenBuffers(1, &this->gl_buffer_id);
+					gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_buffer_id);
 
 					gl::glBufferData(gl::GL_ARRAY_BUFFER, this->polygons.size() * sizeof(Structures::Polygon), &this->polygons[0], gl::GL_STATIC_DRAW);
 
@@ -246,12 +246,17 @@ namespace Vast
 					IO::output("Buffered mesh with " + std::to_string(this->polygons.size()) + " polygons.");
 				}
 			}
+			
+			glid Mesh::getBufferGLID()
+			{
+				return this->gl_buffer_id;
+			}
 
 			void Mesh::discard()
 			{
 				if (this->buffered)
 				{
-					gl::glDeleteBuffers(1, &this->gl_id);
+					gl::glDeleteBuffers(1, &this->gl_buffer_id);
 
 					this->buffered = false;
 				}

@@ -25,7 +25,6 @@ namespace Vast
 				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGB, gl::GL_UNSIGNED_BYTE, 0);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLint)gl::GL_NEAREST);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLint)gl::GL_NEAREST);
-				gl::glFramebufferTexture2D(gl::GL_FRAMEBUFFER, gl::GL_COLOR_ATTACHMENT0, gl::GL_TEXTURE_2D, this->gl_texture_id, 0);
 				
 				//Create a depth buffer
 				gl::glGenRenderbuffers(1, &this->gl_depth_id);
@@ -34,6 +33,8 @@ namespace Vast
 				gl::glFramebufferRenderbuffer(gl::GL_FRAMEBUFFER, gl::GL_DEPTH_ATTACHMENT, gl::GL_RENDERBUFFER, this->gl_depth_id);
 				
 				//Attach the texture(s) to the framebuffer
+				gl::glFramebufferTexture(gl::GL_FRAMEBUFFER, gl::GL_COLOR_ATTACHMENT0, this->gl_texture_id, 0);
+				
 				gl::GLenum attachments[1] = {gl::GL_COLOR_ATTACHMENT0};
 				gl::glDrawBuffers(1, attachments);
 			}

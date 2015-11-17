@@ -59,6 +59,7 @@ void main()
 	vec2 pos = (vec2(1.0, 1.0) + UV) / 2.0;
 
 	COLOUR = texture2D(COLOUR_TEXTURE, pos).rgb;
+	//COLOUR = vec3(1.0, 1.0, 1.0);
 	
 	//COLOUR = vec3( + mod(TIME * 0.01, 1.0), 0.0, 0.0);
 	

@@ -28,6 +28,8 @@ namespace Vast
 			class Mesh : public Bufferable
 			{
 				private:
+					glid gl_buffer_id;
+					
 					std::vector<Structures::Polygon> polygons;
 					
 					gl::GLenum mode = gl::GL_TRIANGLES;
@@ -39,6 +41,7 @@ namespace Vast
 					
 					void setMode(gl::GLenum mode);
 					
+					glid getBufferGLID();
 					gl::GLenum getMode();
 					uint32 getSize();
 
