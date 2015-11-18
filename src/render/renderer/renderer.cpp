@@ -72,15 +72,15 @@ namespace Vast
 
 				//Ready the COLOUR texture
 				gl::GLuint tex_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "RENDER_TEXTURE");
-				gl::glActiveTexture(gl::GL_TEXTURE0);
 				gl::glUniform1i(tex_id, 0);
+				gl::glActiveTexture(gl::GL_TEXTURE0);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 
 				//Ready the depth texture
-				gl::GLuint depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
-				gl::glActiveTexture(gl::GL_TEXTURE1);
-				gl::glUniform1i(depth_id, 0);
-				gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
+				//gl::GLuint depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
+				//gl::glActiveTexture(gl::GL_TEXTURE1);
+				//gl::glUniform1i(depth_id, 0);
+				//gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
 				
 				//Send the current time
 				gl::GLuint time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
@@ -155,6 +155,9 @@ namespace Vast
 				
 				//Bind the vertex buffer
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, part.getMesh().getGLID());
+				
+				//Bind the framebuffer texture
+				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 				
 				//Set up the vertex attributes
 				gl::GLuint offset = 0;

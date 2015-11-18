@@ -27,7 +27,10 @@ namespace Vast
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
 			part.setTexture(&tex);
-			part.bufferAll();
+			part.getMesh().buffer();
+			part.getTexture().buffer();
+			
+			IO::output("ID:" + std::to_string(tex.getGLID()));
 			
 			this->figure_manager.getFigure(0).getState().position = v3(10.0, 0.0, 0.0);
 			this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, -3.14159 / 2, 0.0));

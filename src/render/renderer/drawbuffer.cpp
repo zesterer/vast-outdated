@@ -37,6 +37,8 @@ namespace Vast
 				
 				gl::GLenum attachments[1] = {gl::GL_COLOR_ATTACHMENT0};
 				gl::glDrawBuffers(1, attachments);
+				
+				IO::test(gl::glCheckFramebufferStatus(gl::GL_FRAMEBUFFER) == gl::GL_FRAMEBUFFER_COMPLETE, "Checking Framebuffer status", true);
 			}
 			
 			void DrawBuffer::setSize(uint32 width, uint32 height)

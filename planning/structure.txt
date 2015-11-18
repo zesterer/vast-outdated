@@ -223,3 +223,9 @@ class RenderContext
 - FXAA anti-aliasing
 - Motion Blur (overlaying previous with current)
 - Distance fog
+
+########
+# TODO #
+########
+
+- Switch "glGetUniformLocation" calls to initialisation, not per-render.

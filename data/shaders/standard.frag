@@ -24,10 +24,12 @@ smooth in highp vec4 F_M_POSITION;
 smooth in lowp vec4 F_M_NORMAL;
 
 //----OUTPUTS----
-layout (location = 0) out highp vec3 COLOUR_BUFFER;
+layout (location = 0) out highp vec4 COLOUR_BUFFER;
 //layout (location = 1) out highp float DEPTH_BUFFER;
 
 //----GLOBALS----
+highp vec3 COLOUR = vec3(1.0, 1.0, 1.0);
+
 highp vec4 MOD_NORM;
 
 highp vec4 LIGHT_VECTOR[16];
@@ -35,9 +37,9 @@ highp vec4 LIGHT_COLOUR[16];
 
 float getSpecular(vec4 vector)
 {
-	lowp float specular_shininess = MATERIAL_DATA[0];
-	lowp float specular_amount = MATERIAL_DATA[1];
-	lowp float specular_cap = MATERIAL_DATA[2];
+	lowp float specular_shininess = 1.0;//MATERIAL_DATA[0];
+	lowp float specular_amount = 0.5;//MATERIAL_DATA[1];
+	lowp float specular_cap = 1.0;//MATERIAL_DATA[2];
 
 	vec4 cam_normal = CAMERA_MATRIX * MODEL_MATRIX * MOD_NORM;
 
@@ -130,6 +132,8 @@ void main()
 		specular = floor(specular * 2.0) / 2.0;
 	}*/
 
-	COLOUR_BUFFER = vec3(0.3, 0.3, 0.4) * diffuse + specular;
+	COLOUR = vec3(0.3, 0.3, 0.4) * diffuse + specular;
 	//COLOUR_BUFFER = vec3(1.0, 0.0, 0.0);
+	
+	COLOUR_BUFFER = vec4(COLOUR, 1.0);
 }
