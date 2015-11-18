@@ -86,11 +86,11 @@ bool getEffect(int x)
 void main()
 {
 	//Initialise the specular and diffuse
-	lowp vec3 specular = vec3(0.0, 0.0, 0.0);
-	lowp vec3 diffuse  = vec3(0.0, 0.0, 0.0);
+	//lowp vec3 specular = vec3(0.0, 0.0, 0.0);
+	//lowp vec3 diffuse  = vec3(0.0, 0.0, 0.0);
 
 	//Initialise the normal
-	MOD_NORM = normalize(F_W_NORMAL);
+	//MOD_NORM = normalize(F_W_NORMAL);
 
 	//Loop through all the lights
 	/*for (int count = 0; count < 16; count ++)

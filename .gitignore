@@ -14,7 +14,6 @@ build-ios
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch

@@ -22,7 +22,7 @@ namespace Vast
 				//Create the texture
 				gl::glGenTextures(1, &this->gl_texture_id);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_texture_id);
-				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGB, gl::GL_UNSIGNED_BYTE, 0);
+				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLint)gl::GL_NEAREST);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLint)gl::GL_NEAREST);
 				
@@ -50,7 +50,7 @@ namespace Vast
 					gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, this->gl_id);
 					
 					gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_texture_id);
-					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGB, gl::GL_UNSIGNED_BYTE, 0);
+					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
 					
 					gl::glBindRenderbuffer(gl::GL_RENDERBUFFER, this->gl_depth_id);
 					gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, gl::GL_DEPTH_COMPONENT, this->width, this->height);

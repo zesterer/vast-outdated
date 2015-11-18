@@ -22,16 +22,16 @@ namespace Vast
 
 			///Testing
 			//Resources::Texture& tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/mickey.bmp");
-			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("../spaceship1.obj");
+			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("/home/barry/Documents/Projects/voxeltest/icosahedron.obj");
 
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
 			//part.setTexture(&tex);
 			part.bufferAll();
 			
-			this->figure_manager.getFigure(0).getState().position = v3(0.0, 0.0, 0.0);
+			this->figure_manager.getFigure(0).getState().position = v3(9.0, 0.0, 0.0);
 			this->figure_manager.getFigure(0).getState().spin = quat(v3(0.1, 0.0, 0.0));
-			this->figure_manager.getFigure(0).getState().scale = v3(0.05, 0.05, 0.05);
+			this->figure_manager.getFigure(0).getState().scale = v3(3.0, 3.0, 3.0);
 			this->figure_manager.getFigure(0).getPart(0).getState().update();
 			this->figure_manager.getFigure(0).getState().update();
 			///Testing

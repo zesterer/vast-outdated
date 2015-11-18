@@ -17,6 +17,9 @@ namespace Vast
 
 		void Window::initiate()
 		{
+			this->settings.depthBits = 24;
+			this->settings.stencilBits = 8;
+			this->settings.antialiasingLevel = 4;
 			this->settings.majorVersion = 3;
 			this->settings.minorVersion = 3;
 			this->settings.attributeFlags = sf::ContextSettings::Attribute::Core;
