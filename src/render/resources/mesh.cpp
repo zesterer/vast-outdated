@@ -21,6 +21,11 @@ namespace Vast
 			{
 				//Constructor
 			}
+			
+			Mesh::~Mesh()
+			{
+				//Destructor
+			}
 
 			Mesh::Mesh(std::string filename)
 			{
@@ -109,7 +114,9 @@ namespace Vast
 						//The actual string
 						char vertex[3][20];
 						//The ids of all the data
-						int pos_index[3], tex_index[3], norm_index[3];
+						int pos_index[3] = {0, 0, 0};
+						int tex_index[3] = {0, 0, 0};
+						int norm_index[3] = {0, 0, 0};
 
 						unsigned char has_parts = 0b00000000; //Got everything
 

@@ -10,10 +10,10 @@ uniform lowp mat4 MODEL_MATRIX;
 //uniform lowp vec4 LIGHT_VECTOR[16];
 //uniform lowp vec4 LIGHT_COLOUR[16];
 
-//uniform lowp vec4 MATERIAL_DATA;
-//uniform int MATERIAL_EFFECTS;
+uniform lowp vec4 MATERIAL_DATA;
+uniform int MATERIAL_EFFECTS;
 
-//uniform sampler2D TEXTURE_SAMPLER;
+uniform sampler2D TEXTURE_SAMPLER;
 
 //----INPUTS----
 smooth in highp vec4 F_W_POSITION;
@@ -28,9 +28,12 @@ layout (location = 0) out highp vec3 COLOUR_BUFFER;
 //layout (location = 1) out highp float DEPTH_BUFFER;
 
 //----GLOBALS----
-lowp vec4 MOD_NORM;
+highp vec4 MOD_NORM;
 
-/*float getSpecular(vec4 vector)
+highp vec4 LIGHT_VECTOR[16];
+highp vec4 LIGHT_COLOUR[16];
+
+float getSpecular(vec4 vector)
 {
 	lowp float specular_shininess = MATERIAL_DATA[0];
 	lowp float specular_amount = MATERIAL_DATA[1];
@@ -59,12 +62,12 @@ vec3 getTexture()
 
 	//No proper texture has been loaded in, so revert to colours
 	if (textureSize(TEXTURE_SAMPLER, 0) == ivec2(1, 1))
-		return FRAG_COL;
+		return F_W_COLOUR;
 
-	if (FRAG_UV == vec2(-1.0, -1.0)) //If there's no texture
-		return FRAG_COL;
+	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
+		return F_W_COLOUR;
 	else //It's got a texture!
-		return FRAG_COL * texture2DProjLod(TEXTURE_SAMPLER, vec3(FRAG_UV, 1.0), 0.0).rgb;
+		return F_W_COLOUR * texture2DProjLod(TEXTURE_SAMPLER, vec3(F_W_UV, 1.0), 0.0).rgb;
 }
 
 vec4 getVector(vec4 vector)
@@ -81,19 +84,22 @@ bool getEffect(int x)
 	if (int(MATERIAL_EFFECTS / pow(2, x)) % 2 == 1)
 		return true;
 	return false;
-}*/
+}
 
 void main()
 {
 	//Initialise the specular and diffuse
-	//lowp vec3 specular = vec3(0.0, 0.0, 0.0);
-	//lowp vec3 diffuse  = vec3(0.0, 0.0, 0.0);
+	lowp vec3 specular = vec3(0.0, 0.0, 0.0);
+	lowp vec3 diffuse  = vec3(0.0, 0.0, 0.0);
+	
+	LIGHT_VECTOR[0] = vec4(1.0, 1.0, 1.0, 0.0);
+	LIGHT_COLOUR[0] = vec4(1.0, 1.0, 1.0, 0.0);
 
 	//Initialise the normal
-	//MOD_NORM = normalize(F_W_NORMAL);
+	MOD_NORM = normalize(F_W_NORMAL);
 
 	//Loop through all the lights
-	/*for (int count = 0; count < 16; count ++)
+	for (int count = 0; count < 1; count ++)
 	{
 		//Find the direction and colour of each light
 		vec4 vector = getVector(LIGHT_VECTOR[count]);
@@ -105,7 +111,7 @@ void main()
 
 			if (vector.w == 1.0) //Decrease brightness with distance
 			{
-				multiplier = min(1.0, 5.0 / pow(distance((MODEL_MATRIX * FRAG_M_POS).xyz, LIGHT_VECTOR[count].xyz), 1.5));
+				multiplier = min(1.0, 5.0 / pow(distance((MODEL_MATRIX * F_M_POSITION).xyz, LIGHT_VECTOR[count].xyz), 1.5));
 
 				//Spotlight - WIP
 				//multiplier *= pow(1.05 * dot(normalize(vec3(1.0, 0.9, -2.5)), vector.xyz), 5.0);
@@ -115,7 +121,7 @@ void main()
 			specular += colour.xyz * getSpecular(vector) * multiplier; //Find the specular component
 			diffuse  += colour.xyz * getDiffuse(vector, colour.w) * multiplier; //Find the diffuse component
 		}
-	}*/
+	}
 
 	//Cel-shading
 	/*if (getEffect(0))
@@ -124,6 +130,6 @@ void main()
 		specular = floor(specular * 2.0) / 2.0;
 	}*/
 
-	//COLOUR_BUFFER = getTexture() * diffuse + specular;
-	COLOUR_BUFFER = vec3(1.0, 0.0, 0.0);
+	COLOUR_BUFFER = vec3(0.3, 0.3, 0.4) * diffuse + specular;
+	//COLOUR_BUFFER = vec3(1.0, 0.0, 0.0);
 }

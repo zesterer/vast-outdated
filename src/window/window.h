@@ -12,11 +12,11 @@ namespace Vast
 		class Window
 		{
 			private:
-				double fps;
-				bool show_fps;
-				bool vsync;
+				double fps = 60.0;
+				bool show_fps = true;
+				bool vsync = true;
 				
-				std::string title;
+				std::string title = "Window";
 
 				sf::ContextSettings settings;
 				sf::Window internal_window;

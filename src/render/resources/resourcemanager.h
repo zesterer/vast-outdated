@@ -19,10 +19,10 @@ namespace Vast
 			class ResourceManager
 			{
 				private:
-					std::vector<Mesh> meshes;
-					std::vector<Texture> textures;
-					std::vector<Material> materials;
-					std::vector<Shader> shaders;
+					std::vector<Mesh*> meshes;
+					std::vector<Texture*> textures;
+					std::vector<Material*> materials;
+					std::vector<Shader*> shaders;
 				public:
 					ResourceManager();
 					void close();

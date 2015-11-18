@@ -16,7 +16,7 @@ namespace Vast
 		{
 			private:
 			public:
-				glid gl_id;
+				glid gl_id = 0;
 				bool buffered = false;
 				
 				virtual void setGLID(glid gl_id);

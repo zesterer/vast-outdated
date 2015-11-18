@@ -28,13 +28,14 @@ namespace Vast
 			class Mesh : public Bufferable
 			{
 				private:
-					glid gl_buffer_id;
+					glid gl_buffer_id = 0;
 					
 					std::vector<Structures::Polygon> polygons;
 					
 					gl::GLenum mode = gl::GL_TRIANGLES;
 				public:
 					Mesh();
+					virtual ~Mesh();
 					Mesh(std::string filename);
 					void addPolygon(Structures::Polygon polygon);
 					bool loadFromFile(std::string filename);

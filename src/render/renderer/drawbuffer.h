@@ -13,10 +13,10 @@ namespace Vast
 			class DrawBuffer
 			{
 				private:
-					glid gl_id;
+					glid gl_id = 0;
 					
-					glid gl_texture_id;
-					glid gl_depth_id;
+					glid gl_texture_id = 0;
+					glid gl_depth_id = 0;
 					
 					uint32 width = 640;
 					uint32 height = 480;

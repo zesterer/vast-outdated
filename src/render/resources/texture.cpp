@@ -16,6 +16,11 @@ namespace Vast
 			{
 				//Constructor
 			}
+			
+			Texture::~Texture()
+			{
+				//Destructor
+			}
 
 			//Construct a texture with a given width and height, optionally from pixel data.
 			Texture::Texture(uint16 width, uint16 height, const uint8* pixels)
