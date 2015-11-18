@@ -24,6 +24,7 @@ namespace Vast
 				Figures::FigureManager figure_manager;
 			public:
 				RenderContext();
+				virtual ~RenderContext();
 				void initiate();
 				bool render(double fps, uint32 width, uint32 height);
 				void close();

@@ -14,6 +14,11 @@ namespace Vast
 		{
             IO::output("Creating render context");
 		}
+		
+		RenderContext::~RenderContext()
+		{
+			//Destructor
+		}
 
 		void RenderContext::initiate()
 		{

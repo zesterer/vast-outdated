@@ -25,6 +25,7 @@ namespace Vast
 					std::vector<Shader*> shaders;
 				public:
 					ResourceManager();
+					virtual ~ResourceManager();
 					void close();
 
 					Mesh& newMesh();

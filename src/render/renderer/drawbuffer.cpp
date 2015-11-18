@@ -39,6 +39,8 @@ namespace Vast
 				gl::glDrawBuffers(1, attachments);
 				
 				IO::test(gl::glCheckFramebufferStatus(gl::GL_FRAMEBUFFER) == gl::GL_FRAMEBUFFER_COMPLETE, "Checking Framebuffer status", true);
+				
+				gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
 			}
 			
 			void DrawBuffer::setSize(uint32 width, uint32 height)
@@ -56,6 +58,8 @@ namespace Vast
 					
 					gl::glBindRenderbuffer(gl::GL_RENDERBUFFER, this->gl_depth_id);
 					gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, gl::GL_DEPTH_COMPONENT, this->width, this->height);
+					
+					gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
 					
 					IO::output("Changed draw buffer size to " + std::to_string(width) + "x" + std::to_string(height));
 				}

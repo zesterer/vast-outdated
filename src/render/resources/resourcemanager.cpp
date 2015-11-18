@@ -12,6 +12,11 @@ namespace Vast
 			{
 				IO::output("Created resource manager");
 			}
+			
+			ResourceManager::~ResourceManager()
+			{
+				this->close();
+			}
 
 			void ResourceManager::close()
 			{
