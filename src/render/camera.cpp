@@ -29,6 +29,8 @@ namespace Vast
 			//This is no longer done due to new coordinate system!
 			//Position
 			//this->matrix = translate(this->matrix, glm::vec3(-this->state.position.x, -this->state.position.y, -this->state.position.z));
+			
+			this->matrix_inverse = glm::inverse(this->matrix);
 
 			//Perspective / projection
 			this->perspective_matrix = glm::perspective(this->fov, this->screen_ratio, this->min_render, this->max_render);
@@ -47,6 +49,11 @@ namespace Vast
 		mat4& Camera::getMatrix()
 		{
 			return this->matrix;
+		}
+		
+		mat4& Camera::getMatrixInverse()
+		{
+			return this->matrix_inverse;
 		}
 		
 		mat4& Camera::getPerspective()

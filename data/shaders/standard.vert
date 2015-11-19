@@ -1,25 +1,26 @@
 #version 330 core
 
 //----UNIFORMS----
-uniform highp mat4  PERSPECTIVE_MATRIX;
-uniform highp mat4  CAMERA_MATRIX;
-uniform highp mat4  MODEL_MATRIX;
+uniform mat4  PERSPECTIVE_MATRIX;
+uniform mat4  CAMERA_MATRIX;
+uniform mat4 CAMERA_INVERSE_MATRIX;
+uniform mat4  MODEL_MATRIX;
 
 uniform uint TIME;
 
 //----INPUTS----
-in highp vec3 VERTEX_POS;
-in lowp vec3 VERTEX_COL;
-in lowp vec3 VERTEX_NORM;
-in mediump vec2 VERTEX_UV;
+in vec3 VERTEX_POS;
+in vec3 VERTEX_COL;
+in vec3 VERTEX_NORM;
+in vec2 VERTEX_UV;
 
 //----OUTPUTS----
-smooth out highp vec4 F_W_POSITION;
-smooth out lowp vec3 F_W_COLOUR;
-smooth out mediump vec2 F_W_UV;
-smooth out lowp vec4 F_W_NORMAL;
-smooth out highp vec4 F_M_POSITION;
-smooth out lowp vec4 F_M_NORMAL;
+smooth out vec4 F_W_POSITION;
+smooth out vec3 F_W_COLOUR;
+smooth out vec2 F_W_UV;
+smooth out vec4 F_W_NORMAL;
+smooth out vec4 F_M_POSITION;
+smooth out vec4 F_M_NORMAL;
 
 void main()
 {

@@ -12,6 +12,7 @@ namespace Vast
 		{
 			private:
 				mat4 matrix;
+				mat4 matrix_inverse;
 				mat4 perspective_matrix;
 				
 				float fov = 1.0;
@@ -28,6 +29,7 @@ namespace Vast
 				
 				State& getState();
 				mat4& getMatrix();
+				mat4& getMatrixInverse();
 				mat4& getPerspective();
 		};
 	}

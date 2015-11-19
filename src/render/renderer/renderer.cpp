@@ -71,18 +71,18 @@ namespace Vast
 				gl::glVertexAttribPointer(0, 3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(gl::GLfloat) * 3, (void*)(unsigned long)0);
 
 				//Ready the COLOUR texture
-				gl::GLuint tex_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "RENDER_TEXTURE");
+				glid tex_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "RENDER_TEXTURE");
 				gl::glUniform1i(tex_id, 0);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 
 				//Ready the depth texture
-				//gl::GLuint depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
+				//glid depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
 				//gl::glActiveTexture(gl::GL_TEXTURE1);
 				//gl::glUniform1i(depth_id, 0);
 				//gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
 				
 				//Send the current time
-				gl::GLuint time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
+				glid time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
 				gl::glUniform1ui(time_id, time);
 
 				gl::glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -100,6 +100,10 @@ namespace Vast
 					{
 						//Enable backface culling
 						gl::glDisable(gl::GL_CULL_FACE);
+						
+						//For transparency
+						gl::glEnable(gl::GL_BLEND);
+						gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
 						//Enable the depth buffer
 						gl::glEnable(gl::GL_DEPTH_TEST);
@@ -121,6 +125,9 @@ namespace Vast
 					{
 						//Disable backface culling
 						gl::glEnable(gl::GL_CULL_FACE);
+						
+						//No transparency
+						gl::glDisable(gl::GL_BLEND);
 
 						//Disable the depth buffer
 						gl::glDisable(gl::GL_DEPTH_TEST);
@@ -154,8 +161,8 @@ namespace Vast
 				//gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 				
 				//Set up the vertex attributes
-				gl::GLuint offset = 0;
-				for (gl::GLuint array_id = 0; array_id < 4; array_id ++)
+				glid offset = 0;
+				for (glid array_id = 0; array_id < 4; array_id ++)
 				{
 					gl::glEnableVertexAttribArray(array_id);
 					gl::glVertexAttribPointer(array_id, attribute_array[array_id] / sizeof(gl::GLfloat), gl::GL_FLOAT, gl::GL_FALSE, sizeof(Structures::Vertex), (void*)(unsigned long)offset);
@@ -164,20 +171,24 @@ namespace Vast
 				
 				//Ready the COLOUR texture
 				//gl::glActiveTexture(gl::GL_TEXTURE0);
-				//gl::GLuint texture_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TEXTURE_TEXTURE");
+				//glid texture_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TEXTURE_TEXTURE");
 				//gl::glUniform1i(texture_id, 0);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, part.getTexture().getGLID());
 				
 				//Find the uniform camera matrix, then assign it
-				gl::GLuint perspective_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "PERSPECTIVE_MATRIX");
+				glid perspective_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "PERSPECTIVE_MATRIX");
 				gl::glUniformMatrix4fv(perspective_matrix_id, 1, gl::GL_FALSE, &this->camera->getPerspective()[0][0]);
 
 				//Find the uniform camera matrix, then assign it
-				gl::GLuint camera_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "CAMERA_MATRIX");
+				glid camera_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "CAMERA_MATRIX");
 				gl::glUniformMatrix4fv(camera_matrix_id, 1, gl::GL_FALSE, &this->camera->getMatrix()[0][0]);
 				
+				//Find the uniform camera inverse matrix, then assign it
+				glid camera_inverse_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "CAMERA_INVERSE_MATRIX");
+				gl::glUniformMatrix4fv(camera_inverse_matrix_id, 1, gl::GL_FALSE, &this->camera->getMatrixInverse()[0][0]);
+				
 				//Find the uniform model vector, then assign it
-				gl::GLuint model_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "MODEL_MATRIX");
+				glid model_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "MODEL_MATRIX");
 				State modified = part.getParent().getState();
 				modified.position -= this->camera->getState().position;
 				modified.update();
@@ -186,7 +197,7 @@ namespace Vast
 				gl::glUniformMatrix4fv(model_matrix_id, 1, gl::GL_FALSE, &sum[0][0]);
 				
 				//Send the current time
-				gl::GLuint time_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TIME");
+				glid time_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TIME");
 				gl::glUniform1ui(time_id, time);
 				
 				//Draw the part
