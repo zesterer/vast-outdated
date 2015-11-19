@@ -73,7 +73,6 @@ namespace Vast
 				//Ready the COLOUR texture
 				gl::GLuint tex_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "RENDER_TEXTURE");
 				gl::glUniform1i(tex_id, 0);
-				gl::glActiveTexture(gl::GL_TEXTURE0);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 
 				//Ready the depth texture
@@ -147,17 +146,12 @@ namespace Vast
 				//What is the buffer array composed of?
 				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2)};
 				
-				//IO::output(std::to_string(part.getMesh().getGLID()));
-				//IO::output(std::to_string(part.getMesh().getBufferGLID()));
-				
 				//Make sure the part mesh is buffered
 				part.getMesh().buffer();
 				
 				//Bind the vertex buffer
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, part.getMesh().getGLID());
-				
-				//Bind the framebuffer texture
-				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
+				//gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 				
 				//Set up the vertex attributes
 				gl::GLuint offset = 0;
@@ -167,6 +161,12 @@ namespace Vast
 					gl::glVertexAttribPointer(array_id, attribute_array[array_id] / sizeof(gl::GLfloat), gl::GL_FLOAT, gl::GL_FALSE, sizeof(Structures::Vertex), (void*)(unsigned long)offset);
 					offset += attribute_array[array_id];
 				}
+				
+				//Ready the COLOUR texture
+				//gl::glActiveTexture(gl::GL_TEXTURE0);
+				//gl::GLuint texture_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TEXTURE_TEXTURE");
+				//gl::glUniform1i(texture_id, 0);
+				gl::glBindTexture(gl::GL_TEXTURE_2D, part.getTexture().getGLID());
 				
 				//Find the uniform camera matrix, then assign it
 				gl::GLuint perspective_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "PERSPECTIVE_MATRIX");
@@ -207,7 +207,8 @@ namespace Vast
 					{
 						Figures::Part& part = current_figure.getPart(part_count);
 						
-						this->renderPart(part, time);
+						if (part.getVisible())
+							this->renderPart(part, time);
 					}
 				}
 			}

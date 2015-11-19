@@ -58,9 +58,9 @@ namespace Vast
 		
 		void Window::updateTitle()
 		{
-			//std::ostringstream fps_string;
-			//fps_string << std::setprecision(4) << this->fps;
-			this->internal_window.setTitle(sf::String((this->title + " | FPS: " + std::to_string(this->fps)).c_str()));
+			std::ostringstream fps_string;
+			fps_string << std::setprecision(4) << this->fps;
+			this->internal_window.setTitle(this->title + " | FPS: " + fps_string.str());
 		}
 		
 		void Window::setShowFPS(bool show_fps)
