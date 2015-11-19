@@ -19,12 +19,12 @@ namespace Vast
 				gl::glGenFramebuffers(1, &this->gl_id);
 				gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, this->gl_id);
 				
-				//Create the texture
+				//Create the colour texture
 				gl::glGenTextures(1, &this->gl_texture_id);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_texture_id);
 				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
-				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLint)gl::GL_NEAREST);
-				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLint)gl::GL_NEAREST);
+				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLint)gl::GL_LINEAR);
+				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLint)gl::GL_LINEAR);
 				
 				//Create a depth buffer
 				gl::glGenRenderbuffers(1, &this->gl_depth_id);

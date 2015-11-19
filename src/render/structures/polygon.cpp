@@ -32,6 +32,30 @@ namespace Vast
 				this->b.norm = n0 + (b.norm - average) * curvature_bias;
 				this->c.norm = n0 + (c.norm - average) * curvature_bias;
 			}
+			
+			void Polygon::calculateTangents()
+			{
+				//Position delta
+				glm::vec3 delta_pos_1 = this->b.pos - this->a.pos;
+				glm::vec3 delta_pos_2 = this->c.pos - this->a.pos;
+				
+				//Tex delta
+				glm::vec2 delta_uv_1 = this->b.tex - this->a.tex;
+				glm::vec2 delta_uv_2 = this->c.tex - this->a.tex;
+				
+				float r = 1.0f / (delta_uv_1.x * delta_uv_2.y - delta_uv_1.y * delta_uv_2.x);
+				
+				glm::vec3 tangent = (delta_pos_1 * delta_uv_2.y - delta_pos_2 * delta_uv_1.y) * r;
+				glm::vec3 bitangent = (delta_pos_2 * delta_uv_1.x - delta_pos_1 * delta_uv_2.x) * r;
+				
+				this->a.tangent = tangent;
+				this->b.tangent = tangent;
+				this->c.tangent = tangent;
+				
+				this->a.bitangent = bitangent;
+				this->b.bitangent = bitangent;
+				this->c.bitangent = bitangent;
+			}
 		}
 	}
 }

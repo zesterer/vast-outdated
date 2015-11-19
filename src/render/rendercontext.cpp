@@ -26,17 +26,19 @@ namespace Vast
 			this->renderer.setCamera(this->camera);
 
 			///Testing
-			Resources::Texture& tex = this->resource_manager.newTextureFromFile("/home/barry/Documents/Projects/starclock/mickey.bmp");
-			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("/home/barry/Documents/Projects/starclock/mickey.obj");
+			Resources::Texture& tex = this->resource_manager.newTextureFromFile("../../starclock/mickey.bmp");
+			Resources::Texture& normal_map = this->resource_manager.newTextureFromFile("../normal.png");
+			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("../../starclock/mickey.obj");
 
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
 			part.setTexture(&tex);
+			part.setNormalMap(&normal_map);
 			part.bufferAll();
 			
 			this->figure_manager.getFigure(0).getState().position = v3(12.0, 0.0, -5.0);
 			this->figure_manager.getFigure(0).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
-			this->figure_manager.getFigure(0).getState().spin = quat(v3(0.00, 0.00, 0.02));
+			this->figure_manager.getFigure(0).getState().spin = quat(v3(0.0, 0.0, 0.005));
 			this->figure_manager.getFigure(0).getState().scale = v3(1.0, 1.0, 1.0);
 			this->figure_manager.getFigure(0).getState().update();
 			///Testing
@@ -48,7 +50,7 @@ namespace Vast
 			this->figure_manager.getFigure(0).getState().tick();
 			
 			if (this->time % 60 == 0)
-				IO::output("Rendering context | time = " + std::to_string(this->time) + ".");
+				IO::output("Rendering context, time = " + std::to_string(this->time) + ".");
 			bool closed = false;
 
 			//Update things

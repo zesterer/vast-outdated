@@ -71,15 +71,16 @@ namespace Vast
 				gl::glVertexAttribPointer(0, 3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(gl::GLfloat) * 3, (void*)(unsigned long)0);
 
 				//Ready the COLOUR texture
+				gl::glActiveTexture(gl::GL_TEXTURE0);
 				glid tex_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "RENDER_TEXTURE");
 				gl::glUniform1i(tex_id, 0);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 
 				//Ready the depth texture
-				//glid depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
-				//gl::glActiveTexture(gl::GL_TEXTURE1);
-				//gl::glUniform1i(depth_id, 0);
-				//gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
+				gl::glActiveTexture(gl::GL_TEXTURE1);
+				glid depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
+				gl::glUniform1i(depth_id, 0);
+				gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
 				
 				//Send the current time
 				glid time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
@@ -151,7 +152,7 @@ namespace Vast
 			void Renderer::renderPart(Figures::Part& part, uint32 time)
 			{
 				//What is the buffer array composed of?
-				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2)};
+				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2), sizeof(glm::vec3), sizeof(glm::vec3)};
 				
 				//Make sure the part mesh is buffered
 				part.getMesh().buffer();
@@ -162,18 +163,32 @@ namespace Vast
 				
 				//Set up the vertex attributes
 				glid offset = 0;
-				for (glid array_id = 0; array_id < 4; array_id ++)
+				for (glid array_id = 0; array_id < 6; array_id ++)
 				{
 					gl::glEnableVertexAttribArray(array_id);
 					gl::glVertexAttribPointer(array_id, attribute_array[array_id] / sizeof(gl::GLfloat), gl::GL_FLOAT, gl::GL_FALSE, sizeof(Structures::Vertex), (void*)(unsigned long)offset);
 					offset += attribute_array[array_id];
 				}
 				
-				//Ready the COLOUR texture
-				//gl::glActiveTexture(gl::GL_TEXTURE0);
-				//glid texture_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TEXTURE_TEXTURE");
-				//gl::glUniform1i(texture_id, 0);
-				gl::glBindTexture(gl::GL_TEXTURE_2D, part.getTexture().getGLID());
+				//Ready the colour texture
+				gl::glActiveTexture(gl::GL_TEXTURE0);
+				glid texture_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TEXTURE_TEXTURE");
+				gl::glUniform1i(texture_id, 0);
+				
+				if (part.hasTexture())
+				{
+					gl::glBindTexture(gl::GL_TEXTURE_2D, part.getTexture().getGLID());
+				}
+				
+				//Ready the normal map texture
+				gl::glActiveTexture(gl::GL_TEXTURE1);
+				glid normal_map_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "NORMAL_TEXTURE");
+				gl::glUniform1i(normal_map_id, 1);
+				
+				if (part.hasNormalMap())
+				{
+					gl::glBindTexture(gl::GL_TEXTURE_2D, part.getNormalMap().getGLID());
+				}
 				
 				//Find the uniform camera matrix, then assign it
 				glid perspective_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "PERSPECTIVE_MATRIX");
@@ -199,6 +214,10 @@ namespace Vast
 				//Send the current time
 				glid time_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TIME");
 				gl::glUniform1ui(time_id, time);
+				
+				//Send the part information (Tells the shader which resources the part has available)
+				glid resource_info_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "RESOURCE_INFO");
+				gl::glUniform1i(resource_info_id, part.getInfoInt());
 				
 				//Draw the part
 				glDrawArrays(part.getMesh().getMode(), 0, part.getMesh().getSize() * 3);

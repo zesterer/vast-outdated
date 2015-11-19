@@ -18,6 +18,8 @@ namespace Vast
 					glm::vec3 col;
 					glm::vec3 norm;
 					glm::vec2 tex;
+					glm::vec3 tangent;
+					glm::vec3 bitangent;
 			};
 		}
 	}

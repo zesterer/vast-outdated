@@ -57,11 +57,21 @@ float getPerlin(vec4 pos, float initial, float octaves, float skip)
 	return val;
 }
 
+float getDepthAt(vec2 UV)
+{
+	return texture2D(DEPTH_TEXTURE, clamp(1.0 + UV, 0.0, 2.0) / 2.0).r;
+}
+
+vec3 getTextureAt(vec2 UV)
+{
+	return texture2D(COLOUR_TEXTURE, clamp(1.0 + UV, 0.0, 2.0) / 2.0).rgb;
+}
+
 void main()
 {
-	vec2 pos = (vec2(1.0, 1.0) + UV) / 2.0;
+	vec2 pos = clamp(vec2(1.0, 1.0) + UV, 0.0, 2.0) / 2.0;
 
-	COLOUR = texture2D(COLOUR_TEXTURE, pos).rgb;
+	COLOUR = getTextureAt(UV);
 	
 	//Toon Shading
 	//COLOUR = floor(COLOUR * 6.0) / 6.0;

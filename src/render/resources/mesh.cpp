@@ -229,6 +229,8 @@ namespace Vast
 					{
 						poly.calculateFlatNormals();
 					}
+					
+					poly.calculateTangents();
 
 					this->polygons.push_back(poly);
 				}

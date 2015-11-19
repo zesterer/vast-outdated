@@ -3,6 +3,8 @@
 //----UNIFORMS----
 uniform uint TIME;
 
+uniform int RESOURCE_INFO;
+
 uniform mat4 PERSPECTIVE_MATRIX;
 uniform mat4 CAMERA_MATRIX;
 uniform mat4 CAMERA_INVERSE_MATRIX;
@@ -15,6 +17,7 @@ uniform mat4 MODEL_MATRIX;
 //uniform int MATERIAL_EFFECTS;
 
 uniform sampler2D TEXTURE_TEXTURE;
+uniform sampler2D NORMAL_TEXTURE;
 
 //----INPUTS----
 smooth in vec4 F_W_POSITION;
@@ -23,6 +26,8 @@ smooth in vec2 F_W_UV;
 smooth in vec4 F_W_NORMAL;
 smooth in vec4 F_M_POSITION;
 smooth in vec4 F_M_NORMAL;
+flat in vec3 F_W_TANGENT;
+flat in vec3 F_W_BITANGENT;
 
 //----OUTPUTS----
 layout (location = 0) out highp vec4 COLOUR_BUFFER;
@@ -35,6 +40,14 @@ vec3 W_NEW_NORMAL;
 
 vec4 LIGHT_VECTOR[16];
 vec4 LIGHT_COLOUR[16];
+
+//Find out which resources are loaded
+bool getResourceInfo(int id)
+{
+	if (int(RESOURCE_INFO / pow(2, id)) % 2 == 1)
+		return true;
+	return false;
+}
 
 //Find the type of the light
 int getLightType(int light)
@@ -52,6 +65,12 @@ vec3 getLightVector(int light)
 		return normalize(W_NEW_POSITION - LIGHT_VECTOR[light].xyz);
 	else //It's a directional light
 		return normalize(LIGHT_VECTOR[light].xyz);
+}
+
+//Find the distance to the light
+float getLightDistance(int light)
+{
+	return distance(W_NEW_POSITION, getLightVector(light));
 }
 
 //Find the colour of the light
@@ -90,6 +109,9 @@ vec3 getLightSpecular(int light)
 
 vec4 getTextureValue()
 {
+	if (!getResourceInfo(1))
+		return vec4(1.0, 1.0, 1.0, 1.0);
+		
 	//No proper texture has been loaded in, so revert to colours
 	if (textureSize(TEXTURE_TEXTURE, 0) == ivec2(1, 1))
 		return vec4(1.0, 1.0, 1.0, 1.0);
@@ -97,12 +119,38 @@ vec4 getTextureValue()
 	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
 		return vec4(1.0, 1.0, 1.0, 1.0);
 	else //It's got a texture!
-		return vec4(F_W_COLOUR, 1.0) * texture2D(TEXTURE_TEXTURE, vec2(F_W_UV)).rgba;
+		return vec4(F_W_COLOUR, 1.0) * texture2D(TEXTURE_TEXTURE, F_W_UV).rgba;
 }
 
 vec3 getTextureColour()
 {
 	return F_W_COLOUR * getTextureValue().rgb;
+}
+
+vec3 getNormalMapVector()
+{
+	//No normal map texture has been loaded in, so revert to default
+	if (textureSize(NORMAL_TEXTURE, 0) == ivec2(1, 1))
+		return vec3(0.0, 0.0, 0.0);
+
+	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
+		return vec3(0.0, 0.0, 0.0);
+	else //It's got a texture!
+		return texture2D(NORMAL_TEXTURE, F_W_UV).rgb;
+}
+
+vec3 applyNormalMapping(vec3 normal)
+{
+	vec3 normal_map_vector = getNormalMapVector();
+	
+	if (normal_map_vector != vec3(0.0, 0.0, 0.0));
+	{
+		normal_map_vector -= 0.5;
+	
+		normal = normalize(F_W_TANGENT * normal_map_vector.x + F_W_BITANGENT * normal_map_vector.y + W_NEW_NORMAL.xyz * normal_map_vector.z);
+	}
+	
+	return normal;
 }
 
 void main()
@@ -118,25 +166,31 @@ void main()
 	//Find the modified values
 	W_NEW_POSITION = normalize(F_W_POSITION.xyz);
 	W_NEW_NORMAL = normalize(F_W_NORMAL.xyz);
+	
+	//vec3 v = texture2D(NORMAL_TEXTURE, F_W_UV).rgb - 0.5;
+	//W_NEW_NORMAL = normalize(F_W_TANGENT * v.r + F_W_BITANGENT * v.g + F_W_NORMAL.xyz * v.b);
+	
+	if (getResourceInfo(3))
+		W_NEW_NORMAL = applyNormalMapping(W_NEW_NORMAL);
 
 	//Loop through all the lights
-	for (int count = 0; count < 1; count ++)
+	for (int light = 0; light < 1; light ++)
 	{
 		//Find the direction and colour of each light
-		vec3 vector = getLightVector(count);
+		vec3 vector = getLightVector(light);
 
-		if (getLightColour(count) != vec3(0.0, 0.0, 0.0)) //If the light is actually a light
+		if (getLightColour(light) != vec3(0.0, 0.0, 0.0)) //If the light is actually a light
 		{
 			float multiplier = 1.0;
 
-			if (LIGHT_VECTOR[count].w == 1.0) //Decrease brightness with distance
+			if (LIGHT_VECTOR[light].w == 1.0) //Decrease brightness with distance
 			{
-				multiplier = min(1.0, 5.0 / pow(distance((F_W_POSITION).xyz, LIGHT_VECTOR[count].xyz), 1.5));
+				multiplier = 1.0 / pow(getLightDistance(light), 2.0);
 			}
 
-			specular += getLightSpecular(count) * multiplier;
-			ambiance += getLightAmbiance(count) * multiplier;
-			diffuse += getLightDiffuse(count) * multiplier;
+			specular += getLightSpecular(light) * multiplier;
+			ambiance += getLightAmbiance(light) * multiplier;
+			diffuse += getLightDiffuse(light) * multiplier;
 		}
 	}
 

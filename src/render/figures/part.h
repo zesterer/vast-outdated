@@ -49,6 +49,15 @@ namespace Vast
 					Resources::Texture& getNormalMap();
 					Resources::Material& getMaterial();
 					Resources::Shader& getShader();
+					
+					bool hasMesh();
+					bool hasTexture();
+					bool hasBumpMap();
+					bool hasNormalMap();
+					bool hasMaterial();
+					bool hasShader();
+					
+					glid getInfoInt();
 
 					void bufferAll();
 			};

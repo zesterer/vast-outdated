@@ -83,6 +83,50 @@ namespace Vast
 			{
 				return *this->shader;
 			}
+			
+			bool Part::hasMesh()
+			{
+				return this->mesh != nullptr;
+			}
+			
+			bool Part::hasTexture()
+			{
+				return this->texture != nullptr;
+			}
+			
+			bool Part::hasBumpMap()
+			{
+				return this->bump_map != nullptr;
+			}
+			
+			bool Part::hasNormalMap()
+			{
+				return this->normal_map != nullptr;
+			}
+			
+			bool Part::hasMaterial()
+			{
+				return this->material != nullptr;
+			}
+			
+			bool Part::hasShader()
+			{
+				return this->shader != nullptr;
+			}
+			
+			glid Part::getInfoInt()
+			{
+				glid info = 0;
+				
+				if (this->hasMesh()) info |= 0b1;
+				if (this->hasTexture()) info |= 0b10;
+				if (this->hasBumpMap()) info |= 0b100;
+				if (this->hasNormalMap()) info |= 0b1000;
+				if (this->hasMaterial()) info |= 0b10000;
+				if (this->hasShader()) info |= 0b100000;
+				
+				return info;
+			}
 
 			void Part::bufferAll()
 			{

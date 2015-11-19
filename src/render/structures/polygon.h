@@ -17,6 +17,7 @@ namespace Vast
 
 					void invert();
 					void calculateFlatNormals(float curvature_bias = 0.0f);
+					void calculateTangents();
 			};
 		}
 	}
