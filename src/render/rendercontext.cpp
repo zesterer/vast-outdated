@@ -40,7 +40,6 @@ namespace Vast
 			part.setMesh(&mesh);
 			part.setTexture(&tex);
 			part.bufferAll();
-			IO::output(std::to_string(part.getInfoInt()));
 			
 			this->figure_manager.getFigure(0).getState().position = v3(12.0, 0.0, -2.0);
 			this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, -3.14159 / 2, 0.0));
@@ -138,6 +137,11 @@ namespace Vast
 		Resources::Texture& RenderContext::getNullTexture()
 		{
 			return *this->null_texture;
+		}
+		
+		Lights::Sun& RenderContext::getSun()
+		{
+			return this->sun;
 		}
 	}
 }

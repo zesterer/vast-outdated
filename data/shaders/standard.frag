@@ -5,6 +5,12 @@ uniform uint TIME;
 
 uniform int RESOURCE_INFO;
 
+//Sun information
+uniform vec3 SUN_DIRECTION;
+uniform vec3 SUN_COLOUR;
+uniform float SUN_AMBIANCE;
+
+//Matricies
 uniform mat4 PERSPECTIVE_MATRIX;
 uniform mat4 CAMERA_MATRIX;
 uniform mat4 CAMERA_INVERSE_MATRIX;
@@ -15,6 +21,8 @@ uniform mat4 MODEL_MATRIX;
 
 //uniform vec4 MATERIAL_DATA;
 //uniform int MATERIAL_EFFECTS;
+
+//Textures
 
 uniform sampler2D TEXTURE_TEXTURE;
 uniform sampler2D NORMAL_TEXTURE;
@@ -53,6 +61,9 @@ bool getResourceInfo(int id)
 //Find the type of the light
 int getLightType(int light)
 {
+	if (light == -1)
+		return 0;
+	
 	if (LIGHT_VECTOR[light].w == 1.0)
 		return 1;
 	else
@@ -62,6 +73,9 @@ int getLightType(int light)
 //Find the vector of the light
 vec3 getLightVector(int light)
 {
+	if (light == -1)
+		return SUN_DIRECTION;
+	
 	if (getLightType(light) == 1) //It's a point light
 		return normalize(W_NEW_POSITION - LIGHT_VECTOR[light].xyz);
 	else //It's a directional light
@@ -77,12 +91,18 @@ float getLightDistance(int light)
 //Find the colour of the light
 vec3 getLightColour(int light)
 {
+	if (light == -1)
+		return SUN_COLOUR;
+	
 	return LIGHT_COLOUR[light].xyz;
 }
 
 //Find the ambiance factor of the light
 vec3 getLightAmbiance(int light)
 {
+	if (light == -1)
+		return SUN_COLOUR * SUN_AMBIANCE;
+	
 	return getLightColour(light) * LIGHT_COLOUR[light].w;
 }
 
@@ -94,7 +114,7 @@ vec3 getLightDiffuse(int light)
 
 vec3 getLightSpecular(int light)
 {
-	float smoothness = 100.0;//MATERIAL_DATA[0];
+	float smoothness = 2.0;//MATERIAL_DATA[0];
 	float shininess = 0.5;//MATERIAL_DATA[1];
 	
 	vec3 E = normalize((CAMERA_INVERSE_MATRIX * vec4(0.0, 0.0, 1.0, 0.0)).xyz);
@@ -162,8 +182,8 @@ void main()
 	vec3 diffuse  = vec3(0.0);
 	vec3 specular = vec3(0.0);
 	
-	LIGHT_VECTOR[0] = vec4(12.0, 6.0, -8.5, 1.0);
-	LIGHT_COLOUR[0] = vec4(1.3, 1.2, 1.0, 0.3);
+	//LIGHT_VECTOR[0] = vec4(12.0, 6.0, -8.5, 1.0);
+	//LIGHT_COLOUR[0] = vec4(1.3, 1.2, 1.0, 0.3);
 
 	//Find the modified values
 	W_NEW_POSITION = F_W_POSITION.xyz;
@@ -175,7 +195,7 @@ void main()
 	W_NEW_NORMAL = applyNormalMapping(W_NEW_NORMAL);
 
 	//Loop through all the lights
-	for (int light = 0; light < 1; light ++)
+	for (int light = -1; light < 0; light ++)
 	{
 		//Find the direction and colour of each light
 		vec3 vector = getLightVector(light);

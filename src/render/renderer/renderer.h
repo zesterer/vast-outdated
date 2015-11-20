@@ -51,7 +51,10 @@ namespace Vast
 					void bindMatrixWithUniform(mat4* matrix, std::string uniform_name, Resources::Shader* shader);
 					void bindIntegerWithUniform(int32 integer, std::string uniform_name, Resources::Shader* shader);
 					void bindFloatWithUniform(float float_number, std::string uniform_name, Resources::Shader* shader);
+					void bindVec3WithUniform(glm::vec3 vec3_value, std::string uniform_name, Resources::Shader* shader);
+					void bindVec4WithUniform(glm::vec4 vec4_value, std::string uniform_name, Resources::Shader* shader);
 					
+					void bindContextData(RenderContext& context);
 					void bindCameraData();
 					void bindPartData(Figures::Part& part, RenderContext& context);
 					

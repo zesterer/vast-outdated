@@ -174,6 +174,7 @@ namespace Vast
 				}
 				
 				//Bind the relevant data to the shader uniforms
+				this->bindContextData(context);
 				this->bindPartData(part, context);
 				this->bindCameraData();
 				
@@ -209,6 +210,26 @@ namespace Vast
 			{
 				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
 				gl::glUniform1f(uniform_id, float_number);
+			}
+			
+			void Renderer::bindVec3WithUniform(glm::vec3 vec3_value, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniform3f(uniform_id, vec3_value.x, vec3_value.y, vec3_value.z);
+			}
+			
+			void Renderer::bindVec4WithUniform(glm::vec4 vec4_value, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniform4f(uniform_id, vec4_value.x, vec4_value.y, vec4_value.z, vec4_value.w);
+			}
+			
+			void Renderer::bindContextData(RenderContext& context)
+			{
+				//Bind sun details
+				this->bindVec3WithUniform(context.getSun().direction, "SUN_DIRECTION", this->standard_shader);
+				this->bindVec3WithUniform(context.getSun().colour, "SUN_COLOUR", this->standard_shader);
+				this->bindFloatWithUniform(context.getSun().ambiance, "SUN_AMBIANCE", this->standard_shader);
 			}
 			
 			void Renderer::bindCameraData()
