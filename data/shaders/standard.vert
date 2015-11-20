@@ -41,6 +41,6 @@ void main()
 	F_W_COLOUR = VERTEX_COL;
 	F_W_UV = VERTEX_UV;
 	
-	F_W_TANGENT = normalize(MODEL_MATRIX * vec4(VERTEX_TANGENT, 0.0)).xyz;
-	F_W_BITANGENT = normalize(MODEL_MATRIX * vec4(VERTEX_BITANGENT, 0.0)).xyz;
+	F_W_TANGENT = normalize(MODEL_MATRIX * vec4(normalize(VERTEX_TANGENT), 0.0)).xyz;
+	F_W_BITANGENT = normalize(MODEL_MATRIX * vec4(normalize(VERTEX_BITANGENT), 0.0)).xyz;
 }

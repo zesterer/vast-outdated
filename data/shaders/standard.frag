@@ -30,7 +30,8 @@ flat in vec3 F_W_TANGENT;
 flat in vec3 F_W_BITANGENT;
 
 //----OUTPUTS----
-layout (location = 0) out highp vec4 COLOUR_BUFFER;
+layout (location = 0) out vec4 COLOUR_BUFFER;
+//layout (location = 1) out float DEPTH_BUFFER;
 
 //----GLOBALS----
 vec3 COLOUR = vec3(1.0, 1.0, 1.0);
@@ -70,7 +71,7 @@ vec3 getLightVector(int light)
 //Find the distance to the light
 float getLightDistance(int light)
 {
-	return distance(W_NEW_POSITION, getLightVector(light));
+	return distance(W_NEW_POSITION, LIGHT_VECTOR[light].xyz);
 }
 
 //Find the colour of the light
@@ -136,18 +137,19 @@ vec3 getNormalMapVector()
 	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
 		return vec3(0.0, 0.0, 0.0);
 	else //It's got a texture!
-		return texture2D(NORMAL_TEXTURE, F_W_UV).rgb;
+		return normalize(texture2D(NORMAL_TEXTURE, F_W_UV).rgb - vec3(0.5, 0.5, 0.0));
 }
 
 vec3 applyNormalMapping(vec3 normal)
 {
-	vec3 normal_map_vector = getNormalMapVector();
+	if (!getResourceInfo(3))
+		return normal;
 	
-	if (normal_map_vector != vec3(0.0, 0.0, 0.0));
+	vec3 map_vector = getNormalMapVector();
+	
+	if (map_vector != vec3(0.0, 0.0, 0.0));
 	{
-		normal_map_vector -= 0.5;
-	
-		normal = normalize(F_W_TANGENT * normal_map_vector.x + F_W_BITANGENT * normal_map_vector.y + W_NEW_NORMAL.xyz * normal_map_vector.z);
+		normal = normalize(F_W_TANGENT * map_vector.x + F_W_BITANGENT * map_vector.y + 0.5 * normal * map_vector.z);
 	}
 	
 	return normal;
@@ -160,18 +162,17 @@ void main()
 	vec3 diffuse  = vec3(0.0);
 	vec3 specular = vec3(0.0);
 	
-	LIGHT_VECTOR[0] = vec4(1.0, 1.0, 0.0, 0.0);
-	LIGHT_COLOUR[0] = vec4(0.85, 0.85, 1.0, 0.3);
+	LIGHT_VECTOR[0] = vec4(12.0, 10.0, -3.0, 1.0);
+	LIGHT_COLOUR[0] = vec4(1.0, 1.0, 1.2, 0.3);
 
 	//Find the modified values
-	W_NEW_POSITION = normalize(F_W_POSITION.xyz);
+	W_NEW_POSITION = F_W_POSITION.xyz;
 	W_NEW_NORMAL = normalize(F_W_NORMAL.xyz);
 	
 	//vec3 v = texture2D(NORMAL_TEXTURE, F_W_UV).rgb - 0.5;
 	//W_NEW_NORMAL = normalize(F_W_TANGENT * v.r + F_W_BITANGENT * v.g + F_W_NORMAL.xyz * v.b);
 	
-	if (getResourceInfo(3))
-		W_NEW_NORMAL = applyNormalMapping(W_NEW_NORMAL);
+	W_NEW_NORMAL = applyNormalMapping(W_NEW_NORMAL);
 
 	//Loop through all the lights
 	for (int light = 0; light < 1; light ++)
@@ -183,9 +184,9 @@ void main()
 		{
 			float multiplier = 1.0;
 
-			if (LIGHT_VECTOR[light].w == 1.0) //Decrease brightness with distance
+			if (getLightType(light) == 1) //Decrease brightness with distance
 			{
-				multiplier = 1.0 / pow(getLightDistance(light), 2.0);
+				multiplier = min(1.0, 50.0 / pow(getLightDistance(light), 2.0));
 			}
 
 			specular += getLightSpecular(light) * multiplier;
@@ -197,4 +198,6 @@ void main()
 	COLOUR = getTextureColour() * (ambiance + diffuse + specular);
 	
 	COLOUR_BUFFER = vec4(COLOUR, getTextureValue().a);
+	
+	//DEPTH_BUFFER = length(W_NEW_POSITION);
 }

@@ -23,7 +23,7 @@ namespace Vast
 					
 					FigureManager* manager;
 
-					std::vector<Part> parts;
+					std::vector<Part*> parts;
 				public:
 					Figure(FigureManager* manager);
 
@@ -31,7 +31,7 @@ namespace Vast
 					
 					State& getState();
 					
-					std::vector<Part>& getParts();
+					std::vector<Part*>& getParts();
 					Part& getPart(uint32 id);
 					uint32 getPartNumber();
 			};

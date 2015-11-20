@@ -77,10 +77,10 @@ namespace Vast
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 
 				//Ready the depth texture
-				gl::glActiveTexture(gl::GL_TEXTURE1);
-				glid depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
-				gl::glUniform1i(depth_id, 0);
-				gl::glBindTexture(gl::GL_TEXTURE_DEPTH, this->draw_buffer.getDepthGLID());
+				//gl::glActiveTexture(gl::GL_TEXTURE1);
+				//glid depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
+				//gl::glUniform1i(depth_id, 1);
+				//gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getDepthGLID());
 				
 				//Send the current time
 				glid time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
@@ -155,11 +155,13 @@ namespace Vast
 				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2), sizeof(glm::vec3), sizeof(glm::vec3)};
 				
 				//Make sure the part mesh is buffered
-				part.getMesh().buffer();
+				if (part.hasTexture())
+					part.getMesh().buffer();
+				else
+					return;
 				
 				//Bind the vertex buffer
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, part.getMesh().getGLID());
-				//gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 				
 				//Set up the vertex attributes
 				glid offset = 0;
@@ -176,17 +178,14 @@ namespace Vast
 				gl::glUniform1i(texture_id, 0);
 				
 				if (part.hasTexture())
-				{
 					gl::glBindTexture(gl::GL_TEXTURE_2D, part.getTexture().getGLID());
-				}
-				
-				//Ready the normal map texture
-				gl::glActiveTexture(gl::GL_TEXTURE1);
-				glid normal_map_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "NORMAL_TEXTURE");
-				gl::glUniform1i(normal_map_id, 1);
 				
 				if (part.hasNormalMap())
 				{
+					//Ready the normal map texture
+					gl::glActiveTexture(gl::GL_TEXTURE1);
+					glid normal_map_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "NORMAL_TEXTURE");
+					gl::glUniform1i(normal_map_id, 1);
 					gl::glBindTexture(gl::GL_TEXTURE_2D, part.getNormalMap().getGLID());
 				}
 				

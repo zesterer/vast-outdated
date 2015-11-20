@@ -72,6 +72,7 @@ void main()
 	vec2 pos = clamp(vec2(1.0, 1.0) + UV, 0.0, 2.0) / 2.0;
 
 	COLOUR = getTextureAt(UV);
+	//COLOUR = vec3(getDepthAt(UV) / 5.0);
 	
 	//Toon Shading
 	//COLOUR = floor(COLOUR * 6.0) / 6.0;

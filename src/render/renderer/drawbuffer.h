@@ -15,6 +15,7 @@ namespace Vast
 				private:
 					glid gl_id = -1;
 					
+					glid gl_depthbuffer_id = -1;
 					glid gl_texture_id = -1;
 					glid gl_depth_id = -1;
 					

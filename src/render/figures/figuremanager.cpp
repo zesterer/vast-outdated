@@ -15,16 +15,16 @@ namespace Vast
 
 			Figure& FigureManager::newFigure()
 			{
-				this->figures.emplace_back(this);
-				return this->figures.back();
+				this->figures.push_back(new Figure(this));
+				return *this->figures.back();
 			}
 			
 			Figure& FigureManager::getFigure(uint32 id)
 			{
-				return this->figures[id];
+				return *this->figures[id];
 			}
 			
-			std::vector<Figure>& FigureManager::getFigures()
+			std::vector<Figure*>& FigureManager::getFigures()
 			{
 				return this->figures;
 			}

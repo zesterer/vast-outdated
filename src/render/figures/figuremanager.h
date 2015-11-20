@@ -16,14 +16,14 @@ namespace Vast
 			class FigureManager
 			{
 				private:
-					std::vector<Figure> figures;
+					std::vector<Figure*> figures;
 				public:
 					FigureManager();
 
 					Figure& newFigure();
 					
 					Figure& getFigure(uint32 id);
-					std::vector<Figure>& getFigures();
+					std::vector<Figure*>& getFigures();
 					uint32 getNumber();
 			};
 		}

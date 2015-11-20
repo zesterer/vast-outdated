@@ -15,8 +15,8 @@ namespace Vast
 
 			Part& Figure::newPart()
 			{
-				this->parts.emplace_back(this);
-				return this->parts.back();
+				this->parts.push_back(new Part(this));
+				return *this->parts.back();
 			}
 			
 			State& Figure::getState()
@@ -24,14 +24,14 @@ namespace Vast
 				return this->state;
 			}
 			
-			std::vector<Part>& Figure::getParts()
+			std::vector<Part*>& Figure::getParts()
 			{
 				return this->parts;
 			}
 			
 			Part& Figure::getPart(uint32 id)
 			{
-				return this->parts[id];
+				return *this->parts[id];
 			}
 			
 			uint32 Figure::getPartNumber()

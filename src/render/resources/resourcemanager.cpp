@@ -101,6 +101,26 @@ namespace Vast
 				this->shaders.back()->loadFromFiles(vertex_shader_filename, fragment_shader_filename);
 				return *this->shaders.back();
 			}
+			
+			Mesh& ResourceManager::getMesh(uint32 id)
+			{
+				return *this->meshes[id];
+			}
+			
+			Texture& ResourceManager::getTexture(uint32 id)
+			{
+				return *this->textures[id];
+			}
+			
+			Material& ResourceManager::getMaterial(uint32 id)
+			{
+				return *this->materials[id];
+			}
+			
+			Shader& ResourceManager::getShader(uint32 id)
+			{
+				return *this->shaders[id];
+			}
 		}
 	}
 }
