@@ -16,8 +16,13 @@ uniform mat4 CAMERA_MATRIX;
 uniform mat4 CAMERA_INVERSE_MATRIX;
 uniform mat4 MODEL_MATRIX;
 
-//uniform vec4 LIGHT_VECTOR[16];
-//uniform vec4 LIGHT_COLOUR[16];
+uniform vec3 LIGHT_POSITION[16];
+uniform vec3 LIGHT_COLOUR[16];
+uniform vec3 LIGHT_DIRECTION[16];
+
+uniform int LIGHT_TYPE[16];
+uniform float LIGHT_SPOT_ANGLE[16];
+uniform float LIGHT_AMBIENCE[16];
 
 //uniform vec4 MATERIAL_DATA;
 //uniform int MATERIAL_EFFECTS;
@@ -47,9 +52,6 @@ vec3 COLOUR = vec3(1.0, 1.0, 1.0);
 vec3 W_NEW_POSITION;
 vec3 W_NEW_NORMAL;
 
-vec4 LIGHT_VECTOR[16];
-vec4 LIGHT_COLOUR[16];
-
 //Find out which resources are loaded
 bool getResourceInfo(int id)
 {
@@ -64,10 +66,7 @@ int getLightType(int light)
 	if (light == -1)
 		return 0;
 	
-	if (LIGHT_VECTOR[light].w == 1.0)
-		return 1;
-	else
-		return 0;
+	return LIGHT_TYPE[light];
 }
 
 //Find the vector of the light
@@ -77,15 +76,15 @@ vec3 getLightVector(int light)
 		return SUN_DIRECTION;
 	
 	if (getLightType(light) == 1) //It's a point light
-		return normalize(W_NEW_POSITION - LIGHT_VECTOR[light].xyz);
+		return normalize(W_NEW_POSITION - LIGHT_POSITION[light]);
 	else //It's a directional light
-		return normalize(LIGHT_VECTOR[light].xyz);
+		return normalize(LIGHT_DIRECTION[light]);
 }
 
 //Find the distance to the light
 float getLightDistance(int light)
 {
-	return distance(W_NEW_POSITION, LIGHT_VECTOR[light].xyz);
+	return distance(W_NEW_POSITION, LIGHT_POSITION[light]);
 }
 
 //Find the colour of the light
@@ -94,7 +93,7 @@ vec3 getLightColour(int light)
 	if (light == -1)
 		return SUN_COLOUR;
 	
-	return LIGHT_COLOUR[light].xyz;
+	return LIGHT_COLOUR[light];
 }
 
 //Find the ambiance factor of the light
@@ -103,7 +102,7 @@ vec3 getLightAmbiance(int light)
 	if (light == -1)
 		return SUN_COLOUR * SUN_AMBIANCE;
 	
-	return getLightColour(light) * LIGHT_COLOUR[light].w;
+	return getLightColour(light) * LIGHT_COLOUR[light];
 }
 
 //Find the diffuse factor of the light
@@ -185,17 +184,15 @@ void main()
 	//LIGHT_VECTOR[0] = vec4(12.0, 6.0, -8.5, 1.0);
 	//LIGHT_COLOUR[0] = vec4(1.3, 1.2, 1.0, 0.3);
 
-	//Find the modified values
+	//Set up the modified values
 	W_NEW_POSITION = F_W_POSITION.xyz;
 	W_NEW_NORMAL = normalize(F_W_NORMAL.xyz);
 	
-	//vec3 v = texture2D(NORMAL_TEXTURE, F_W_UV).rgb - 0.5;
-	//W_NEW_NORMAL = normalize(F_W_TANGENT * v.r + F_W_BITANGENT * v.g + F_W_NORMAL.xyz * v.b);
-	
+	//Apply normal mapping
 	W_NEW_NORMAL = applyNormalMapping(W_NEW_NORMAL);
 
 	//Loop through all the lights
-	for (int light = -1; light < 0; light ++)
+	for (int light = -1; light < 16; light ++)
 	{
 		//Find the direction and colour of each light
 		vec3 vector = getLightVector(light);
@@ -206,7 +203,7 @@ void main()
 
 			if (getLightType(light) == 1) //Decrease brightness with distance
 			{
-				multiplier = min(1.0, 50.0 / pow(getLightDistance(light), 2.0));
+				multiplier = min(1.0, 10.0 / pow(getLightDistance(light), 2.0));
 			}
 
 			specular += getLightSpecular(light) * multiplier;
@@ -215,9 +212,9 @@ void main()
 		}
 	}
 
+	//Combine colours with light
 	COLOUR = getTextureColour() * (ambiance + diffuse + specular);
 	
+	//Apply transparency (if there is any)
 	COLOUR_BUFFER = vec4(COLOUR, getTextureValue().a);
-	
-	//DEPTH_BUFFER = length(W_NEW_POSITION);
 }

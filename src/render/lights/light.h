@@ -12,6 +12,7 @@ namespace Vast
 		{
 			enum LightType
 			{
+				Directional,
 				Point,
 				Spot,
 			};
@@ -20,7 +21,14 @@ namespace Vast
 			{
 				private:
 				public:
-					LightType type;
+					LightType type = LightType::Directional;
+					
+					v3 position = glm::vec3(0.0, 0.0, 0.0);
+					glm::vec3 colour = glm::vec3(1.0, 1.0, 1.0);
+					glm::vec3 direction = glm::vec3(1.0, 0.0, 0.0);
+					
+					float spot_angle = 0.0;
+					float ambiance = 0.1;
 					
 					Light();
 			};

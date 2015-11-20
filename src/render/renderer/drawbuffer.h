@@ -17,7 +17,6 @@ namespace Vast
 					
 					glid gl_depthbuffer_id = -1;
 					glid gl_texture_id = -1;
-					glid gl_depth_id = -1;
 					
 					uint32 width = 640;
 					uint32 height = 480;
@@ -29,7 +28,7 @@ namespace Vast
 					
 					glid getGLID();
 					glid getTextureGLID();
-					glid getDepthGLID();
+					glid getDepthBufferGLID();
 			};
 		}
 	}

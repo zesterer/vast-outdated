@@ -62,7 +62,7 @@ namespace Vast
 				IO::output("Buffered screen quad array");
 			}
 
-			void Renderer::renderPostProcess(uint32 time)
+			void Renderer::renderPostProcess(RenderContext& context)
 			{
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_screen_quad_id);
 
@@ -76,17 +76,8 @@ namespace Vast
 				gl::glUniform1i(tex_id, 0);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
 
-				//Ready the depth texture
-				//gl::glActiveTexture(gl::GL_TEXTURE1);
-				//glid depth_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "DEPTH_TEXTURE");
-				//gl::glUniform1i(depth_id, 1);
-				//gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getDepthGLID());
-				
 				//Send the current time
-				glid time_id = gl::glGetUniformLocation(this->postprocess_shader->getGLID(), "TIME");
-				gl::glUniform1ui(time_id, time);
-
-				gl::glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+				this->bindIntegerWithUniform(context.getTime(), "TIME", this->postprocess_shader);
 
 				gl::glDrawArrays(gl::GL_TRIANGLES, 0, sizeof(gl::GLfloat) * 6 * 3);
 
@@ -224,12 +215,38 @@ namespace Vast
 				gl::glUniform4f(uniform_id, vec4_value.x, vec4_value.y, vec4_value.z, vec4_value.w);
 			}
 			
+			void Renderer::bindVec3ArrayWithUniform(glm::vec3* vec3_array, int32 number, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniform3fv(uniform_id, number, &vec3_array[0][0]);
+			}
+			
+			void Renderer::bindFloatArrayWithUniform(float* float_array, int32 number, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniform1fv(uniform_id, number, float_array);
+			}
+			
+			void Renderer::bindIntegerArrayWithUniform(int* integer_array, int32 number, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniform1iv(uniform_id, number, integer_array);
+			}
+			
 			void Renderer::bindContextData(RenderContext& context)
 			{
 				//Bind sun details
-				this->bindVec3WithUniform(context.getSun().direction, "SUN_DIRECTION", this->standard_shader);
-				this->bindVec3WithUniform(context.getSun().colour, "SUN_COLOUR", this->standard_shader);
-				this->bindFloatWithUniform(context.getSun().ambiance, "SUN_AMBIANCE", this->standard_shader);
+				this->bindVec3WithUniform(context.getLightManager().getSun().direction, "SUN_DIRECTION", this->standard_shader);
+				this->bindVec3WithUniform(context.getLightManager().getSun().colour, "SUN_COLOUR", this->standard_shader);
+				this->bindFloatWithUniform(context.getLightManager().getSun().ambiance, "SUN_AMBIANCE", this->standard_shader);
+				
+				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayPosition(), MAX_LIGHT_NUMBER * 3, "LIGHT_POSITION", this->standard_shader);
+				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayColour(), MAX_LIGHT_NUMBER * 3, "LIGHT_COLOUR", this->standard_shader);
+				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayDirection(), MAX_LIGHT_NUMBER * 3, "LIGHT_DIRECTION", this->standard_shader);
+				
+				this->bindIntegerArrayWithUniform(context.getLightManager().getPriorityArrayType(), MAX_LIGHT_NUMBER * 3, "LIGHT_TYPE", this->standard_shader);
+				this->bindFloatArrayWithUniform(context.getLightManager().getPriorityArraySpotAngle(), MAX_LIGHT_NUMBER * 3, "LIGHT_SPOT_ANGLE", this->standard_shader);
+				this->bindFloatArrayWithUniform(context.getLightManager().getPriorityArrayAmbiance(), MAX_LIGHT_NUMBER * 3, "LIGHT_AMBIANCE", this->standard_shader);
 			}
 			
 			void Renderer::bindCameraData()

@@ -54,7 +54,7 @@ namespace Vast
 				if (abs(this->fps - new_fps) > new_fps / 5.0)
 					this->fps = new_fps;
 				else //Use a smoothing system to make sure the FPS doesn't flicker about like crazy
-					this->fps = this->fps * (1.0 - 5.0 / this->fps) + (5.0 / this->fps) * new_fps;
+					this->fps = this->fps * (1.0 - 0.5 / this->fps) + (0.5 / this->fps) * new_fps;
 			}
 
 			//Close everything down

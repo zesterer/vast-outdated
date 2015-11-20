@@ -63,6 +63,27 @@ namespace Vast
 			this->figure_manager.getFigure(1).getState().spin = quat(v3(0.0, 0.0, 0.01));
 			this->figure_manager.getFigure(1).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(1).getState().update();
+			
+			Lights::Light& point0 = this->getLightManager().newLight();
+			point0.position = glm::vec3(12.0, 8.0, -5.0);
+			point0.direction = glm::vec3(0.0, 0.0, 1.0);
+			point0.colour = glm::vec3(0.0, 1.0, 0.0);
+			point0.ambiance = 0.0;
+			point0.type = Lights::LightType::Point;
+			
+			Lights::Light& point1 = this->getLightManager().newLight();
+			point1.position = glm::vec3(11.0, -8.0, -5.0);
+			point1.direction = glm::vec3(0.0, 0.0, 1.0);
+			point1.colour = glm::vec3(1.0, 0.0, 0.0);
+			point1.ambiance = 0.0;
+			point1.type = Lights::LightType::Point;
+			
+			Lights::Light& point2 = this->getLightManager().newLight();
+			point2.position = glm::vec3(16.0, -5.0, -5.0);
+			point2.direction = glm::vec3(0.0, 0.0, 1.0);
+			point2.colour = glm::vec3(0.0, 0.0, 1.0);
+			point2.ambiance = 0.0;
+			point2.type = Lights::LightType::Point;
 			///Testing
 		}
 
@@ -80,15 +101,16 @@ namespace Vast
 			bool closed = false;
 
 			//Update things
-			this->camera.update((float)width / (float)height);
-			this->renderer.update(width, height);
+			this->getCamera().update((float)width / (float)height);
+			this->getRenderer().update(width, height);
+			this->getLightManager().updatePriorityArrays();
 
 			//Rendering goes here
 			this->renderer.preRender(Renderer::RenderMethod::Standard);
 			this->renderFigures();
 			
 			this->renderer.preRender(Renderer::RenderMethod::PostProcess);
-			this->renderer.renderPostProcess(this->time);
+			this->renderer.renderPostProcess(*this);
 
 			//Increment time
 			this->time ++;
@@ -118,6 +140,16 @@ namespace Vast
 
 			this->resource_manager.close();
 		}
+		
+		Camera& RenderContext::getCamera()
+		{
+			return this->camera;
+		}
+		
+		Renderer::Renderer& RenderContext::getRenderer()
+		{
+			return this->renderer;
+		}
 
 		Resources::ResourceManager& RenderContext::getResourceManager()
 		{
@@ -129,6 +161,11 @@ namespace Vast
 			return this->figure_manager;
 		}
 		
+		Lights::LightManager& RenderContext::getLightManager()
+		{
+			return this->light_manager;
+		}
+		
 		int32 RenderContext::getTime()
 		{
 			return this->time;
@@ -137,11 +174,6 @@ namespace Vast
 		Resources::Texture& RenderContext::getNullTexture()
 		{
 			return *this->null_texture;
-		}
-		
-		Lights::Sun& RenderContext::getSun()
-		{
-			return this->sun;
 		}
 	}
 }

@@ -7,7 +7,7 @@
 #include "common/basictypes.h"
 #include "camera.h"
 #include "renderer/renderer.h"
-#include "lights/sun.h"
+#include "lights/lightmanager.h"
 
 namespace Vast
 {
@@ -19,11 +19,11 @@ namespace Vast
 				int32 time = 0;
 
 				Camera camera;
-				Lights::Sun sun;
 
 				Renderer::Renderer renderer;
 				Resources::ResourceManager resource_manager;
 				Figures::FigureManager figure_manager;
+				Lights::LightManager light_manager;
 				
 				Resources::Texture* null_texture = nullptr;
 				
@@ -37,10 +37,12 @@ namespace Vast
 				
 				int32 getTime();
 				Resources::Texture& getNullTexture();
-				Lights::Sun& getSun();
 
 				Resources::ResourceManager& getResourceManager();
 				Figures::FigureManager& getFigureManager();
+				Lights::LightManager& getLightManager();
+				Camera& getCamera();
+				Renderer::Renderer& getRenderer();
 		};
 	}
 }
