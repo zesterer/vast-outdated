@@ -5,6 +5,7 @@
 //----LOCAL----
 #include "texture.h"
 #include "common/io.h"
+#include "shader.h"
 
 namespace Vast
 {
@@ -86,14 +87,6 @@ namespace Vast
 					//Bind the texture ready to write data
 					gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_id);
 					
-					/*for (int j = 0; j < this->getSize().y; j ++)
-					{
-						for (int i = 0; i < this->getSize().x; i ++)
-						{
-							printf((" " + std::to_string(this->getPixelData()[(i + j * this->getSize().y) * 3])).c_str());
-						}
-					}*/
-
 					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLuint)gl::GL_RGBA, this->getSize().x, this->getSize().y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, this->getPixelData());
 
 					gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLuint)gl::GL_LINEAR);
@@ -104,6 +97,18 @@ namespace Vast
 
 					IO::output("Buffered texture with size " + std::to_string(this->getSize().x) + "x" + std::to_string(this->getSize().y) + ".");
 				}
+			}
+			
+			void Texture::bindTo(uint16 texture_slot)
+			{
+				gl::glActiveTexture(gl::GL_TEXTURE0 + texture_slot);
+				gl::glBindTexture(gl::GL_TEXTURE_2D, this->getGLID());
+			}
+			
+			void Texture::bindToWithUniform(uint16 texture_slot, std::string uniform_name, Shader& shader)
+			{
+				gl::glUniform1i(gl::glGetUniformLocation(shader.getGLID(), uniform_name.c_str()), texture_slot);
+				this->bindTo(texture_slot);
 			}
 		}
 	}

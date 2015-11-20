@@ -94,7 +94,7 @@ vec3 getLightDiffuse(int light)
 
 vec3 getLightSpecular(int light)
 {
-	float smoothness = 10.0;//MATERIAL_DATA[0];
+	float smoothness = 100.0;//MATERIAL_DATA[0];
 	float shininess = 0.5;//MATERIAL_DATA[1];
 	
 	vec3 E = normalize((CAMERA_INVERSE_MATRIX * vec4(0.0, 0.0, 1.0, 0.0)).xyz);
@@ -137,7 +137,7 @@ vec3 getNormalMapVector()
 	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
 		return vec3(0.0, 0.0, 0.0);
 	else //It's got a texture!
-		return normalize(texture2D(NORMAL_TEXTURE, F_W_UV).rgb - vec3(0.5, 0.5, 0.0));
+		return normalize(texture2D(NORMAL_TEXTURE, F_W_UV).rgb - 0.5);
 }
 
 vec3 applyNormalMapping(vec3 normal)
@@ -149,7 +149,7 @@ vec3 applyNormalMapping(vec3 normal)
 	
 	if (map_vector != vec3(0.0, 0.0, 0.0));
 	{
-		normal = normalize(F_W_TANGENT * map_vector.x + F_W_BITANGENT * map_vector.y + 0.5 * normal * map_vector.z);
+		normal = normalize(-F_W_TANGENT * map_vector.x - F_W_BITANGENT * map_vector.y + normal * map_vector.z);
 	}
 	
 	return normal;
@@ -162,8 +162,8 @@ void main()
 	vec3 diffuse  = vec3(0.0);
 	vec3 specular = vec3(0.0);
 	
-	LIGHT_VECTOR[0] = vec4(12.0, 10.0, -3.0, 1.0);
-	LIGHT_COLOUR[0] = vec4(1.0, 1.0, 1.2, 0.3);
+	LIGHT_VECTOR[0] = vec4(12.0, 6.0, -8.5, 1.0);
+	LIGHT_COLOUR[0] = vec4(1.3, 1.2, 1.0, 0.3);
 
 	//Find the modified values
 	W_NEW_POSITION = F_W_POSITION.xyz;

@@ -14,6 +14,8 @@ namespace Vast
 	{
 		namespace Resources
 		{
+			class Shader;
+			
 			class Texture : public Bufferable
 			{
 				private:
@@ -32,6 +34,9 @@ namespace Vast
 					const uint8* getPixelData();
 					Pixel getPixel(uint16 x, uint16 y);
 					void setPixel(uint16 x, uint16 y, Pixel pixel);
+					
+					void bindTo(uint16 texture_slot);
+					void bindToWithUniform(uint16 texture_slot, std::string uniform_name, Shader& shader);
 
 					void buffer(bool force = false) override;
 			};

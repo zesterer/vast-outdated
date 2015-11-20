@@ -3,10 +3,8 @@
 
 //----LOCAL----
 #include "common/basictypes.h"
-#include "figures/figure.h"
 #include "figures/part.h"
 #include "resources/shader.h"
-#include "figures/figuremanager.h"
 #include "drawbuffer.h"
 #include "camera.h"
 
@@ -47,9 +45,15 @@ namespace Vast
 
 					void preRender(RenderMethod method);
 
-					void renderPart(Figures::Part& part, uint32 time);
-					void renderFigures(Figures::FigureManager& figure_manager, uint32 time);
+					void renderPart(Figures::Part& part, RenderContext& context);
 					void renderPostProcess(uint32 time);
+					
+					void bindMatrixWithUniform(mat4* matrix, std::string uniform_name, Resources::Shader* shader);
+					void bindIntegerWithUniform(int32 integer, std::string uniform_name, Resources::Shader* shader);
+					void bindFloatWithUniform(float float_number, std::string uniform_name, Resources::Shader* shader);
+					
+					void bindCameraData();
+					void bindPartData(Figures::Part& part, RenderContext& context);
 					
 					void setCamera(Camera& camera);
 			};

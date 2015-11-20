@@ -149,7 +149,8 @@ namespace Vast
 				}
 			}
 
-			void Renderer::renderPart(Figures::Part& part, uint32 time)
+			//Render a single part
+			void Renderer::renderPart(Figures::Part& part, RenderContext& context)
 			{
 				//What is the buffer array composed of?
 				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2), sizeof(glm::vec3), sizeof(glm::vec3)};
@@ -172,51 +173,12 @@ namespace Vast
 					offset += attribute_array[array_id];
 				}
 				
-				//Ready the colour texture
-				gl::glActiveTexture(gl::GL_TEXTURE0);
-				glid texture_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TEXTURE_TEXTURE");
-				gl::glUniform1i(texture_id, 0);
+				//Bind the relevant data to the shader uniforms
+				this->bindPartData(part, context);
+				this->bindCameraData();
 				
-				if (part.hasTexture())
-					gl::glBindTexture(gl::GL_TEXTURE_2D, part.getTexture().getGLID());
-				
-				if (part.hasNormalMap())
-				{
-					//Ready the normal map texture
-					gl::glActiveTexture(gl::GL_TEXTURE1);
-					glid normal_map_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "NORMAL_TEXTURE");
-					gl::glUniform1i(normal_map_id, 1);
-					gl::glBindTexture(gl::GL_TEXTURE_2D, part.getNormalMap().getGLID());
-				}
-				
-				//Find the uniform camera matrix, then assign it
-				glid perspective_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "PERSPECTIVE_MATRIX");
-				gl::glUniformMatrix4fv(perspective_matrix_id, 1, gl::GL_FALSE, &this->camera->getPerspective()[0][0]);
-
-				//Find the uniform camera matrix, then assign it
-				glid camera_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "CAMERA_MATRIX");
-				gl::glUniformMatrix4fv(camera_matrix_id, 1, gl::GL_FALSE, &this->camera->getMatrix()[0][0]);
-				
-				//Find the uniform camera inverse matrix, then assign it
-				glid camera_inverse_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "CAMERA_INVERSE_MATRIX");
-				gl::glUniformMatrix4fv(camera_inverse_matrix_id, 1, gl::GL_FALSE, &this->camera->getMatrixInverse()[0][0]);
-				
-				//Find the uniform model vector, then assign it
-				glid model_matrix_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "MODEL_MATRIX");
-				State modified = part.getParent().getState();
-				modified.position -= this->camera->getState().position;
-				modified.update();
-				mat4 sum = glm::f32mat4(1.0f);
-				sum = (glm::f32mat4)modified.matrix * (glm::f32mat4)part.getState().matrix * sum;
-				gl::glUniformMatrix4fv(model_matrix_id, 1, gl::GL_FALSE, &sum[0][0]);
-				
-				//Send the current time
-				glid time_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "TIME");
-				gl::glUniform1ui(time_id, time);
-				
-				//Send the part information (Tells the shader which resources the part has available)
-				glid resource_info_id = gl::glGetUniformLocation(this->standard_shader->getGLID(), "RESOURCE_INFO");
-				gl::glUniform1i(resource_info_id, part.getInfoInt());
+				//Assign the current time
+				this->bindIntegerWithUniform(context.getTime(), "TIME", this->standard_shader);
 				
 				//Draw the part
 				glDrawArrays(part.getMesh().getMode(), 0, part.getMesh().getSize() * 3);
@@ -225,26 +187,60 @@ namespace Vast
 				for (int i = 0; i < 4; i ++)
 					gl::glDisableVertexAttribArray(i);
 			}
-
-			void Renderer::renderFigures(Figures::FigureManager& figure_manager, uint32 time)
-			{
-				for (uint32 figure_count = 0; figure_count < figure_manager.getNumber(); figure_count ++)
-				{
-					Figures::Figure& current_figure = figure_manager.getFigure(figure_count);
-					
-					for (uint32 part_count = 0; part_count < current_figure.getPartNumber(); part_count ++)
-					{
-						Figures::Part& part = current_figure.getPart(part_count);
-						
-						if (part.getVisible())
-							this->renderPart(part, time);
-					}
-				}
-			}
 			
 			void Renderer::setCamera(Camera& camera)
 			{
 				this->camera = &camera;
+			}
+			
+			void Renderer::bindMatrixWithUniform(mat4* matrix, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniformMatrix4fv(uniform_id, 1, gl::GL_FALSE, (const gl::GLfloat*)matrix);
+			}
+			
+			void Renderer::bindIntegerWithUniform(int32 integer, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniform1i(uniform_id, integer);
+			}
+			
+			void Renderer::bindFloatWithUniform(float float_number, std::string uniform_name, Resources::Shader* shader)
+			{
+				glid uniform_id = gl::glGetUniformLocation(shader->getGLID(), uniform_name.c_str());
+				gl::glUniform1f(uniform_id, float_number);
+			}
+			
+			void Renderer::bindCameraData()
+			{
+				//Assign the perspective matrix
+				this->bindMatrixWithUniform(&this->camera->getPerspective(), "PERSPECTIVE_MATRIX", this->standard_shader);
+
+				//Assign the camera matrix
+				this->bindMatrixWithUniform(&this->camera->getMatrix(), "CAMERA_MATRIX", this->standard_shader);
+				
+				//Assign the camera inverse matrix
+				this->bindMatrixWithUniform(&this->camera->getInverseMatrix(), "CAMERA_INVERSE_MATRIX", this->standard_shader);
+			}
+			
+			void Renderer::bindPartData(Figures::Part& part, RenderContext& context)
+			{
+				if (part.hasTexture()) //Ready the colour texture
+					part.getTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *this->standard_shader);
+				
+				if (part.hasNormalMap()) //Ready the normal map texture
+					part.getNormalMap().bindToWithUniform(1, "NORMAL_TEXTURE", *this->standard_shader);
+				
+				//Assign the model matrix
+				State modified = part.getParent().getState();
+				modified.position -= this->camera->getState().position;
+				modified.update();
+				mat4 sum = glm::f32mat4(1.0f);
+				sum = (glm::f32mat4)modified.matrix * (glm::f32mat4)part.getState().matrix * sum;
+				this->bindMatrixWithUniform(&sum, "MODEL_MATRIX", this->standard_shader);
+				
+				//Assign the part information (Tells the shader which resources the part has available)
+				this->bindIntegerWithUniform(part.getInfoInt(), "RESOURCE_INFO", this->standard_shader);
 			}
 		}
 	}

@@ -51,7 +51,7 @@ namespace Vast
 			return this->matrix;
 		}
 		
-		mat4& Camera::getMatrixInverse()
+		mat4& Camera::getInverseMatrix()
 		{
 			return this->matrix_inverse;
 		}

@@ -15,19 +15,23 @@ namespace Vast
 		class RenderContext
 		{
 			private:
-				uint32 time = 0;
+				int32 time = 0;
 
 				Camera camera;
 
 				Renderer::Renderer renderer;
 				Resources::ResourceManager resource_manager;
 				Figures::FigureManager figure_manager;
+				
+				void renderFigures();
 			public:
 				RenderContext();
 				virtual ~RenderContext();
 				void initiate();
 				bool render(double fps, uint32 width, uint32 height);
 				void close();
+				
+				int32 getTime();
 
 				Resources::ResourceManager& getResourceManager();
 				Figures::FigureManager& getFigureManager();

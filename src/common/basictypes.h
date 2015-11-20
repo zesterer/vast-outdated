@@ -22,6 +22,7 @@ typedef unsigned int uint32;
 typedef unsigned long uint64;
 
 typedef gl::GLuint glid;
+typedef gl::GLenum glenum;
 
 typedef glm::mat4 mat4;
 typedef glm::quat quat;

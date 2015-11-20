@@ -29,7 +29,7 @@ namespace Vast
 				
 				State& getState();
 				mat4& getMatrix();
-				mat4& getMatrixInverse();
+				mat4& getInverseMatrix();
 				mat4& getPerspective();
 		};
 	}

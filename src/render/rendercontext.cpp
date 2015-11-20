@@ -69,8 +69,8 @@ namespace Vast
 		{
 			if (this->time % 480 == 240)
 				this->figure_manager.getFigure(1).getPart(0).setNormalMap(&this->resource_manager.getTexture(2));
-			if (this->time % 480 == 0)
-				this->figure_manager.getFigure(1).getPart(0).setNormalMap(nullptr);
+			//if (this->time % 480 == 0)
+				//this->figure_manager.getFigure(1).getPart(0).setNormalMap(nullptr);
 			
 			///Testing
 			this->figure_manager.getFigure(0).getState().update();
@@ -89,7 +89,7 @@ namespace Vast
 
 			//Rendering goes here
 			this->renderer.preRender(Renderer::RenderMethod::Standard);
-			this->renderer.renderFigures(this->figure_manager, this->time);
+			this->renderFigures();
 			
 			this->renderer.preRender(Renderer::RenderMethod::PostProcess);
 			this->renderer.renderPostProcess(this->time);
@@ -98,6 +98,22 @@ namespace Vast
 			this->time ++;
 
 			return closed;
+		}
+		
+		void RenderContext::renderFigures()
+		{
+			for (uint32 figure_count = 0; figure_count < this->figure_manager.getNumber(); figure_count ++)
+			{
+				Figures::Figure& current_figure = this->figure_manager.getFigure(figure_count);
+				
+				for (uint32 part_count = 0; part_count < current_figure.getPartNumber(); part_count ++)
+				{
+					Figures::Part& part = current_figure.getPart(part_count);
+					
+					if (part.getVisible())
+						this->renderer.renderPart(part, *this);
+				}
+			}
 		}
 
 		void RenderContext::close()
@@ -115,6 +131,11 @@ namespace Vast
 		Figures::FigureManager& RenderContext::getFigureManager()
 		{
 			return this->figure_manager;
+		}
+		
+		int32 RenderContext::getTime()
+		{
+			return this->time;
 		}
 	}
 }
