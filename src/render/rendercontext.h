@@ -23,6 +23,8 @@ namespace Vast
 				Resources::ResourceManager resource_manager;
 				Figures::FigureManager figure_manager;
 				
+				Resources::Texture* null_texture = nullptr;
+				
 				void renderFigures();
 			public:
 				RenderContext();
@@ -32,6 +34,7 @@ namespace Vast
 				void close();
 				
 				int32 getTime();
+				Resources::Texture& getNullTexture();
 
 				Resources::ResourceManager& getResourceManager();
 				Figures::FigureManager& getFigureManager();

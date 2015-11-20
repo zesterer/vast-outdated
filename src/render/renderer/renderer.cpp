@@ -227,9 +227,13 @@ namespace Vast
 			{
 				if (part.hasTexture()) //Ready the colour texture
 					part.getTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *this->standard_shader);
+				else
+					context.getNullTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *this->standard_shader);
 				
 				if (part.hasNormalMap()) //Ready the normal map texture
 					part.getNormalMap().bindToWithUniform(1, "NORMAL_TEXTURE", *this->standard_shader);
+				else
+					context.getNullTexture().bindToWithUniform(1, "NORMAL_TEXTURE", *this->standard_shader);
 				
 				//Assign the model matrix
 				State modified = part.getParent().getState();
