@@ -18,13 +18,12 @@ namespace Vast
 					glid gl_depthbuffer_id = -1;
 					glid gl_texture_id = -1;
 					
-					uint32 width = 640;
-					uint32 height = 480;
+					glm::ivec2 dimensions = glm::ivec2(1, 1);
 				public:
 					DrawBuffer();
 					void initialise();
 					
-					void setSize(uint32 width, uint32 height);
+					void setSize(glm::ivec2 dimensions);
 					
 					glid getGLID();
 					glid getTextureGLID();

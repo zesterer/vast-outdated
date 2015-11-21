@@ -22,7 +22,7 @@ namespace Vast
 				//Create the colour texture
 				gl::glGenTextures(1, &this->gl_texture_id);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_texture_id);
-				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
+				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->dimensions.x, this->dimensions.y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLint)gl::GL_LINEAR);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLint)gl::GL_LINEAR);
 				gl::glFramebufferTexture2D(gl::GL_FRAMEBUFFER, gl::GL_COLOR_ATTACHMENT0, gl::GL_TEXTURE_2D, this->gl_texture_id, 0);
@@ -30,7 +30,7 @@ namespace Vast
 				//Create a depth buffer
 				gl::glGenRenderbuffers(1, &this->gl_depthbuffer_id);
 				gl::glBindRenderbuffer(gl::GL_RENDERBUFFER, this->gl_depthbuffer_id);
-				gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, gl::GL_DEPTH_COMPONENT, this->width, this->height);
+				gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, gl::GL_DEPTH_COMPONENT, this->dimensions.x, this->dimensions.y);
 				gl::glFramebufferRenderbuffer(gl::GL_FRAMEBUFFER, gl::GL_DEPTH_ATTACHMENT, gl::GL_RENDERBUFFER, this->gl_depthbuffer_id);
 				
 				gl::GLenum attachments[1] = {gl::GL_COLOR_ATTACHMENT0};
@@ -41,25 +41,24 @@ namespace Vast
 				gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
 			}
 			
-			void DrawBuffer::setSize(uint32 width, uint32 height)
+			void DrawBuffer::setSize(glm::ivec2 dimensions)
 			{
-				if (width != this->width || height != this->height)
+				if (this->dimensions != dimensions)
 				{
-					this->width = width;
-					this->height = height;
+					this->dimensions = dimensions;
 					
 					//Bind the framebuffer
 					gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, this->gl_id);
 					
 					gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_texture_id);
-					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->width, this->height, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
+					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->dimensions.x, this->dimensions.y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
 					
 					gl::glBindRenderbuffer(gl::GL_RENDERBUFFER, this->gl_depthbuffer_id);
-					gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, gl::GL_DEPTH_COMPONENT, this->width, this->height);
+					gl::glRenderbufferStorage(gl::GL_RENDERBUFFER, gl::GL_DEPTH_COMPONENT, this->dimensions.x, this->dimensions.y);
 					
 					gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
 					
-					IO::output("Changed draw buffer size to " + std::to_string(width) + "x" + std::to_string(height));
+					IO::output("Changed draw buffer size to " + std::to_string(this->dimensions.x) + "x" + std::to_string(this->dimensions.y));
 				}
 				else
 				{

@@ -29,12 +29,11 @@ namespace Vast
 				this->postprocess_shader = &context.getResourceManager().newShaderFromFiles("../data/shaders/postprocess.vert", "../data/shaders/postprocess.frag");
 			}
 			
-			void Renderer::update(uint32 width, uint32 height)
+			void Renderer::update(glm::ivec2 dimensions)
 			{
-				this->width = width;
-				this->height = height;
+				this->dimensions = dimensions;
 				
-				this->draw_buffer.setSize(this->width, this->height);
+				this->draw_buffer.setSize(this->dimensions);
 			}
 
 			void Renderer::bufferScreenQuad()
@@ -103,7 +102,7 @@ namespace Vast
 
 						// Render to our framebuffer
 						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, this->draw_buffer.getGLID());
-						gl::glViewport(0, 0, this->width, this->height);
+						gl::glViewport(0, 0, this->dimensions.x, this->dimensions.y);
 						
 						//Blank the screen
 						gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
@@ -127,8 +126,7 @@ namespace Vast
 
 						//Bind the framebuffer ready
 						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
-						//Set up the viewport
-						gl::glViewport(0, 0, this->width, this->height);
+						gl::glViewport(0, 0, this->dimensions.x, this->dimensions.y);
 						
 						this->postprocess_shader->enable();
 						
@@ -239,6 +237,8 @@ namespace Vast
 				this->bindVec3WithUniform(context.getLightManager().getSun().direction, "SUN_DIRECTION", this->standard_shader);
 				this->bindVec3WithUniform(context.getLightManager().getSun().colour, "SUN_COLOUR", this->standard_shader);
 				this->bindFloatWithUniform(context.getLightManager().getSun().ambiance, "SUN_AMBIANCE", this->standard_shader);
+				
+				this->bindIntegerWithUniform(std::min((int)context.getLightManager().getNumber(), MAX_LIGHT_NUMBER), "LIGHT_NUMBER", this->standard_shader);
 				
 				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayPosition(), MAX_LIGHT_NUMBER * 3, "LIGHT_POSITION", this->standard_shader);
 				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayColour(), MAX_LIGHT_NUMBER * 3, "LIGHT_COLOUR", this->standard_shader);

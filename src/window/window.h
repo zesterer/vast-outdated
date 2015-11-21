@@ -36,7 +36,7 @@ namespace Vast
 				void setVSync(bool vsync);
 
 				std::string getTitle();
-				sf::Vector2u getSize();
+				glm::ivec2 getSize();
 				bool getShowFPS();
 				bool getVSync();
 		};

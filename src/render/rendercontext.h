@@ -32,7 +32,7 @@ namespace Vast
 				RenderContext();
 				virtual ~RenderContext();
 				void initiate();
-				bool render(double fps, uint32 width, uint32 height);
+				bool render(double fps, glm::ivec2 dimensions);
 				void close();
 				
 				int32 getTime();

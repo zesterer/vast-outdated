@@ -26,10 +26,10 @@ namespace Vast
 
 			this->internal_window.create(sf::VideoMode(640, 480), "Window", sf::Style::Default, this->settings);
 
-			this->internal_window.setFramerateLimit(500);
+			this->internal_window.setFramerateLimit(60);
 			
 			this->setTitle("Vast Main Window");
-			this->setVSync(this->vsync);
+			this->setVSync(true);
 
 			IO::output("Initiated window");
 		}
@@ -84,9 +84,10 @@ namespace Vast
 			this->internal_window.setSize(sf::Vector2u(width, height));
 		}
 
-		sf::Vector2u Window::getSize()
+		glm::ivec2 Window::getSize()
 		{
-			return this->internal_window.getSize();
+			sf::Vector2u dimensions = this->internal_window.getSize();
+			return glm::ivec2(dimensions.x, dimensions.y);
 		}
 
 		bool Window::activate(bool active)

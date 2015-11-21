@@ -59,7 +59,7 @@ namespace Vast
 						this->colour_array[light] = glm::vec3(0.0, 0.0, 0.0);
 						this->direction_array[light] = glm::vec3(0.0, 0.0, 0.0);
 						
-						this->type_array[light] = 0;
+						this->type_array[light] = -1;
 						this->spot_angle_array[light] = 0.0f;
 						this->ambiance_array[light] = 0.0f;
 					}

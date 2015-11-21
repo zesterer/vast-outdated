@@ -38,7 +38,7 @@ namespace Vast
 
 			//Set up the main window
 			this->main_window.initiate();
-			this->render_context.initiate();
+			this->scene.initiate();
 			
 			//Create the FPS timer
 			Timer fps_timer;
@@ -46,7 +46,7 @@ namespace Vast
 			bool closed = false;
 			while (!closed)
 			{
-				closed |= this->render_context.render(fps, this->main_window.getSize().x, this->main_window.getSize().y);
+				closed |= this->scene.tick(fps, this->main_window.getSize());
 				closed |= this->main_window.tick(fps);
 				
 				//Calculate FPS
@@ -58,7 +58,7 @@ namespace Vast
 			}
 
 			//Close everything down
-			this->render_context.close();
+			this->scene.close();
 			this->main_window.close();
 
 			IO::output("Stopped running application");

@@ -5,6 +5,7 @@
 #include "common/basictypes.h"
 #include "window/window.h"
 #include "render/rendercontext.h"
+#include "engine/scene.h"
 
 namespace Vast
 {
@@ -28,7 +29,7 @@ namespace Vast
 				double fps;
 
 				Window::Window main_window;
-				Render::RenderContext render_context;
+				Engine::Scene scene;
 
 				void parseArguments(int32 argc, char* argv[]);
 			public:

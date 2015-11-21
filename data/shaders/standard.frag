@@ -10,11 +10,8 @@ uniform vec3 SUN_DIRECTION;
 uniform vec3 SUN_COLOUR;
 uniform float SUN_AMBIANCE;
 
-//Matricies
-uniform mat4 PERSPECTIVE_MATRIX;
-uniform mat4 CAMERA_MATRIX;
-uniform mat4 CAMERA_INVERSE_MATRIX;
-uniform mat4 MODEL_MATRIX;
+//Lights
+uniform int LIGHT_NUMBER;
 
 uniform vec3 LIGHT_POSITION[16];
 uniform vec3 LIGHT_COLOUR[16];
@@ -24,11 +21,16 @@ uniform int LIGHT_TYPE[16];
 uniform float LIGHT_SPOT_ANGLE[16];
 uniform float LIGHT_AMBIENCE[16];
 
+//Matricies
+uniform mat4 PERSPECTIVE_MATRIX;
+uniform mat4 CAMERA_MATRIX;
+uniform mat4 CAMERA_INVERSE_MATRIX;
+uniform mat4 MODEL_MATRIX;
+
 //uniform vec4 MATERIAL_DATA;
 //uniform int MATERIAL_EFFECTS;
 
 //Textures
-
 uniform sampler2D TEXTURE_TEXTURE;
 uniform sampler2D NORMAL_TEXTURE;
 
@@ -60,7 +62,7 @@ bool getResourceInfo(int id)
 	return false;
 }
 
-//Find the type of the light
+//Find the type of the light (0 = directional, 1 = point, 2 = spot)
 int getLightType(int light)
 {
 	if (light == -1)
@@ -180,9 +182,6 @@ void main()
 	vec3 ambiance = vec3(0.0);
 	vec3 diffuse  = vec3(0.0);
 	vec3 specular = vec3(0.0);
-	
-	//LIGHT_VECTOR[0] = vec4(12.0, 6.0, -8.5, 1.0);
-	//LIGHT_COLOUR[0] = vec4(1.3, 1.2, 1.0, 0.3);
 
 	//Set up the modified values
 	W_NEW_POSITION = F_W_POSITION.xyz;
@@ -192,13 +191,13 @@ void main()
 	W_NEW_NORMAL = applyNormalMapping(W_NEW_NORMAL);
 
 	//Loop through all the lights
-	for (int light = -1; light < 16; light ++)
+	for (int light = -1; light < LIGHT_NUMBER; light ++)
 	{
-		//Find the direction and colour of each light
-		vec3 vector = getLightVector(light);
-
-		if (getLightColour(light) != vec3(0.0, 0.0, 0.0)) //If the light is actually a light
+		if (getLightType(light) != -1) //Make sure that the light is in use
 		{
+			//Find the direction and colour of each light
+			vec3 vector = getLightVector(light);
+
 			float multiplier = 1.0;
 
 			if (getLightType(light) == 1) //Decrease brightness with distance

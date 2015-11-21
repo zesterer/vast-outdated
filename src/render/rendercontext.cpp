@@ -87,7 +87,7 @@ namespace Vast
 			///Testing
 		}
 
-		bool RenderContext::render(double fps, uint32 width, uint32 height)
+		bool RenderContext::render(double fps, glm::ivec2 dimensions)
 		{
 			///Testing
 			this->figure_manager.getFigure(0).getState().update();
@@ -101,8 +101,8 @@ namespace Vast
 			bool closed = false;
 
 			//Update things
-			this->getCamera().update((float)width / (float)height);
-			this->getRenderer().update(width, height);
+			this->getCamera().update((float)dimensions.x/ (float)dimensions.y);
+			this->getRenderer().update(dimensions);
 			this->getLightManager().updatePriorityArrays();
 
 			//Rendering goes here

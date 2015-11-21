@@ -32,8 +32,7 @@ namespace Vast
 					Resources::Shader* standard_shader;
 					Resources::Shader* postprocess_shader;
 					
-					uint32 width = 1;
-					uint32 height = 1;
+					glm::ivec2 dimensions = glm::ivec2(1, 1);
 					
 					DrawBuffer draw_buffer;
 				public:
@@ -41,7 +40,7 @@ namespace Vast
 					void initiate(RenderContext& context);
 					void bufferScreenQuad();
 					
-					void update(uint32 width, uint32 height);
+					void update(glm::ivec2 dimensions);
 
 					void preRender(RenderMethod method);
 
