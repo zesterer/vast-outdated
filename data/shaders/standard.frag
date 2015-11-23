@@ -115,7 +115,7 @@ vec3 getLightDiffuse(int light)
 
 vec3 getLightSpecular(int light)
 {
-	float smoothness = 2.0;//MATERIAL_DATA[0];
+	float smoothness = 4.0;//MATERIAL_DATA[0];
 	float shininess = 0.5;//MATERIAL_DATA[1];
 	
 	vec3 E = normalize((CAMERA_INVERSE_MATRIX * vec4(0.0, 0.0, 1.0, 0.0)).xyz);

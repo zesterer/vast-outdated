@@ -115,7 +115,7 @@ namespace Vast
 					case (RenderMethod::PostProcess):
 					{
 						//Disable backface culling
-						gl::glEnable(gl::GL_CULL_FACE);
+						gl::glDisable(gl::GL_CULL_FACE);
 						
 						//No transparency
 						gl::glDisable(gl::GL_BLEND);

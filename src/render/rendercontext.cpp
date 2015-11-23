@@ -60,7 +60,7 @@ namespace Vast
 			
 			this->figure_manager.getFigure(1).getState().position = v3(12.0, 0.0, -5.0);
 			this->figure_manager.getFigure(1).getState().scale = v3(12.0, 12.0, 12.0);
-			this->figure_manager.getFigure(1).getState().spin = quat(v3(0.0, 0.0, 0.01));
+			this->figure_manager.getFigure(1).getState().spin = quat(v3(0.0, 0.01, 0.01));
 			this->figure_manager.getFigure(1).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(1).getState().update();
 			
