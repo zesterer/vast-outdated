@@ -3,6 +3,7 @@
 
 //----LOCAL----
 #include "render/rendercontext.h"
+#include "entities/entitymanager.h"
 
 namespace Vast
 {
@@ -12,6 +13,7 @@ namespace Vast
 		{
 			private:
 				Render::RenderContext render_context;
+				Entities::EntityManager entity_manager;
 			public:
 				Scene();
 				void initiate();
