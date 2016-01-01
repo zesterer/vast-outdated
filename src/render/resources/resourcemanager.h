@@ -41,7 +41,7 @@ namespace Vast
 
 					Texture& newTexture();
 					Texture& newTextureFromBlank(uint16 width, uint16 height, const uint8* pixels = nullptr);
-					Texture& newTextureFromFile(std::string filename);
+					Texture& newTextureFromFile(std::string filename, unsigned char flip_flags = 0b00000010);
 					
 					Texture& getTexture(int32 id);
 

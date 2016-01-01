@@ -27,8 +27,8 @@ namespace Vast
 					Texture(uint16 width, uint16 height, const uint8* pixels = nullptr);
 					void create(uint16 width, uint16 height, const uint8* pixels = nullptr);
 
-					Texture(std::string filename);
-					bool loadFromFile(std::string filename);
+					Texture(std::string filename, unsigned char flip_flags = 0b00000010);
+					bool loadFromFile(std::string filename, unsigned char flip_flags = 0b00000010);
 
 					sf::Vector2u getSize();
 					const uint8* getPixelData();

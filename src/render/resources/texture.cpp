@@ -36,16 +36,19 @@ namespace Vast
 			}
 
 			//Construct a texture from the data contained within a given file
-			Texture::Texture(std::string filename)
+			Texture::Texture(std::string filename, unsigned char flip_flags)
 			{
-				this->loadFromFile(filename);
+				this->loadFromFile(filename, flip_flags);
 			}
 
 			//Create a texture from the data contained within a given file
-			bool Texture::loadFromFile(std::string filename)
+			bool Texture::loadFromFile(std::string filename, unsigned char flip_flags)
 			{
 				bool success = this->internal_image.loadFromFile(filename);
-				this->internal_image.flipVertically();
+				if (flip_flags & 0b00000001)
+					this->internal_image.flipHorizontally();
+				if (flip_flags & 0b00000010)
+					this->internal_image.flipVertically();
 				IO::test(success, "Loading texture from file '" + filename + "'");
 
 				return success;
@@ -91,7 +94,10 @@ namespace Vast
 
 					gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLuint)gl::GL_LINEAR);
 					gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLuint)gl::GL_LINEAR);
-					//gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
+					
+					IO::output("Generating texture mipmap...");
+					
+					gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
 					
 					this->buffered = true;
 

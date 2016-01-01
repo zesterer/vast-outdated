@@ -39,9 +39,10 @@ namespace Vast
 			Resources::Texture& norm = this->resource_manager.newTextureFromFile("../data/proprietary/tie-norm.png");
 			Resources::Material& mat = this->resource_manager.newMaterial();
 			mat.setShininess(3.0f);
-			mat.setAmbientColour(glm::vec3(1.0, 1.0, 0.7));
-			mat.setDiffuseColour(glm::vec3(1.0, 1.0, 0.3));
-			mat.setSpecularColour(glm::vec3(1.0, 1.0, 0.3));
+			//mat.setAmbientColour(glm::vec3(1.0, 1.0, 0.3));
+			//mat.setDiffuseColour(glm::vec3(1.0, 1.0, 0.3));
+			mat.setDiffuseColour(glm::vec3(0.6, 0.6, 1.0));
+			mat.setSpecularColour(glm::vec3(0.6, 0.6, 1.0));
 
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
@@ -57,15 +58,20 @@ namespace Vast
 			this->figure_manager.getFigure(0).getState().scale = v3(1.0, 1.0, 1.0);
 			this->figure_manager.getFigure(0).getState().update();
 			
-			Resources::Texture& tex1 = this->resource_manager.newTextureFromFile("../data/test/texture.jpg");
-			Resources::Texture& normal_map1 = this->resource_manager.newTextureFromFile("../data/test/normal.jpg");
+			Resources::Texture& tex1 = this->resource_manager.newTextureFromFile("../data/test/texture3.png");
+			Resources::Texture& normal_map1 = this->resource_manager.newTextureFromFile("../data/test/normal3.png", 3);
 			normal_map1.buffer();
 			Resources::Mesh& mesh1 = this->resource_manager.newMeshFromFile("../data/test/floor.obj");
+			Resources::Material& mat1 = this->resource_manager.newMaterial();
+			mat1.setShininess(3.5f);
+			mat1.setDiffuseColour(glm::vec3(1.0, 0.8, 0.3));
+			mat1.setSpecularColour(glm::vec3(1.0, 0.8, 0.3));
 			
 			Figures::Part& part1 = this->figure_manager.newFigure().newPart();
 			part1.setMesh(&mesh1);
 			part1.setTexture(&tex1);
 			part1.setNormalMap(&normal_map1);
+			part1.setMaterial(&mat1);
 			part1.bufferAll();
 			
 			this->figure_manager.getFigure(1).getState().position = v3(12.0, 0.0, -5.0);
@@ -74,7 +80,7 @@ namespace Vast
 			this->figure_manager.getFigure(1).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(1).getState().update();
 			
-			Lights::Light& point0 = this->getLightManager().newLight();
+			/*Lights::Light& point0 = this->getLightManager().newLight();
 			point0.position = glm::vec3(12.0, 8.0, -7.0);
 			point0.direction = glm::vec3(0.0, 0.0, 1.0);
 			point0.colour = glm::vec3(0.0, 1.0, 0.0);
@@ -93,7 +99,7 @@ namespace Vast
 			point2.direction = glm::vec3(0.0, 0.0, 1.0);
 			point2.colour = glm::vec3(0.0, 0.0, 1.0);
 			point2.ambiance = 0.0;
-			point2.type = Lights::LightType::Point;
+			point2.type = Lights::LightType::Point;*/
 			///Testing
 		}
 
@@ -147,8 +153,6 @@ namespace Vast
 		void RenderContext::close()
 		{
 			IO::output("Closing render context");
-
-			this->resource_manager.close();
 		}
 		
 		Camera& RenderContext::getCamera()

@@ -77,9 +77,9 @@ namespace Vast
 			}
 
 			//Create a new texture from a given file and load it into the resource manager
-			Texture& ResourceManager::newTextureFromFile(std::string filename)
+			Texture& ResourceManager::newTextureFromFile(std::string filename, unsigned char flip_flags)
 			{
-				this->textures.push_back(new Texture(filename));
+				this->textures.push_back(new Texture(filename, flip_flags));
 				return *this->textures.back();
 			}
 
