@@ -218,7 +218,7 @@ namespace Vast
 					}
 
 					//We got normals!
-					if ((face.has_parts & 0b00100000) == 0b00100000) //If we have normal data
+					if ((face.has_parts & 0b00100000) == 0b00100000 && !(face.a_norm == face.b_norm && face.a_norm == face.c_norm)) //If we have normal data
 					{
 						//Set to default normals
 						poly.a.norm = tmp_norm[face.a_norm - 1];

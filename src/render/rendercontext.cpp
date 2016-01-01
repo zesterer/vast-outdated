@@ -25,6 +25,7 @@ namespace Vast
 		{
 			this->renderer.initiate(*this);
 			this->renderer.setCamera(this->camera);
+			this->resource_manager.initiate();
 			
 			//Create null texture
 			this->null_texture = &this->resource_manager.newTextureFromBlank(1, 1, nullptr);
@@ -33,16 +34,25 @@ namespace Vast
 			this->camera.getState().orientation = quat(v3(0.0, 3.141592 / 2.0 - 0.4, 3.141592 / 2.0));
 			this->camera.getState().position = v3(0.0, 0.0, 5.0);
 			
-			Resources::Texture& tex = this->resource_manager.newTextureFromFile("../data/test/texture.jpg");
-			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("../data/test/spaceship1.obj");
+			Resources::Texture& tex = this->resource_manager.newTextureFromFile("../data/proprietary/tie-tex.png");
+			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("../data/proprietary/tie-mesh.obj");
+			Resources::Texture& norm = this->resource_manager.newTextureFromFile("../data/proprietary/tie-norm.png");
+			Resources::Material& mat = this->resource_manager.newMaterial();
+			mat.setShininess(3.0f);
+			mat.setAmbientColour(glm::vec3(1.0, 1.0, 0.7));
+			mat.setDiffuseColour(glm::vec3(1.0, 1.0, 0.3));
+			mat.setSpecularColour(glm::vec3(1.0, 1.0, 0.3));
 
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
 			part.setTexture(&tex);
+			part.setNormalMap(&norm);
+			part.setMaterial(&mat);
 			part.bufferAll();
 			
-			this->figure_manager.getFigure(0).getState().position = v3(12.0, 0.0, -2.0);
-			this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, -3.14159 / 2, 0.0));
+			this->figure_manager.getFigure(0).getState().position = v3(12.0, 0.0, 2.0);
+			//this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, -3.14159 / 2, 0.0));
+			this->figure_manager.getFigure(0).getState().orientation = quat(v3(-3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(0).getState().spin = quat(v3(0.0, 0.0, 0.01));
 			this->figure_manager.getFigure(0).getState().scale = v3(1.0, 1.0, 1.0);
 			this->figure_manager.getFigure(0).getState().update();
@@ -60,12 +70,12 @@ namespace Vast
 			
 			this->figure_manager.getFigure(1).getState().position = v3(12.0, 0.0, -5.0);
 			this->figure_manager.getFigure(1).getState().scale = v3(12.0, 12.0, 12.0);
-			this->figure_manager.getFigure(1).getState().spin = quat(v3(0.0, 0.01, 0.01));
+			this->figure_manager.getFigure(1).getState().spin = quat(v3(0.0, 0.00, 0.01));
 			this->figure_manager.getFigure(1).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(1).getState().update();
 			
 			Lights::Light& point0 = this->getLightManager().newLight();
-			point0.position = glm::vec3(12.0, 8.0, -5.0);
+			point0.position = glm::vec3(12.0, 8.0, -7.0);
 			point0.direction = glm::vec3(0.0, 0.0, 1.0);
 			point0.colour = glm::vec3(0.0, 1.0, 0.0);
 			point0.ambiance = 0.0;

@@ -28,7 +28,7 @@ namespace Vast
 
 			this->internal_window.setFramerateLimit(60);
 			
-			this->setTitle("Vast Main Window");
+			this->setTitle("Vast");
 			this->setVSync(true);
 
 			IO::output("Initiated window");

@@ -27,8 +27,14 @@ uniform mat4 CAMERA_MATRIX;
 uniform mat4 CAMERA_INVERSE_MATRIX;
 uniform mat4 MODEL_MATRIX;
 
-//uniform vec4 MATERIAL_DATA;
-//uniform int MATERIAL_EFFECTS;
+uniform vec3 MATERIAL_AMBIENT_COLOUR;
+uniform vec3 MATERIAL_DIFFUSE_COLOUR;
+uniform vec3 MATERIAL_SPECULAR_COLOUR;
+
+uniform float MATERIAL_SMOOTHNESS;
+uniform float MATERIAL_SHININESS;
+
+uniform float MATERIAL_TRANSPARENCY;
 
 //Textures
 uniform sampler2D TEXTURE_TEXTURE;
@@ -104,19 +110,19 @@ vec3 getLightAmbiance(int light)
 	if (light == -1)
 		return SUN_COLOUR * SUN_AMBIANCE;
 	
-	return getLightColour(light) * LIGHT_COLOUR[light];
+	return getLightColour(light) * LIGHT_COLOUR[light] * MATERIAL_AMBIENT_COLOUR;
 }
 
 //Find the diffuse factor of the light
 vec3 getLightDiffuse(int light)
 {
-	return getLightColour(light) * max(0.0, dot(-W_NEW_NORMAL, getLightVector(light)));
+	return getLightColour(light) * max(0.0, dot(-W_NEW_NORMAL, getLightVector(light))) * MATERIAL_DIFFUSE_COLOUR;
 }
 
 vec3 getLightSpecular(int light)
 {
-	float smoothness = 4.0;//MATERIAL_DATA[0];
-	float shininess = 0.5;//MATERIAL_DATA[1];
+	float smoothness = MATERIAL_SMOOTHNESS;//MATERIAL_DATA[0];
+	float shininess = MATERIAL_SHININESS;//MATERIAL_DATA[1];
 	
 	vec3 E = normalize((CAMERA_INVERSE_MATRIX * vec4(0.0, 0.0, 1.0, 0.0)).xyz);
 	
@@ -126,7 +132,7 @@ vec3 getLightSpecular(int light)
 	
 	specular = pow(specular, smoothness);
 	
-	return getLightColour(light) * specular * shininess;
+	return getLightColour(light) * specular * shininess * MATERIAL_SPECULAR_COLOUR;
 }
 
 vec4 getTextureValue()
@@ -185,7 +191,11 @@ void main()
 
 	//Set up the modified values
 	W_NEW_POSITION = F_W_POSITION.xyz;
-	W_NEW_NORMAL = normalize(F_W_NORMAL.xyz);
+	
+	if (gl_FrontFacing)
+		W_NEW_NORMAL = normalize(F_W_NORMAL.xyz);
+	else
+		W_NEW_NORMAL = normalize(-F_W_NORMAL.xyz);
 	
 	//Apply normal mapping
 	W_NEW_NORMAL = applyNormalMapping(W_NEW_NORMAL);
@@ -215,5 +225,5 @@ void main()
 	COLOUR = getTextureColour() * (ambiance + diffuse + specular);
 	
 	//Apply transparency (if there is any)
-	COLOUR_BUFFER = vec4(COLOUR, getTextureValue().a);
+	COLOUR_BUFFER = vec4(COLOUR, getTextureValue().a * MATERIAL_TRANSPARENCY);
 }

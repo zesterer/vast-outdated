@@ -75,7 +75,8 @@ void main()
 	//COLOUR = vec3(getDepthAt(UV) / 5.0);
 	
 	//Toon Shading
-	//COLOUR = floor(COLOUR * 6.0) / 6.0;
+	const vec3 bitmask = vec3(8.0, 8.0, 4.0);
+	//COLOUR = floor(COLOUR * bitmask) / bitmask;
 
 	COLOUR = mix(vec3(0.0, 0.0, 0.0), COLOUR, min(1, 1.8 - length(UV)));
 	//Faded corners

@@ -45,8 +45,8 @@ add_definitions(-std=c++11 -Wall -g3)
 find_package(SFML 2 REQUIRED system window graphics network audio)
 
 if (SFML_FOUND)
-	set(LIBVOLUME_SOURCE_DIRS ${LIBVOLUME_SOURCE_DIRS} ${SFML_INCLUDE_DIR})
-	set(LIBVOLUME_LINK_LIBRARIES ${LIBVOLUME_LINK_LIBRARIES} ${SFML_LIBRARIES})
+	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${SFML_INCLUDE_DIR})
+	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${SFML_LIBRARIES})
 else ()
 	message("SFML could not be found, and is required to build this library.")
 endif ()
@@ -59,7 +59,7 @@ endif ()
 find_package(GLM REQUIRED)
 
 if (GLM_FOUND)
-	set(LIBVOLUME_SOURCE_DIRS ${LIBVOLUME_SOURCE_DIRS} ${GLM_INCLUDE_DIR})
+	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${GLM_INCLUDE_DIR})
 else ()
 	message("GLM could not be found, and is required to build this library.")
 endif ()
@@ -72,11 +72,25 @@ endif ()
 find_package(GLBINDING REQUIRED)
 
 if (GLBINDING_FOUND)
-	set(LIBVOLUME_SOURCE_DIRS ${LIBVOLUME_SOURCE_DIRS} ${GLBINDING_INCLUDE_DIR})
-	set(LIBVOLUME_LINK_LIBRARIES ${LIBVOLUME_LINK_LIBRARIES} ${GLBINDING_LIBRARIES})
+	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${GLBINDING_INCLUDE_DIR})
+	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${GLBINDING_LIBRARIES})
 else ()
 	message("GLBINDING could not be found, and is required to build this library.")
 endif ()
+
+##########
+# BULLET #
+##########
+
+#Find BULLET
+#find_package(BULLET REQUIRED)
+
+#if (BULLET_FOUND)
+#	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${BULLET_INCLUDE_DIR})
+#	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${BULLET_LIBRARIES})
+#else ()
+#	message("BULLET could not be found, and is required to build this library.")
+#endif ()
 
 ##################
 #### BUILDING ####
@@ -92,4 +106,4 @@ include_directories(${APPLICATION_SOURCE_DIRS})
 add_executable(${APPLICATION_NAME} ${APPLICATION_SOURCE_FILES})
 
 #Link the final executable to the needed libraries
-target_link_libraries(${APPLICATION_NAME} ${LIBVOLUME_LINK_LIBRARIES})
+target_link_libraries(${APPLICATION_NAME} ${APPLICATION_LINK_LIBRARIES})

@@ -10,6 +10,9 @@ build-android
 build-bsd
 build-ios
 
+#Proprietary
+data/proprietary
+
 # Compiled Object files
 *.slo
 *.lo

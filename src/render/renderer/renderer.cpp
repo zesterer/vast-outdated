@@ -25,7 +25,6 @@ namespace Vast
 				this->bufferScreenQuad();
 
 				//Set up the default shaders
-				this->standard_shader = &context.getResourceManager().newShaderFromFiles("../data/shaders/standard.vert", "../data/shaders/standard.frag");
 				this->postprocess_shader = &context.getResourceManager().newShaderFromFiles("../data/shaders/postprocess.vert", "../data/shaders/postprocess.frag");
 			}
 			
@@ -106,9 +105,9 @@ namespace Vast
 						
 						//Blank the screen
 						gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
-						gl::glClearColor(0.0f, 0.0f, 0.4f, 1.0f);
+						gl::glClearColor(0.0f, 0.0f, 0.03f, 1.0f);
 						
-						this->standard_shader->enable();
+						//this->standard_shader->enable();
 					}
 					break;
 					
@@ -129,10 +128,6 @@ namespace Vast
 						gl::glViewport(0, 0, this->dimensions.x, this->dimensions.y);
 						
 						this->postprocess_shader->enable();
-						
-						//Blank the screen
-						//gl::glClearColor(0.0f, 0.4f, 0.0f, 0.0f);
-						//gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 					}
 					break;
 				}
@@ -141,6 +136,14 @@ namespace Vast
 			//Render a single part
 			void Renderer::renderPart(Figures::Part& part, RenderContext& context)
 			{
+				Resources::Shader* shader = nullptr;
+				if (part.hasShader())
+					shader = &part.getShader();
+				else //The shader index 0 is always filled with a default
+					shader = &context.getResourceManager().getShader(-1);
+				
+				shader->enable();
+				
 				//What is the buffer array composed of?
 				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2), sizeof(glm::vec3), sizeof(glm::vec3)};
 				
@@ -163,12 +166,9 @@ namespace Vast
 				}
 				
 				//Bind the relevant data to the shader uniforms
-				this->bindContextData(context);
-				this->bindPartData(part, context);
-				this->bindCameraData();
-				
-				//Assign the current time
-				this->bindIntegerWithUniform(context.getTime(), "TIME", this->standard_shader);
+				this->bindContextData(context, shader);
+				this->bindPartData(part, context, shader);
+				this->bindCameraData(shader);
 				
 				//Draw the part
 				glDrawArrays(part.getMesh().getMode(), 0, part.getMesh().getSize() * 3);
@@ -231,47 +231,50 @@ namespace Vast
 				gl::glUniform1iv(uniform_id, number, integer_array);
 			}
 			
-			void Renderer::bindContextData(RenderContext& context)
+			void Renderer::bindContextData(RenderContext& context, Resources::Shader* shader)
 			{
 				//Bind sun details
-				this->bindVec3WithUniform(context.getLightManager().getSun().direction, "SUN_DIRECTION", this->standard_shader);
-				this->bindVec3WithUniform(context.getLightManager().getSun().colour, "SUN_COLOUR", this->standard_shader);
-				this->bindFloatWithUniform(context.getLightManager().getSun().ambiance, "SUN_AMBIANCE", this->standard_shader);
+				this->bindVec3WithUniform(context.getLightManager().getSun().direction, "SUN_DIRECTION", shader);
+				this->bindVec3WithUniform(context.getLightManager().getSun().colour, "SUN_COLOUR", shader);
+				this->bindFloatWithUniform(context.getLightManager().getSun().ambiance, "SUN_AMBIANCE", shader);
 				
-				this->bindIntegerWithUniform(std::min((int)context.getLightManager().getNumber(), MAX_LIGHT_NUMBER), "LIGHT_NUMBER", this->standard_shader);
+				this->bindIntegerWithUniform(std::min((int)context.getLightManager().getNumber(), MAX_LIGHT_NUMBER), "LIGHT_NUMBER", shader);
 				
-				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayPosition(), MAX_LIGHT_NUMBER * 3, "LIGHT_POSITION", this->standard_shader);
-				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayColour(), MAX_LIGHT_NUMBER * 3, "LIGHT_COLOUR", this->standard_shader);
-				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayDirection(), MAX_LIGHT_NUMBER * 3, "LIGHT_DIRECTION", this->standard_shader);
+				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayPosition(), MAX_LIGHT_NUMBER * 3, "LIGHT_POSITION", shader);
+				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayColour(), MAX_LIGHT_NUMBER * 3, "LIGHT_COLOUR", shader);
+				this->bindVec3ArrayWithUniform(context.getLightManager().getPriorityArrayDirection(), MAX_LIGHT_NUMBER * 3, "LIGHT_DIRECTION", shader);
 				
-				this->bindIntegerArrayWithUniform(context.getLightManager().getPriorityArrayType(), MAX_LIGHT_NUMBER * 3, "LIGHT_TYPE", this->standard_shader);
-				this->bindFloatArrayWithUniform(context.getLightManager().getPriorityArraySpotAngle(), MAX_LIGHT_NUMBER * 3, "LIGHT_SPOT_ANGLE", this->standard_shader);
-				this->bindFloatArrayWithUniform(context.getLightManager().getPriorityArrayAmbiance(), MAX_LIGHT_NUMBER * 3, "LIGHT_AMBIANCE", this->standard_shader);
+				this->bindIntegerArrayWithUniform(context.getLightManager().getPriorityArrayType(), MAX_LIGHT_NUMBER * 3, "LIGHT_TYPE", shader);
+				this->bindFloatArrayWithUniform(context.getLightManager().getPriorityArraySpotAngle(), MAX_LIGHT_NUMBER * 3, "LIGHT_SPOT_ANGLE", shader);
+				this->bindFloatArrayWithUniform(context.getLightManager().getPriorityArrayAmbiance(), MAX_LIGHT_NUMBER * 3, "LIGHT_AMBIANCE", shader);
+				
+				//Assign the current time
+				this->bindIntegerWithUniform(context.getTime(), "TIME", shader);
 			}
 			
-			void Renderer::bindCameraData()
+			void Renderer::bindCameraData(Resources::Shader* shader)
 			{
 				//Assign the perspective matrix
-				this->bindMatrixWithUniform(&this->camera->getPerspective(), "PERSPECTIVE_MATRIX", this->standard_shader);
+				this->bindMatrixWithUniform(&this->camera->getPerspective(), "PERSPECTIVE_MATRIX", shader);
 
 				//Assign the camera matrix
-				this->bindMatrixWithUniform(&this->camera->getMatrix(), "CAMERA_MATRIX", this->standard_shader);
+				this->bindMatrixWithUniform(&this->camera->getMatrix(), "CAMERA_MATRIX", shader);
 				
 				//Assign the camera inverse matrix
-				this->bindMatrixWithUniform(&this->camera->getInverseMatrix(), "CAMERA_INVERSE_MATRIX", this->standard_shader);
+				this->bindMatrixWithUniform(&this->camera->getInverseMatrix(), "CAMERA_INVERSE_MATRIX",shader);
 			}
 			
-			void Renderer::bindPartData(Figures::Part& part, RenderContext& context)
+			void Renderer::bindPartData(Figures::Part& part, RenderContext& context, Resources::Shader* shader)
 			{
 				if (part.hasTexture()) //Ready the colour texture
-					part.getTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *this->standard_shader);
+					part.getTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *shader);
 				else
-					context.getNullTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *this->standard_shader);
+					context.getNullTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *shader);
 				
 				if (part.hasNormalMap()) //Ready the normal map texture
-					part.getNormalMap().bindToWithUniform(1, "NORMAL_TEXTURE", *this->standard_shader);
+					part.getNormalMap().bindToWithUniform(1, "NORMAL_TEXTURE", *shader);
 				else
-					context.getNullTexture().bindToWithUniform(1, "NORMAL_TEXTURE", *this->standard_shader);
+					context.getNullTexture().bindToWithUniform(1, "NORMAL_TEXTURE", *shader);
 				
 				//Assign the model matrix
 				State modified = part.getParent().getState();
@@ -279,10 +282,26 @@ namespace Vast
 				modified.update();
 				mat4 sum = glm::f32mat4(1.0f);
 				sum = (glm::f32mat4)modified.matrix * (glm::f32mat4)part.getState().matrix * sum;
-				this->bindMatrixWithUniform(&sum, "MODEL_MATRIX", this->standard_shader);
+				this->bindMatrixWithUniform(&sum, "MODEL_MATRIX", shader);
 				
 				//Assign the part information (Tells the shader which resources the part has available)
-				this->bindIntegerWithUniform(part.getInfoInt(), "RESOURCE_INFO", this->standard_shader);
+				this->bindIntegerWithUniform(part.getInfoInt(), "RESOURCE_INFO", shader);
+				
+				//Bind the material info
+				Resources::Material* material = nullptr;
+				if (part.hasMaterial())
+					material = &part.getMaterial();
+				else
+					material = &context.getResourceManager().getMaterial(-1);
+				
+				this->bindVec3WithUniform(material->getAmbientColour(), "MATERIAL_AMBIENT_COLOUR", shader);
+				this->bindVec3WithUniform(material->getDiffuseColour(), "MATERIAL_DIFFUSE_COLOUR", shader);
+				this->bindVec3WithUniform(material->getSpecularColour(), "MATERIAL_SPECULAR_COLOUR", shader);
+				
+				this->bindFloatWithUniform(material->getSmoothness(), "MATERIAL_SMOOTHNESS", shader);
+				this->bindFloatWithUniform(material->getShininess(), "MATERIAL_SHININESS", shader);
+				
+				this->bindFloatWithUniform(material->getTransparency(), "MATERIAL_TRANSPARENCY", shader);
 			}
 		}
 	}

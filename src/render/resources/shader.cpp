@@ -29,7 +29,7 @@ namespace Vast
 			}
 
 			void Shader::loadFromFiles(std::string vertex_file_path, std::string fragment_file_path)
-			{
+			{printf("TESTING\n");
 				// Read the Vertex Shader code from the file
 				IO::output("Loading vertex shader code from '" + vertex_file_path + "'");
 				std::string VertexShaderCode;
@@ -63,7 +63,7 @@ namespace Vast
 					IO::output("Fragment shader location '" + fragment_file_path + "' cannot be opened", IO::OutputType::Error);
 					return;
 				}
-
+				
 				this->loadFromStrings(VertexShaderCode, FragmentShaderCode);
 			}
 

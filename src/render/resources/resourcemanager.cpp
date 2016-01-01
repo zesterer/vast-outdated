@@ -17,6 +17,14 @@ namespace Vast
 			{
 				this->close();
 			}
+			
+			void ResourceManager::initiate()
+			{
+				this->default_mesh = &this->newMesh();
+				this->default_texture = &this->newTexture();
+				this->default_material = &this->newMaterial();
+				this->default_shader = &this->newShaderFromFiles("../data/shaders/standard.vert", "../data/shaders/standard.frag");
+			}
 
 			void ResourceManager::close()
 			{
@@ -102,23 +110,35 @@ namespace Vast
 				return *this->shaders.back();
 			}
 			
-			Mesh& ResourceManager::getMesh(uint32 id)
+			Mesh& ResourceManager::getMesh(int32 id)
 			{
+				if (id == -1)
+					return *this->default_mesh;
+				
 				return *this->meshes[id];
 			}
 			
-			Texture& ResourceManager::getTexture(uint32 id)
+			Texture& ResourceManager::getTexture(int32 id)
 			{
+				if (id == -1)
+					return *this->default_texture;
+				
 				return *this->textures[id];
 			}
 			
-			Material& ResourceManager::getMaterial(uint32 id)
+			Material& ResourceManager::getMaterial(int32 id)
 			{
+				if (id == -1)
+					return *this->default_material;
+				
 				return *this->materials[id];
 			}
 			
-			Shader& ResourceManager::getShader(uint32 id)
+			Shader& ResourceManager::getShader(int32 id)
 			{
+				if (id == -1)
+					return *this->default_shader;
+				
 				return *this->shaders[id];
 			}
 		}

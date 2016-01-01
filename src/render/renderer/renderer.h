@@ -29,7 +29,6 @@ namespace Vast
 					
 					Camera* camera = nullptr;
 
-					Resources::Shader* standard_shader;
 					Resources::Shader* postprocess_shader;
 					
 					glm::ivec2 dimensions = glm::ivec2(1, 1);
@@ -57,9 +56,9 @@ namespace Vast
 					void bindFloatArrayWithUniform(float* float_array, int32 number, std::string uniform_name, Resources::Shader* shader);
 					void bindIntegerArrayWithUniform(int* integer_array, int32 number, std::string uniform_name, Resources::Shader* shader);
 					
-					void bindContextData(RenderContext& context);
-					void bindCameraData();
-					void bindPartData(Figures::Part& part, RenderContext& context);
+					void bindContextData(RenderContext& context, Resources::Shader* shader);
+					void bindCameraData(Resources::Shader* shader);
+					void bindPartData(Figures::Part& part, RenderContext& context, Resources::Shader* shader);
 					
 					void setCamera(Camera& camera);
 			};
