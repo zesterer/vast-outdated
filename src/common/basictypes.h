@@ -25,6 +25,7 @@ typedef gl::GLuint glid;
 typedef gl::GLenum glenum;
 
 typedef glm::mat4 mat4;
+typedef glm::mat3 mat3;
 typedef glm::quat quat;
 
 typedef glm::vec4 v4;

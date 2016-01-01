@@ -22,7 +22,7 @@ namespace Vast
 				//Create the colour texture
 				gl::glGenTextures(1, &this->gl_texture_id);
 				gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_texture_id);
-				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA32F, this->dimensions.x, this->dimensions.y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, 0);
+				gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLint)gl::GL_RGBA16F, this->dimensions.x, this->dimensions.y, 0, gl::GL_RGBA, gl::GL_FLOAT, 0);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLint)gl::GL_LINEAR);
 				gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLint)gl::GL_LINEAR);
 				gl::glFramebufferTexture2D(gl::GL_FRAMEBUFFER, gl::GL_COLOR_ATTACHMENT0, gl::GL_TEXTURE_2D, this->gl_texture_id, 0);

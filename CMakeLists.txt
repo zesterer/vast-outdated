@@ -78,12 +78,14 @@ else ()
 	message("GLBINDING could not be found, and is required to build this library.")
 endif ()
 
-##########
-# BULLET #
-##########
+########################
+# Open Dynamics Engine #
+########################
 
-#Find BULLET
-#find_package(BULLET REQUIRED)
+
+
+#Find ODE
+#find_package(OpenDynamicsEngine REQUIRED)
 
 #if (BULLET_FOUND)
 #	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${BULLET_INCLUDE_DIR})

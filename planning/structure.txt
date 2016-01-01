@@ -214,15 +214,17 @@ class RenderContext
 # List of effects to implement #
 ################################
 
-- HDR
-- Texturing
-- Bump-mapping
-- Normal-mapping
-- Phong lighting
-- Transparency (sort transparent objects by depth using quicksort, and then draw them to a seperate RGBA buffer which is then combined with the standard buffer during post-processing)
-- FXAA anti-aliasing
-- Motion Blur (overlaying previous with current)
-- Distance fog
+[n/i/f] = Not started, Incomplete, Finished
+
+[i] HDR
+[f] Texturing
+[i] Bump-mapping
+[f] Normal-mapping
+[f] Phong lighting
+[i] Transparency (sort transparent objects by depth using quicksort, and then draw them to a seperate RGBA buffer which is then combined with the standard buffer during post-processing)
+[n] FXAA anti-aliasing
+[n] Motion Blur (overlaying previous with current)
+[n] Distance fog
 
 ########
 # TODO #

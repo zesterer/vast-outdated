@@ -27,6 +27,8 @@ namespace Vast
 					Texture(uint16 width, uint16 height, const uint8* pixels = nullptr);
 					void create(uint16 width, uint16 height, const uint8* pixels = nullptr);
 
+					//We use flip-flags because some textures (such as normal maps) expect to
+					//be flipped in various non-standard ways (don't ask me why).
 					Texture(std::string filename, unsigned char flip_flags = 0b00000010);
 					bool loadFromFile(std::string filename, unsigned char flip_flags = 0b00000010);
 

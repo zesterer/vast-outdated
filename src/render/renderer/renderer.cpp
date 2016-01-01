@@ -141,17 +141,13 @@ namespace Vast
 					shader = &part.getShader();
 				else //The shader index 0 is always filled with a default
 					shader = &context.getResourceManager().getShader(-1);
-				
 				shader->enable();
 				
 				//What is the buffer array composed of?
 				int attribute_array[] = {sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec3), sizeof(glm::vec2), sizeof(glm::vec3), sizeof(glm::vec3)};
 				
 				//Make sure the part mesh is buffered
-				if (part.hasTexture())
-					part.getMesh().buffer();
-				else
-					return;
+				part.getMesh().buffer();
 				
 				//Bind the vertex buffer
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, part.getMesh().getGLID());
@@ -266,15 +262,25 @@ namespace Vast
 			
 			void Renderer::bindPartData(Figures::Part& part, RenderContext& context, Resources::Shader* shader)
 			{
-				if (part.hasTexture()) //Ready the colour texture
-					part.getTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *shader);
+				//Bind the texture
+				Resources::Texture* texture = nullptr;
+				if (part.hasTexture())
+					texture = &part.getTexture();
 				else
-					context.getNullTexture().bindToWithUniform(0, "TEXTURE_TEXTURE", *shader);
+					texture = &context.getResourceManager().getTexture(-1);
+				texture->buffer();
 				
-				if (part.hasNormalMap()) //Ready the normal map texture
-					part.getNormalMap().bindToWithUniform(1, "NORMAL_TEXTURE", *shader);
+				texture->bindToWithUniform(0, "TEXTURE_TEXTURE", *shader);
+				
+				//Bind the normal map
+				Resources::Texture* normal_map = nullptr;
+				if (part.hasNormalMap())
+					normal_map = &part.getNormalMap();
 				else
-					context.getNullTexture().bindToWithUniform(1, "NORMAL_TEXTURE", *shader);
+					normal_map = &context.getResourceManager().getTexture(-1);
+				normal_map->buffer();
+				
+				normal_map->bindToWithUniform(0, "NORMAL_TEXTURE", *shader);
 				
 				//Assign the model matrix
 				State modified = part.getParent().getState();

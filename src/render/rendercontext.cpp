@@ -34,26 +34,26 @@ namespace Vast
 			this->camera.getState().orientation = quat(v3(0.0, 3.141592 / 2.0 - 0.4, 3.141592 / 2.0));
 			this->camera.getState().position = v3(0.0, 0.0, 5.0);
 			
-			Resources::Texture& tex = this->resource_manager.newTextureFromFile("../data/proprietary/tie-tex.png");
-			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("../data/proprietary/tie-mesh.obj");
-			Resources::Texture& norm = this->resource_manager.newTextureFromFile("../data/proprietary/tie-norm.png");
+			Resources::Texture& tex = this->resource_manager.newTextureFromFile("../data/test/texture2.jpg");
+			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("../data/test/spaceship3.obj");
+			Resources::Texture& norm = this->resource_manager.newTextureFromFile("../data/test/texture2.jpg");
 			Resources::Material& mat = this->resource_manager.newMaterial();
-			mat.setShininess(3.0f);
-			//mat.setAmbientColour(glm::vec3(1.0, 1.0, 0.3));
-			//mat.setDiffuseColour(glm::vec3(1.0, 1.0, 0.3));
+			mat.setShininess(1.0f);
+			mat.setAmbientColour(glm::vec3(1.0, 1.0, 0.3));
+			mat.setDiffuseColour(glm::vec3(1.0, 1.0, 0.3));
 			mat.setDiffuseColour(glm::vec3(0.6, 0.6, 1.0));
 			mat.setSpecularColour(glm::vec3(0.6, 0.6, 1.0));
 
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
-			part.setTexture(&tex);
-			part.setNormalMap(&norm);
+			//part.setTexture(&tex);
+			//part.setNormalMap(&norm);
 			part.setMaterial(&mat);
 			part.bufferAll();
 			
 			this->figure_manager.getFigure(0).getState().position = v3(12.0, 0.0, 2.0);
 			//this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, -3.14159 / 2, 0.0));
-			this->figure_manager.getFigure(0).getState().orientation = quat(v3(-3.14159 / 2, 0.0, 0.0));
+			this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, 0.0, 0.0));
 			this->figure_manager.getFigure(0).getState().spin = quat(v3(0.0, 0.0, 0.01));
 			this->figure_manager.getFigure(0).getState().scale = v3(1.0, 1.0, 1.0);
 			this->figure_manager.getFigure(0).getState().update();
@@ -69,13 +69,13 @@ namespace Vast
 			
 			Figures::Part& part1 = this->figure_manager.newFigure().newPart();
 			part1.setMesh(&mesh1);
-			part1.setTexture(&tex1);
+			//part1.setTexture(&tex1);
 			part1.setNormalMap(&normal_map1);
 			part1.setMaterial(&mat1);
 			part1.bufferAll();
 			
 			this->figure_manager.getFigure(1).getState().position = v3(12.0, 0.0, -5.0);
-			this->figure_manager.getFigure(1).getState().scale = v3(12.0, 12.0, 12.0);
+			this->figure_manager.getFigure(1).getState().scale = v3(24.0, 24.0, 24.0);
 			this->figure_manager.getFigure(1).getState().spin = quat(v3(0.0, 0.00, 0.01));
 			this->figure_manager.getFigure(1).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(1).getState().update();

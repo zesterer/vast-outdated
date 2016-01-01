@@ -21,7 +21,10 @@ namespace Vast
 			void ResourceManager::initiate()
 			{
 				this->default_mesh = &this->newMesh();
-				this->default_texture = &this->newTexture();
+				
+				unsigned char pixel[4] = {255, 255, 255, 255};
+				
+				this->default_texture = &this->newTextureFromBlank(1, 1, pixel);
 				this->default_material = &this->newMaterial();
 				this->default_shader = &this->newShaderFromFiles("../data/shaders/standard.vert", "../data/shaders/standard.frag");
 			}

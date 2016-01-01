@@ -75,7 +75,7 @@ void main()
 	//COLOUR = vec3(getDepthAt(UV) / 5.0);
 	
 	//Toon Shading
-	const vec3 bitmask = vec3(8.0, 8.0, 8.0) * 0.5;
+	const vec3 bitmask = vec3(8.0, 8.0, 8.0);
 	//COLOUR = floor(COLOUR * bitmask) / bitmask;
 	
 	//Just me messing around with old-style photo effects
