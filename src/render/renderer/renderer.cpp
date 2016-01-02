@@ -280,7 +280,7 @@ namespace Vast
 					normal_map = &context.getResourceManager().getTexture(-1);
 				normal_map->buffer();
 				
-				normal_map->bindToWithUniform(0, "NORMAL_TEXTURE", *shader);
+				normal_map->bindToWithUniform(1, "NORMAL_TEXTURE", *shader);
 				
 				//Assign the model matrix
 				State modified = part.getParent().getState();
@@ -289,9 +289,6 @@ namespace Vast
 				mat4 sum = glm::f32mat4(1.0f);
 				sum = (glm::f32mat4)modified.matrix * (glm::f32mat4)part.getState().matrix * sum;
 				this->bindMatrixWithUniform(&sum, "MODEL_MATRIX", shader);
-				
-				//Assign the part information (Tells the shader which resources the part has available)
-				this->bindIntegerWithUniform(part.getInfoInt(), "RESOURCE_INFO", shader);
 				
 				//Bind the material info
 				Resources::Material* material = nullptr;

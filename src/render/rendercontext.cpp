@@ -26,9 +26,6 @@ namespace Vast
 			this->renderer.initiate(*this);
 			this->renderer.setCamera(this->camera);
 			this->resource_manager.initiate();
-			
-			//Create null texture
-			this->null_texture = &this->resource_manager.newTextureFromBlank(1, 1, nullptr);
 
 			///Testing
 			this->camera.getState().orientation = quat(v3(0.0, 3.141592 / 2.0 - 0.4, 3.141592 / 2.0));
@@ -38,7 +35,8 @@ namespace Vast
 			Resources::Mesh& mesh = this->resource_manager.newMeshFromFile("../data/test/spaceship3.obj");
 			Resources::Texture& norm = this->resource_manager.newTextureFromFile("../data/test/texture2.jpg");
 			Resources::Material& mat = this->resource_manager.newMaterial();
-			mat.setShininess(1.0f);
+			mat.setShininess(1.5f);
+			mat.setSmoothness(2.0f);
 			mat.setAmbientColour(glm::vec3(1.0, 1.0, 0.3));
 			mat.setDiffuseColour(glm::vec3(1.0, 1.0, 0.3));
 			mat.setDiffuseColour(glm::vec3(0.6, 0.6, 1.0));
@@ -63,13 +61,13 @@ namespace Vast
 			normal_map1.buffer();
 			Resources::Mesh& mesh1 = this->resource_manager.newMeshFromFile("../data/test/floor.obj");
 			Resources::Material& mat1 = this->resource_manager.newMaterial();
-			mat1.setShininess(3.5f);
+			mat1.setShininess(1.5f);
 			mat1.setDiffuseColour(glm::vec3(1.0, 0.8, 0.3));
 			mat1.setSpecularColour(glm::vec3(1.0, 0.8, 0.3));
 			
 			Figures::Part& part1 = this->figure_manager.newFigure().newPart();
 			part1.setMesh(&mesh1);
-			//part1.setTexture(&tex1);
+			part1.setTexture(&tex1);
 			part1.setNormalMap(&normal_map1);
 			part1.setMaterial(&mat1);
 			part1.bufferAll();
@@ -183,11 +181,6 @@ namespace Vast
 		int32 RenderContext::getTime()
 		{
 			return this->time;
-		}
-		
-		Resources::Texture& RenderContext::getNullTexture()
-		{
-			return *this->null_texture;
 		}
 	}
 }

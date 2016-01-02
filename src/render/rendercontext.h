@@ -36,7 +36,6 @@ namespace Vast
 				void close();
 				
 				int32 getTime();
-				Resources::Texture& getNullTexture();
 
 				Resources::ResourceManager& getResourceManager();
 				Figures::FigureManager& getFigureManager();

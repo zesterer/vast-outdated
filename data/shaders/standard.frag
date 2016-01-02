@@ -3,8 +3,6 @@
 //----UNIFORMS----
 uniform uint TIME;
 
-uniform int RESOURCE_INFO;
-
 //Sun information
 uniform vec3 SUN_DIRECTION;
 uniform vec3 SUN_COLOUR;
@@ -59,14 +57,6 @@ vec3 COLOUR = vec3(1.0, 1.0, 1.0);
 
 vec3 W_NEW_POSITION;
 vec3 W_NEW_NORMAL;
-
-//Find out which resources are loaded
-bool getResourceInfo(int id)
-{
-	if (int(RESOURCE_INFO / pow(2, id)) % 2 == 1)
-		return true;
-	return false;
-}
 
 //Find the type of the light (0 = directional, 1 = point, 2 = spot)
 int getLightType(int light)
@@ -137,9 +127,6 @@ vec3 getLightSpecular(int light)
 
 vec4 getTextureValue()
 {
-	if (!getResourceInfo(1))
-		return vec4(1.0, 1.0, 1.0, 1.0);
-		
 	//No proper texture has been loaded in, so revert to colours
 	if (textureSize(TEXTURE_TEXTURE, 0) == ivec2(1, 1))
 		return vec4(1.0, 1.0, 1.0, 1.0);
@@ -159,19 +146,16 @@ vec3 getNormalMapVector()
 {
 	//No normal map texture has been loaded in, so revert to default
 	if (textureSize(NORMAL_TEXTURE, 0) == ivec2(1, 1))
-		return vec3(0.0, 0.0, 0.0);
+		return vec3(0.0, 0.0, 1.0);
 
 	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
-		return vec3(0.0, 0.0, 0.0);
+		return vec3(0.0, 0.0, 1.0);
 	else //It's got a texture!
-		return normalize(texture2D(NORMAL_TEXTURE, F_W_UV).rgb - 0.5);
+		return normalize(texture2D(NORMAL_TEXTURE, clamp(F_W_UV, 0.0, 1.0)).rgb - 0.5);
 }
 
 vec3 applyNormalMapping(vec3 normal)
 {
-	if (!getResourceInfo(3))
-		return normal;
-	
 	vec3 map_vector = getNormalMapVector();
 	
 	if (map_vector != vec3(0.0, 0.0, 0.0));
