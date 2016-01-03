@@ -87,11 +87,12 @@ endif ()
 #Find ODE
 #find_package(OpenDynamicsEngine REQUIRED)
 
-#if (BULLET_FOUND)
-#	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${BULLET_INCLUDE_DIR})
+#TODO!!!!!
+#if (TRUE)
+#	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} "/usr/local/include/ode/")
 #	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${BULLET_LIBRARIES})
 #else ()
-#	message("BULLET could not be found, and is required to build this library.")
+#	message("Open Dynamics Engine (ODE) could not be found, and is required to build this library.")
 #endif ()
 
 ##################

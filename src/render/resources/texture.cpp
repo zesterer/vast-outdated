@@ -1,3 +1,6 @@
+//----STANDARD----
+#include "string.h"
+
 //----LIBRARY----
 #include "glbinding/gl/gl.h"
 #include "glbinding/Binding.h"

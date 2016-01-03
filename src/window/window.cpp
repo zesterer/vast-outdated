@@ -1,6 +1,7 @@
 //----STANDARD----
 #include "iomanip"
 #include "sstream"
+#include "string.h"
 
 //----LOCAL----
 #include "window.h"
@@ -58,9 +59,9 @@ namespace Vast
 		
 		void Window::updateTitle()
 		{
-			std::ostringstream fps_string;
+			std::stringstream fps_string;
 			fps_string << std::setprecision(4) << this->fps;
-			this->internal_window.setTitle(this->title + " | FPS: " + fps_string.str());
+			this->internal_window.setTitle(std::string(this->title + " | FPS: " + fps_string.str()).c_str());
 		}
 		
 		void Window::setShowFPS(bool show_fps)

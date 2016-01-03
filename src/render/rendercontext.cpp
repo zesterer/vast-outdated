@@ -44,7 +44,7 @@ namespace Vast
 
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
-			//part.setTexture(&tex);
+			part.setTexture(&tex);
 			//part.setNormalMap(&norm);
 			part.setMaterial(&mat);
 			part.bufferAll();
@@ -53,7 +53,7 @@ namespace Vast
 			//this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, -3.14159 / 2, 0.0));
 			this->figure_manager.getFigure(0).getState().orientation = quat(v3(0.0, 0.0, 0.0));
 			this->figure_manager.getFigure(0).getState().spin = quat(v3(0.0, 0.0, 0.01));
-			this->figure_manager.getFigure(0).getState().scale = v3(1.0, 1.0, 1.0);
+			this->figure_manager.getFigure(0).getState().scale = v3(1.8, 1.8, 1.8);
 			this->figure_manager.getFigure(0).getState().update();
 			
 			Resources::Texture& tex1 = this->resource_manager.newTextureFromFile("../data/test/texture3.png");
@@ -78,26 +78,28 @@ namespace Vast
 			this->figure_manager.getFigure(1).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(1).getState().update();
 			
-			/*Lights::Light& point0 = this->getLightManager().newLight();
+			this->getLightManager().getSun().colour = glm::vec3(1.0, 1.0, 0.85);
+			
+			Lights::Light& point0 = this->getLightManager().newLight();
 			point0.position = glm::vec3(12.0, 8.0, -7.0);
 			point0.direction = glm::vec3(0.0, 0.0, 1.0);
-			point0.colour = glm::vec3(0.0, 1.0, 0.0);
+			point0.colour = glm::vec3(0.1, 1.0, 0.1);
 			point0.ambiance = 0.0;
 			point0.type = Lights::LightType::Point;
 			
 			Lights::Light& point1 = this->getLightManager().newLight();
 			point1.position = glm::vec3(11.0, -8.0, -5.0);
 			point1.direction = glm::vec3(0.0, 0.0, 1.0);
-			point1.colour = glm::vec3(1.0, 0.0, 0.0);
+			point1.colour = glm::vec3(1.0, 0.1, 0.1);
 			point1.ambiance = 0.0;
 			point1.type = Lights::LightType::Point;
 			
 			Lights::Light& point2 = this->getLightManager().newLight();
 			point2.position = glm::vec3(16.0, -5.0, -5.0);
 			point2.direction = glm::vec3(0.0, 0.0, 1.0);
-			point2.colour = glm::vec3(0.0, 0.0, 1.0);
+			point2.colour = glm::vec3(0.1, 0.1, 1.0);
 			point2.ambiance = 0.0;
-			point2.type = Lights::LightType::Point;*/
+			point2.type = Lights::LightType::Point;
 			///Testing
 		}
 

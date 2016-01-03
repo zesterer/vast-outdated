@@ -15,7 +15,7 @@ namespace Vast
 				private:
 				public:
 					glm::vec3 direction = glm::vec3(1.0, 1.0, -1.0);
-					glm::vec3 colour = glm::vec3(0.5, 0.5, 0.5);
+					glm::vec3 colour = glm::vec3(0.5, 0.5, 0.5) * 0.0f;
 					float ambiance = 0.2;
 					
 					Sun();

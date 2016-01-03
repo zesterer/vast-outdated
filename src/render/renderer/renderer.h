@@ -61,6 +61,8 @@ namespace Vast
 					void bindPartData(Figures::Part& part, RenderContext& context, Resources::Shader* shader);
 					
 					void setCamera(Camera& camera);
+					
+					Resources::Texture& applyFilterToTexture(RenderContext& context, Resources::Shader* shader, Resources::Texture& in_texture);
 			};
 		}
 	}

@@ -306,6 +306,32 @@ namespace Vast
 				
 				this->bindFloatWithUniform(material->getTransparency(), "MATERIAL_TRANSPARENCY", shader);
 			}
+			
+			Resources::Texture& Renderer::applyFilterToTexture(RenderContext& context, Resources::Shader* shader, Resources::Texture& in_texture)
+			{
+				Resources::Texture* out_texture = new Resources::Texture();
+				
+				//Bind the screen quad
+				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_screen_quad_id);
+				//Tell the shaders what different parts of the buffer mean using the above array
+				gl::glEnableVertexAttribArray(0);
+				gl::glVertexAttribPointer(0, 3, gl::GL_FLOAT, gl::GL_FALSE, sizeof(gl::GLfloat) * 3, (void*)(unsigned long)0);
+
+				//Ready the COLOUR texture
+				gl::glActiveTexture(gl::GL_TEXTURE0);
+				glid tex_id = gl::glGetUniformLocation(shader->getGLID(), "RENDER_TEXTURE");
+				gl::glUniform1i(tex_id, 0);
+				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
+
+				//Send the current time
+				//this->bindIntegerWithUniform(context.getTime(), "TIME", this->postprocess_shader);
+
+				gl::glDrawArrays(gl::GL_TRIANGLES, 0, sizeof(gl::GLfloat) * 6 * 3);
+
+				gl::glDisableVertexAttribArray(0);
+				
+				this->preRender(RenderMethod::PostProcess);
+			}
 		}
 	}
 }
