@@ -7,6 +7,7 @@
 //----LOCAL----
 #include "structures/polygon.h"
 #include "render/bufferable.h"
+#include "resource.h"
 
 namespace Vast
 {
@@ -25,7 +26,7 @@ namespace Vast
 					unsigned char has_parts;
 			};
 
-			class Mesh : public Bufferable
+			class Mesh : public Bufferable, public Resource
 			{
 				private:
 					glid gl_buffer_id = 0;

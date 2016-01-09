@@ -8,6 +8,7 @@ namespace Vast
 		class InputState
 		{
 			private:
+				
 			public:
 		}
 	}

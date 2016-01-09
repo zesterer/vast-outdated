@@ -44,7 +44,7 @@ namespace Vast
 
 			Figures::Part& part = this->figure_manager.newFigure().newPart();
 			part.setMesh(&mesh);
-			part.setTexture(&tex);
+			//part.setTexture(&tex);
 			//part.setNormalMap(&norm);
 			part.setMaterial(&mat);
 			part.bufferAll();
@@ -78,7 +78,8 @@ namespace Vast
 			this->figure_manager.getFigure(1).getState().orientation = quat(v3(3.14159 / 2, 0.0, 0.0));
 			this->figure_manager.getFigure(1).getState().update();
 			
-			this->getLightManager().getSun().colour = glm::vec3(1.0, 1.0, 0.85);
+			//Set the sun power
+			//this->getLightManager().getSun().colour = glm::vec3(1.0, 1.0, 0.85);
 			
 			Lights::Light& point0 = this->getLightManager().newLight();
 			point0.position = glm::vec3(12.0, 8.0, -7.0);

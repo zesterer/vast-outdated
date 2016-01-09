@@ -5,6 +5,9 @@
 #include "glm/glm.hpp"
 #include "glm/vec3.hpp"
 
+//----LOCAL----
+#include "resource.h"
+
 namespace Vast
 {
 	namespace Render
@@ -17,7 +20,7 @@ namespace Vast
 				GGX
 			};
 
-			class Material
+			class Material : public Resource
 			{
 				private:
 					glm::vec3 ambient_colour = glm::vec3(1.0f, 1.0f, 1.0f);

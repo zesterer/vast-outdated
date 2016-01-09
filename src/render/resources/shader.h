@@ -6,6 +6,7 @@
 
 //----LOCAL----
 #include "common/basictypes.h"
+#include "resource.h"
 
 namespace Vast
 {
@@ -13,7 +14,7 @@ namespace Vast
 	{
 		namespace Resources
 		{
-			class Shader
+			class Shader : public Resource
 			{
 				private:
 					glid gl_id;

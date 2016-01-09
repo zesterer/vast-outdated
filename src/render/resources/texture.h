@@ -7,6 +7,7 @@
 //----LOCAL----
 #include "render/bufferable.h"
 #include "common/generics.h"
+#include "resource.h"
 
 namespace Vast
 {
@@ -16,7 +17,7 @@ namespace Vast
 		{
 			class Shader;
 			
-			class Texture : public Bufferable
+			class Texture : public Bufferable, public Resource
 			{
 				private:
 					sf::Image internal_image;
