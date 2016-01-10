@@ -15,10 +15,10 @@ namespace Vast
 		class Bufferable
 		{
 			private:
-			public:
+			protected:
 				glid gl_id = -1;
 				bool buffered = false;
-				
+			public:
 				virtual void setGLID(glid gl_id);
 				virtual glid getGLID();
 

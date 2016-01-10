@@ -35,7 +35,10 @@ namespace Vast
 			//Create a texture with a given width and height, optionally from pixel data.
 			void Texture::create(uint16 width, uint16 height, const uint8* pixels)
 			{
-				this->internal_image.create(width, height, pixels);
+				if (pixels == nullptr) //Override the default SFML behaviour. Make null pixels create a white texture, not an empty one
+					this->internal_image.create(width, height, sf::Color::White);
+				else
+					this->internal_image.create(width, height, pixels);
 			}
 
 			//Construct a texture from the data contained within a given file
@@ -61,6 +64,17 @@ namespace Vast
 			sf::Vector2u Texture::getSize()
 			{
 				return this->internal_image.getSize();
+			}
+			
+			//Set the size of the texture [WARNING: OVERWRITES THE TEXTURE]
+			void Texture::setSize(sf::Vector2u size)
+			{
+				IO::output("Changed texture size to (" + std::to_string(size.x) + ", " + std::to_string(size.y) + ")");
+				this->create(size.x, size.y, nullptr);
+				
+				//Rebuffer it if it needs it
+				if (this->buffered)
+					this->buffer();
 			}
 
 			//Find a pointer to the pixel data contained within the texture
@@ -93,14 +107,14 @@ namespace Vast
 					//Bind the texture ready to write data
 					gl::glBindTexture(gl::GL_TEXTURE_2D, this->gl_id);
 					
-					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLuint)gl::GL_RGBA, this->getSize().x, this->getSize().y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, this->getPixelData());
+					gl::glTexImage2D(gl::GL_TEXTURE_2D, 0, (gl::GLuint)gl::GL_RGBA16F, this->getSize().x, this->getSize().y, 0, gl::GL_RGBA, gl::GL_UNSIGNED_BYTE, this->getPixelData());
 
 					gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MAG_FILTER, (gl::GLuint)gl::GL_LINEAR);
 					gl::glTexParameteri(gl::GL_TEXTURE_2D, gl::GL_TEXTURE_MIN_FILTER, (gl::GLuint)gl::GL_LINEAR);
 					
 					IO::output("Generating texture mipmap...");
 					
-					gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
+					//gl::glGenerateMipmap(gl::GL_TEXTURE_2D);
 					
 					this->buffered = true;
 

@@ -68,7 +68,7 @@ namespace Vast
 			Figures::Part& part1 = this->figure_manager.newFigure().newPart();
 			part1.setMesh(&mesh1);
 			part1.setTexture(&tex1);
-			part1.setNormalMap(&normal_map1);
+			//part1.setNormalMap(&normal_map1);
 			part1.setMaterial(&mat1);
 			part1.bufferAll();
 			
@@ -80,6 +80,15 @@ namespace Vast
 			
 			//Set the sun power
 			//this->getLightManager().getSun().colour = glm::vec3(1.0, 1.0, 0.85);
+			
+			/*
+			Resources::Texture& out_tex = this->resource_manager.newTextureFromBlank(tex1.getSize().x, tex1.getSize().y, nullptr);
+			out_tex.setSize(tex1.getSize());
+			printf("Texture size = %dx%d\n", out_tex.getSize().x, out_tex.getSize().y);
+			Resources::Shader& out_shader = this->resource_manager.newShaderFromFiles("../data/shaders/nullfilter.vert", "../data/shaders/nullfilter.frag");
+			this->getRenderer().applyFilterToTexture(&out_shader, &tex1, &out_tex);
+			part1.setTexture(&out_tex);
+			*/
 			
 			Lights::Light& point0 = this->getLightManager().newLight();
 			point0.position = glm::vec3(12.0, 8.0, -7.0);
@@ -123,7 +132,7 @@ namespace Vast
 			this->getLightManager().updatePriorityArrays();
 
 			//Rendering goes here
-			this->renderer.preRender(Renderer::RenderMethod::Standard);
+			this->renderer.preRender(Renderer::RenderMethod::Standard, this->renderer.getDrawBuffer().getGLID());
 			this->renderFigures();
 			
 			this->renderer.preRender(Renderer::RenderMethod::PostProcess);

@@ -3,6 +3,7 @@
 
 //----LOCAL----
 #include "common/basictypes.h"
+#include "resources/texture.h"
 
 namespace Vast
 {
@@ -18,9 +19,13 @@ namespace Vast
 					glid gl_depthbuffer_id = -1;
 					glid gl_texture_id = -1;
 					
+					Resources::Texture* target_texture = nullptr;
+					
 					glm::ivec2 dimensions = glm::ivec2(1, 1);
 				public:
-					DrawBuffer();
+					DrawBuffer(Resources::Texture* in_texture = nullptr);
+					~DrawBuffer();
+					
 					void initialise();
 					
 					void setSize(glm::ivec2 dimensions);

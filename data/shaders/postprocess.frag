@@ -82,8 +82,8 @@ void main()
 	//float avg = (COLOUR.r + COLOUR.g + COLOUR.b) / 3.0;
 	//COLOUR = vec3(avg * 0.6 + 0.3, avg * 0.6 + 0.3, avg * 0.6);
 
-	COLOUR = mix(vec3(0.0, 0.0, 0.0), COLOUR, min(1, 1.8 - length(UV)));
 	//Faded corners
+	COLOUR = mix(vec3(0.0, 0.0, 0.0), COLOUR, min(1, 1.8 - length(UV)));
 
 	COLOUR_BUFFER = vec4(COLOUR, 1.0);
 }

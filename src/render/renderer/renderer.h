@@ -41,7 +41,9 @@ namespace Vast
 					
 					void update(glm::ivec2 dimensions);
 
-					void preRender(RenderMethod method);
+					void preRender(RenderMethod method, glid framebuffer_output = 0);
+					
+					DrawBuffer& getDrawBuffer() { return this->draw_buffer; }
 
 					void renderPart(Figures::Part& part, RenderContext& context);
 					void renderPostProcess(RenderContext& context);
@@ -62,7 +64,7 @@ namespace Vast
 					
 					void setCamera(Camera& camera);
 					
-					Resources::Texture& applyFilterToTexture(RenderContext& context, Resources::Shader* shader, Resources::Texture& in_texture);
+					Resources::Texture* applyFilterToTexture(Resources::Shader* shader, Resources::Texture* in_texture, Resources::Texture* out_texture);
 			};
 		}
 	}

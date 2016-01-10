@@ -62,6 +62,8 @@ namespace Vast
 
 			void Renderer::renderPostProcess(RenderContext& context)
 			{
+				this->postprocess_shader->enable();
+				
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_screen_quad_id);
 
 				//Tell the shaders what different parts of the buffer mean using the above array
@@ -82,7 +84,7 @@ namespace Vast
 				gl::glDisableVertexAttribArray(0);
 			}
 			
-			void Renderer::preRender(RenderMethod method)
+			void Renderer::preRender(RenderMethod method, glid framebuffer_output)
 			{
 				switch (method)
 				{
@@ -100,7 +102,7 @@ namespace Vast
 						gl::glDepthFunc(gl::GL_LESS);
 
 						// Render to our framebuffer
-						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, this->draw_buffer.getGLID());
+						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, framebuffer_output);
 						gl::glViewport(0, 0, this->dimensions.x, this->dimensions.y);
 						
 						//Blank the screen
@@ -124,10 +126,8 @@ namespace Vast
 						gl::glDepthFunc(gl::GL_NONE);
 
 						//Bind the framebuffer ready
-						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, 0);
+						gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, framebuffer_output);
 						gl::glViewport(0, 0, this->dimensions.x, this->dimensions.y);
-						
-						this->postprocess_shader->enable();
 					}
 					break;
 				}
@@ -307,9 +307,24 @@ namespace Vast
 				this->bindFloatWithUniform(material->getTransparency(), "MATERIAL_TRANSPARENCY", shader);
 			}
 			
-			Resources::Texture& Renderer::applyFilterToTexture(RenderContext& context, Resources::Shader* shader, Resources::Texture& in_texture)
+			Resources::Texture* Renderer::applyFilterToTexture(Resources::Shader* shader, Resources::Texture* in_texture, Resources::Texture* out_texture)
 			{
-				Resources::Texture* out_texture = new Resources::Texture();
+				printf("APPLYING FILTER!\n");
+				
+				//Since OpenGL can't implement a texture as both an input and a target, we need to check for this
+				if (in_texture == out_texture)
+				{
+					IO::output("Tried to apply filter to texture from the same texture", IO::OutputType::Error);
+					return nullptr;
+				}
+				
+				//Resources::Texture* out_texture = new Resources::Texture();
+				DrawBuffer d_buffer(out_texture);
+				d_buffer.initialise();
+				
+				this->preRender(RenderMethod::PostProcess, d_buffer.getGLID());
+				
+				shader->enable();
 				
 				//Bind the screen quad
 				gl::glBindBuffer(gl::GL_ARRAY_BUFFER, this->gl_screen_quad_id);
@@ -319,9 +334,9 @@ namespace Vast
 
 				//Ready the COLOUR texture
 				gl::glActiveTexture(gl::GL_TEXTURE0);
-				glid tex_id = gl::glGetUniformLocation(shader->getGLID(), "RENDER_TEXTURE");
+				glid tex_id = gl::glGetUniformLocation(shader->getGLID(), "COLOUR_TEXTURE");
 				gl::glUniform1i(tex_id, 0);
-				gl::glBindTexture(gl::GL_TEXTURE_2D, this->draw_buffer.getTextureGLID());
+				gl::glBindTexture(gl::GL_TEXTURE_2D, in_texture->getGLID());
 
 				//Send the current time
 				//this->bindIntegerWithUniform(context.getTime(), "TIME", this->postprocess_shader);
@@ -330,7 +345,9 @@ namespace Vast
 
 				gl::glDisableVertexAttribArray(0);
 				
-				this->preRender(RenderMethod::PostProcess);
+				printf("APPLIED FILTER!\n");
+				
+				return out_texture;
 			}
 		}
 	}
