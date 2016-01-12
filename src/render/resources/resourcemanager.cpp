@@ -144,6 +144,84 @@ namespace Vast
 				
 				return *this->shaders[id];
 			}
+			
+			/* NEW RESOURCE MANAGEMENT METHODS */
+			
+			Resource* ResourceManager::attach(Resource* resource)
+			{
+				this->resources.push_back(resource);
+				
+				resource->attach(this);
+				
+				return resource;
+			}
+			
+			Resource* ResourceManager::get(ResourceID resource_id)
+			{
+				for (unsigned int i = 0; i < this->resources.size(); i ++)
+				{
+					if (this->resources[i]->getResourceID() == resource_id)
+						return this->resources[i];
+				}
+				
+				return nullptr;
+			}
+			
+			bool ResourceManager::contains(Resource* resource)
+			{
+				for (unsigned int i = 0; i < this->resources.size(); i ++)
+				{
+					if (this->resources[i] == resource)
+						return true;
+				}
+				
+				return false;
+			}
+			
+			bool ResourceManager::contains(ResourceID resource_id)
+			{
+				return (this->get(resource_id) != nullptr);
+			}
+			
+			Resource* ResourceManager::detach(Resource* resource)
+			{
+				for (unsigned int i = 0; i < this->resources.size(); i ++)
+				{
+					if (this->resources[i] == resource)
+					{
+						resource->detach();
+						
+						//place the last element where this used to be, and then pop the last element
+						this->resources[i] = this->resources.back();
+						this->resources.pop_back();
+						
+						return resource;
+					}
+				}
+				
+				return nullptr;
+			}
+			
+			Resource* ResourceManager::detach(ResourceID resource_id)
+			{
+				for (unsigned int i = 0; i < this->resources.size(); i ++)
+				{
+					if (this->resources[i]->getResourceID() == resource_id)
+					{
+						Resource* resource = this->resources[i];
+						
+						resource->detach();
+						
+						//place the last element where this used to be, and then pop the last element
+						this->resources[i] = this->resources.back();
+						this->resources.pop_back();
+						
+						return resource;
+					}
+				}
+				
+				return nullptr;
+			}
 		}
 	}
 }

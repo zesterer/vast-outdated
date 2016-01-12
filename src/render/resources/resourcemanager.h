@@ -9,6 +9,7 @@
 #include "mesh.h"
 #include "material.h"
 #include "shader.h"
+#include "resource.h"
 
 namespace Vast
 {
@@ -28,6 +29,11 @@ namespace Vast
 					Texture* default_texture = nullptr;
 					Material* default_material = nullptr;
 					Shader* default_shader = nullptr;
+					
+					/* NEW RESOURCE MANAGEMENT MEMBERS */
+					
+					std::vector<Resource*> resources;
+					
 				public:
 					ResourceManager();
 					virtual ~ResourceManager();
@@ -54,6 +60,18 @@ namespace Vast
 					Shader& newShaderFromFiles(std::string vertex_shader_filename, std::string fragment_shader_filename);
 					
 					Shader& getShader(int32 id);
+					
+					/* NEW RESOURCE MANAGEMENT METHODS */
+					
+					Resource* attach(Resource* resource);
+					
+					Resource* get(ResourceID resource_id);
+					
+					bool contains(Resource* resource);
+					bool contains(ResourceID resource_id);
+					
+					Resource* detach(Resource* resource);
+					Resource* detach(ResourceID resource_id);
 			};
 		}
 	}
