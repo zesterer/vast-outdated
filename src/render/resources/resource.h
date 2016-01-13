@@ -20,12 +20,13 @@ namespace Vast
 			{
 				NONE = 0,
 				MESH = 1,
-				TEXTURE = 2,
-				SURFACE = 2, //Ambiguous (soon to replace Texture)	
-				IMAGE = 3,
-				MATERIAL = 4,
-				SHADER = 5,
-				SHADER_HOOK = 6,
+				BUFFERED_MESH = 2,
+				TEXTURE = 3,
+				SURFACE = 3, //Ambiguous (soon to replace Texture)	
+				IMAGE = 4,
+				MATERIAL = 5,
+				SHADER = 6,
+				SHADER_HOOK = 7,
 			};
 			
 			class Resource

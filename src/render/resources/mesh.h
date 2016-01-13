@@ -8,6 +8,8 @@
 #include "structures/polygon.h"
 #include "render/bufferable.h"
 #include "resource.h"
+#include "structures/face.h"
+#include "bufferedmesh.h"
 
 namespace Vast
 {
@@ -15,17 +17,6 @@ namespace Vast
 	{
 		namespace Resources
 		{
-			//Face is used for loading .OBJ files
-			struct Face
-			{
-				public:
-					unsigned int a_pos, a_col, a_tex, a_norm;
-					unsigned int b_pos, b_col, b_tex, b_norm;
-					unsigned int c_pos, c_col, c_tex, c_norm;
-
-					unsigned char has_parts;
-			};
-
 			class Mesh : public Bufferable, public Resource
 			{
 				private:
@@ -49,6 +40,10 @@ namespace Vast
 
 					void buffer(bool force = false) override;
 					void discard() override;
+					
+					/* REWRITE METHODS */
+					
+					BufferedMesh* bufferToGLObject();
 			};
 		}
 	}

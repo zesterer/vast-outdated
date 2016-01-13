@@ -61,7 +61,7 @@ namespace Vast
 				std::vector<glm::vec3> tmp_col;
 				std::vector<glm::vec2> tmp_tex;
 				std::vector<glm::vec3> tmp_norm;
-				std::vector<Face>      tmp_face;
+				std::vector<Structures::Face>      tmp_face;
 
 				//Open the file
 				std::ifstream file (filename);
@@ -166,7 +166,7 @@ namespace Vast
 							for (int x = 0; x < 3; x ++)
 								if (norm_index[x] < 0) norm_index[x] *= -1;
 
-							Face face;
+							Structures::Face face;
 
 							face.a_pos = pos_index[0];
 							face.a_col = pos_index[0];
@@ -194,7 +194,7 @@ namespace Vast
 
 				for (unsigned long face_id = 0; face_id < tmp_face.size(); face_id ++)
 				{
-					Face face = tmp_face[face_id];
+					Structures::Face face = tmp_face[face_id];
 
 					Structures::Polygon poly;
 
@@ -269,6 +269,11 @@ namespace Vast
 
 					this->buffered = false;
 				}
+			}
+			
+			BufferedMesh* Mesh::bufferToGLObject()
+			{
+				return new BufferedMesh(this->polygons);
 			}
 		}
 	}

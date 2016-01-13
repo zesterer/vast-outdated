@@ -18,9 +18,9 @@ namespace Vast
 			protected:
 				glid gl_id = -1;
 			public:
-				virtual glid getGLID();
+				virtual glid getGLID() { return this->gl_id; };
 
-				virtual void discard();
+				virtual void discard() = 0;
 		};
 	}
 }
