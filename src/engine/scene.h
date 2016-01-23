@@ -5,6 +5,9 @@
 #include "render/rendercontext.h"
 #include "entities/entitymanager.h"
 
+///TESTING///
+#include "parasol/context.h"
+
 namespace Vast
 {
 	namespace Engine

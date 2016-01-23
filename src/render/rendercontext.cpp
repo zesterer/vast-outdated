@@ -26,6 +26,11 @@ namespace Vast
 			this->renderer.initiate(*this);
 			this->renderer.setCamera(this->camera);
 			this->resource_manager.initiate();
+			
+			///* NEW TESTING */
+			
+			Resources::Mesh new_mesh("../data/test/spaceship3.obj");
+			this->resource_manager.attach(new_mesh.bufferToGLObject());
 
 			///Testing
 			this->camera.getState().orientation = quat(v3(0.0, 3.141592 / 2.0 - 0.4, 3.141592 / 2.0));
@@ -68,7 +73,7 @@ namespace Vast
 			Figures::Part& part1 = this->figure_manager.newFigure().newPart();
 			part1.setMesh(&mesh1);
 			part1.setTexture(&tex1);
-			//part1.setNormalMap(&normal_map1);
+			part1.setNormalMap(&normal_map1);
 			part1.setMaterial(&mat1);
 			part1.bufferAll();
 			
