@@ -5,7 +5,8 @@ namespace Parasol
 {
 	class Target
 	{
-		
+		private:
+		public:
 	}
 }
 

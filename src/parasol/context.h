@@ -12,9 +12,9 @@ namespace Parasol
 {
 	class Context
 	{
-		Manager manager;
-		
-		std::vector<Task> pipeline;
+		private:
+			Manager manager;
+		public:
 	};
 }
 

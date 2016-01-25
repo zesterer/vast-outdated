@@ -11,7 +11,8 @@ namespace Parasol
 {
 	class Task
 	{
-		std::vector<Hook> hooks;
+		private:
+			std::vector<Hook> hooks;
 	};
 }
 

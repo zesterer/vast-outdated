@@ -11,7 +11,9 @@ namespace Parasol
 {
 	class Manager
 	{
-		std::vector<Resource> resources;
+		private:
+			std::vector<Resource> resources;
+		public:
 	};
 }
 

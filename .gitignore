@@ -11,6 +11,8 @@ build-android
 build-bsd
 build-ios
 
+builds
+
 #Proprietary
 data/proprietary
 

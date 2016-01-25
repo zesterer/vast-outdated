@@ -66,7 +66,7 @@ namespace Vast
 			normal_map1.buffer();
 			Resources::Mesh& mesh1 = this->resource_manager.newMeshFromFile("../data/test/floor.obj");
 			Resources::Material& mat1 = this->resource_manager.newMaterial();
-			mat1.setShininess(1.5f);
+			mat1.setShininess(10.5f);
 			mat1.setDiffuseColour(glm::vec3(1.0, 0.8, 0.3));
 			mat1.setSpecularColour(glm::vec3(1.0, 0.8, 0.3));
 			
