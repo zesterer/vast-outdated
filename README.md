@@ -29,6 +29,16 @@ Vast also aims to simulate alien civilisations, with procedurally-generated crea
 
 `cd vast`
 
+## Dependencies
+
+### Mac OS X
+
+*Only tested with 10.11.2 El Capitan*
+
+Using Homebrew,
+
+`brew install cmake sfml glm glbinding`
+
 ## Compilation
 
 ~ From the root repository directory, as already done in the previous step ~
