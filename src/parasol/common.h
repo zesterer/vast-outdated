@@ -39,6 +39,11 @@ namespace Parasol
 	typedef glm::vec3 v3;
 	typedef glm::vec2 v2;
 	typedef float v1;
+	
+	typedef glm::ivec4 iv4;
+	typedef glm::ivec3 iv3;
+	typedef glm::ivec2 iv2;
+	typedef int iv1;
 }
 
 #endif

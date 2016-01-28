@@ -15,6 +15,8 @@ namespace Parasol
 		private:
 			Manager manager;
 		public:
+			int initiate();
+			int renderTask(Task* task);
 	};
 }
 

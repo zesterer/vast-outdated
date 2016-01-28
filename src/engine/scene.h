@@ -7,6 +7,7 @@
 
 ///TESTING///
 #include "parasol/context.h"
+#include "parasol/image.h"
 
 namespace Vast
 {
