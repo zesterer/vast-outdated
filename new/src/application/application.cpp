@@ -10,8 +10,13 @@ namespace Vast
 		{
 			this->argc = argc;
 			this->argv = argv;
+		}
+		
+		void Application::init()
+		{
+			Common::output("Initiating application");
 			
-			Common::output("Created application");
+			this->main_game.init();
 		}
 		
 		int Application::run()

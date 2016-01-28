@@ -8,7 +8,7 @@ namespace Vast
 {
 	namespace Common
 	{
-		//Abstract
+		//Abstract class representing a resource management system
 		class ResourceContainer
 		{
 		public:

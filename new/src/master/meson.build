@@ -1,5 +1,6 @@
 # Add source files
 sources += files(
+'game.cpp',
 )
 
 # Add include directories
