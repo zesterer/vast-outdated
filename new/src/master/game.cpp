@@ -15,7 +15,8 @@ namespace Vast
 		{
 			Common::output("Initiating game");
 			
-			this->main_engine.init();
+			this->backend_engine.init();
+			this->frontend_context.init();
 		}
 	}
 }

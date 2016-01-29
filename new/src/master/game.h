@@ -3,6 +3,7 @@
 
 //local
 #include "../backend/engine.h"
+#include "../frontend/context.h"
 
 namespace Vast
 {
@@ -11,7 +12,8 @@ namespace Vast
 		class Game
 		{
 		private:
-			Backend::Engine main_engine;
+			Backend::Engine backend_engine;
+			Frontend::Context frontend_context;
 		public:
 			Game();
 			void init();

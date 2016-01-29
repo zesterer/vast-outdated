@@ -1,5 +1,6 @@
 # Add source files
 sources += files(
+'context.cpp',
 )
 
 # Add include directories
