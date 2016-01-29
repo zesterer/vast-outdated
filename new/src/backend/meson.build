@@ -1,5 +1,6 @@
 # Add source files
 sources += files(
+'engine.cpp',
 )
 
 # Add include directories
