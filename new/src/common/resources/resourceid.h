@@ -8,7 +8,10 @@ namespace Vast
 {
 	namespace Common
 	{
-		typedef std::string ResourceID;
+		namespace Resources
+		{
+			typedef std::string ResourceID;
+		}
 	}
 }
 
