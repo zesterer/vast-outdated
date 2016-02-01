@@ -56,3 +56,9 @@ Using Homebrew,
 ~ Assuming you've run the compilation commands above ~
 
 `./vast`
+
+## Contact
+
+Want to contribute? Want to know more? Do you have ideas for Vast?
+
+You can contact me via Skype (my username is 'zesterer') or I can often be found on IRC at irc.freenode.net on the "##vast" channel.
