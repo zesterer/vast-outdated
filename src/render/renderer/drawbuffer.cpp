@@ -74,6 +74,8 @@ namespace Vast
 			
 			void DrawBuffer::setSize(glm::ivec2 dimensions)
 			{
+				dimensions = glm::max(glm::ivec2(1, 1), dimensions);
+				
 				if (this->dimensions != dimensions && this->target_texture == nullptr)
 				{
 					this->dimensions = dimensions;
