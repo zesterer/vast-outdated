@@ -1,4 +1,4 @@
-#version 330
+#version 130
 
 //----UNIFORMS----
 uniform uint TIME;
@@ -49,7 +49,7 @@ flat in vec3 F_W_TANGENT;
 flat in vec3 F_W_BITANGENT;
 
 //----OUTPUTS----
-layout (location = 0) out vec4 COLOUR_BUFFER;
+out vec4 COLOUR_BUFFER;
 //layout (location = 1) out float DEPTH_BUFFER;
 
 //----GLOBALS----

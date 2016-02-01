@@ -1,4 +1,4 @@
-#version 330
+#version 130
 
 //----INPUTS----
 in highp vec3 VERTEX_POS;

@@ -1,4 +1,4 @@
-#version 330 core
+#version 130
 
 //----UNIFORMS----
 uniform mat4  PERSPECTIVE_MATRIX;

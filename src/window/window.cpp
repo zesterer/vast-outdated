@@ -21,8 +21,8 @@ namespace Vast
 			this->settings.depthBits = 24;
 			this->settings.stencilBits = 8;
 			this->settings.antialiasingLevel = 4;
-			this->settings.majorVersion = 3;
-			this->settings.minorVersion = 3;
+			this->settings.majorVersion = 2;
+			this->settings.minorVersion = 1;
 			this->settings.attributeFlags = sf::ContextSettings::Attribute::Core;
 
 			this->internal_window.create(sf::VideoMode(640, 480), "Window", sf::Style::Default, this->settings);
