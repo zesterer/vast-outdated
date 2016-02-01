@@ -18,15 +18,22 @@ includes = []
 dependencies = []
 sources = []
 linklibs = []
+compileflags = []
+compileflags += '--std=c++11'
 
 # Add dependencies
 
-#GLM - TODO
-#dependencies += find_library('glm')
+#GLM - Kind of hackish, but it works (GLM is header-only, so this is necessary)
+compiler = meson.get_compiler('cpp')
+#if compiler.has_header('glm/glm.hpp')
+#	message('Found GLM')
+#else
+#	error('Cannot find GLM')
+#endif
 
 #SFML
-dependencies += find_library('sfml-graphics')
-dependencies += find_library('sfml-window')
+dependencies += dependency('sfml-graphics')
+dependencies += dependency('sfml-window')
 
 #GlBinding
 dependencies += find_library('glbinding')
@@ -47,4 +54,5 @@ sources,
 include_directories : includes,
 link_with : linklibs,
 gui_app : isgui,
+cpp_args : compileflags,
 )

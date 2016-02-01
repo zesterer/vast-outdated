@@ -48,7 +48,7 @@ if (SFML_FOUND)
 	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${SFML_INCLUDE_DIR})
 	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${SFML_LIBRARIES})
 else ()
-	message("SFML could not be found, and is required to build this library.")
+	error("SFML could not be found, and is required to build this application.")
 endif ()
 
 #######
@@ -61,7 +61,7 @@ find_package(GLM REQUIRED)
 if (GLM_FOUND)
 	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${GLM_INCLUDE_DIR})
 else ()
-	message("GLM could not be found, and is required to build this library.")
+	error("GLM could not be found, and is required to build this application.")
 endif ()
 
 #############
@@ -75,7 +75,7 @@ if (GLBINDING_FOUND)
 	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${GLBINDING_INCLUDE_DIR})
 	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${GLBINDING_LIBRARIES})
 else ()
-	message("GLBINDING could not be found, and is required to build this library.")
+	error("GLBINDING could not be found, and is required to build this application.")
 endif ()
 
 ########################
@@ -92,7 +92,7 @@ endif ()
 #	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} "/usr/local/include/ode/")
 #	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${BULLET_LIBRARIES})
 #else ()
-#	message("Open Dynamics Engine (ODE) could not be found, and is required to build this library.")
+#	error("Open Dynamics Engine (ODE) could not be found, and is required to build this application.")
 #endif ()
 
 ##################
