@@ -1,30 +1,30 @@
-#version 130
+#version 120
 
 //----UNIFORMS----
-uniform mat4  PERSPECTIVE_MATRIX;
-uniform mat4  CAMERA_MATRIX;
+uniform mat4 PERSPECTIVE_MATRIX;
+uniform mat4 CAMERA_MATRIX;
 uniform mat4 CAMERA_INVERSE_MATRIX;
-uniform mat4  MODEL_MATRIX;
+uniform mat4 MODEL_MATRIX;
 
-uniform uint TIME;
+uniform int TIME;
 
 //----INPUTS----
-in vec3 VERTEX_POS;
-in vec3 VERTEX_COL;
-in vec3 VERTEX_NORM;
-in vec2 VERTEX_UV;
-in vec3 VERTEX_TANGENT;
-in vec3 VERTEX_BITANGENT;
+attribute vec3 VERTEX_POS;
+attribute vec3 VERTEX_COL;
+attribute vec3 VERTEX_NORM;
+attribute vec2 VERTEX_UV;
+attribute vec3 VERTEX_TANGENT;
+attribute vec3 VERTEX_BITANGENT;
 
 //----OUTPUTS----
-smooth out vec4 F_W_POSITION;
-smooth out vec3 F_W_COLOUR;
-smooth out vec2 F_W_UV;
-smooth out vec4 F_W_NORMAL;
-smooth out vec4 F_M_POSITION;
-smooth out vec4 F_M_NORMAL;
-flat out vec3 F_W_TANGENT;
-flat out vec3 F_W_BITANGENT;
+varying vec4 F_W_POSITION;
+varying vec3 F_W_COLOUR;
+varying vec2 F_W_UV;
+varying vec4 F_W_NORMAL;
+varying vec4 F_M_POSITION;
+varying vec4 F_M_NORMAL;
+varying vec3 F_W_TANGENT;
+varying vec3 F_W_BITANGENT;
 
 void main()
 {

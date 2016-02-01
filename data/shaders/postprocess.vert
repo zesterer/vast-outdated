@@ -1,10 +1,10 @@
-#version 130
+#version 120
 
 //----INPUTS----
-in highp vec3 VERTEX_POS;
+attribute vec3 VERTEX_POS;
 
 //----OUTPUTS----
-smooth out highp vec2 UV;
+varying vec2 UV;
 
 void main()
 {

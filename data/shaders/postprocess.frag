@@ -1,13 +1,13 @@
-#version 130
+#version 120
 
-smooth in vec2 UV;
+varying vec2 UV;
 
-out vec4 COLOUR_BUFFER;
+//attribute vec4 COLOUR_BUFFER;
 
 uniform sampler2D COLOUR_TEXTURE;
 uniform sampler2D DEPTH_TEXTURE;
 
-uniform uint TIME;
+uniform int TIME;
 
 //----GLOBALS----
 vec3 COLOUR;
@@ -85,5 +85,5 @@ void main()
 	//Faded corners
 	COLOUR = mix(vec3(0.0, 0.0, 0.0), COLOUR, min(1, 1.8 - length(UV)));
 
-	COLOUR_BUFFER = vec4(COLOUR, 1.0);
+	gl_FragColor = vec4(COLOUR, 1.0);
 }

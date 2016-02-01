@@ -23,7 +23,7 @@ namespace Vast
 			this->settings.antialiasingLevel = 4;
 			this->settings.majorVersion = 2;
 			this->settings.minorVersion = 1;
-			this->settings.attributeFlags = sf::ContextSettings::Attribute::Core;
+			this->settings.attributeFlags = sf::ContextSettings::Attribute::Default;
 
 			this->internal_window.create(sf::VideoMode(640, 480), "Window", sf::Style::Default, this->settings);
 
