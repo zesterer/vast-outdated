@@ -17,12 +17,12 @@ attribute vec3 VERTEX_TANGENT;
 attribute vec3 VERTEX_BITANGENT;
 
 //----OUTPUTS----
-centroid varying vec4 F_W_POSITION;
-centroid varying vec3 F_W_COLOUR;
-centroid varying vec2 F_W_UV;
-centroid varying vec4 F_W_NORMAL;
-centroid varying vec4 F_M_POSITION;
-centroid varying vec4 F_M_NORMAL;
+varying vec4 F_W_POSITION;
+varying vec3 F_W_COLOUR;
+varying vec2 F_W_UV;
+varying vec4 F_W_NORMAL;
+varying vec4 F_M_POSITION;
+varying vec4 F_M_NORMAL;
 invariant varying vec3 F_W_TANGENT;
 invariant varying vec3 F_W_BITANGENT;
 

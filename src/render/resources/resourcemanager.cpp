@@ -26,7 +26,7 @@ namespace Vast
 				
 				this->default_texture = &this->newTextureFromBlank(1, 1, pixel);
 				this->default_material = &this->newMaterial();
-				this->default_shader = &this->newShaderFromFiles("../data/shaders/standard.vert", "../data/shaders/standard.frag");
+				this->default_shader = &this->newShaderFromFiles("../data/shaders/330/standard.vert", "../data/shaders/330/standard.frag");
 			}
 
 			void ResourceManager::close()

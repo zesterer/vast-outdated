@@ -1,7 +1,7 @@
-#version 120
+#version 330
 
 //----UNIFORMS----
-uniform int TIME;
+uniform uint TIME;
 
 //Sun information
 uniform vec3 SUN_DIRECTION;
@@ -39,17 +39,17 @@ uniform sampler2D TEXTURE_TEXTURE;
 uniform sampler2D NORMAL_TEXTURE;
 
 //----INPUTS----
-centroid varying vec4 F_W_POSITION;
-centroid varying vec3 F_W_COLOUR;
-centroid varying vec2 F_W_UV;
-centroid varying vec4 F_W_NORMAL;
-centroid varying vec4 F_M_POSITION;
-centroid varying vec4 F_M_NORMAL;
-invariant varying vec3 F_W_TANGENT;
-invariant varying vec3 F_W_BITANGENT;
+smooth in vec4 F_W_POSITION;
+smooth in vec3 F_W_COLOUR;
+smooth in vec2 F_W_UV;
+smooth in vec4 F_W_NORMAL;
+smooth in vec4 F_M_POSITION;
+smooth in vec4 F_M_NORMAL;
+flat in vec3 F_W_TANGENT;
+flat in vec3 F_W_BITANGENT;
 
 //----OUTPUTS----
-//out vec4 COLOUR_BUFFER;
+layout (location = 0) out vec4 COLOUR_BUFFER;
 //layout (location = 1) out float DEPTH_BUFFER;
 
 //----GLOBALS----
@@ -128,8 +128,8 @@ vec3 getLightSpecular(int light)
 vec4 getTextureValue()
 {
 	//No proper texture has been loaded in, so revert to colours
-	//if (textureSize(TEXTURE_TEXTURE, 0) == ivec2(1, 1))
-		//return vec4(1.0, 1.0, 1.0, 1.0);
+	if (textureSize(TEXTURE_TEXTURE, 0) == ivec2(1, 1))
+		return vec4(1.0, 1.0, 1.0, 1.0);
 
 	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
 		return vec4(1.0, 1.0, 1.0, 1.0);
@@ -145,8 +145,8 @@ vec3 getTextureColour()
 vec3 getNormalMapVector()
 {
 	//No normal map texture has been loaded in, so revert to default
-	//if (textureSize(NORMAL_TEXTURE, 0) == ivec2(1, 1))
-		//return vec3(0.0, 0.0, 1.0);
+	if (textureSize(NORMAL_TEXTURE, 0) == ivec2(1, 1))
+		return vec3(0.0, 0.0, 1.0);
 
 	if (F_W_UV == vec2(-1.0, -1.0)) //If there's no texture
 		return vec3(0.0, 0.0, 1.0);
@@ -209,5 +209,5 @@ void main()
 	COLOUR = getTextureColour() * (ambiance + diffuse + specular);
 	
 	//Apply transparency (if there is any)
-	gl_FragColor = vec4(COLOUR, getTextureValue().a * MATERIAL_TRANSPARENCY);
+	COLOUR_BUFFER = vec4(COLOUR, getTextureValue().a * MATERIAL_TRANSPARENCY);
 }

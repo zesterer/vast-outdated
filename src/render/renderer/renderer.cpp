@@ -25,7 +25,7 @@ namespace Vast
 				this->bufferScreenQuad();
 
 				//Set up the default shaders
-				this->postprocess_shader = &context.getResourceManager().newShaderFromFiles("../data/shaders/postprocess.vert", "../data/shaders/postprocess.frag");
+				this->postprocess_shader = &context.getResourceManager().newShaderFromFiles("../data/shaders/330/postprocess.vert", "../data/shaders/330/postprocess.frag");
 			}
 			
 			void Renderer::update(glm::ivec2 dimensions)
