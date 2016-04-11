@@ -6,7 +6,7 @@
 int main(int argc, char* argv[])
 {
 	Vast::App::App app;
-	Vast::App::app_run(app);
+	Vast::App::app_build(app);
 	
-	return 0;
+	return Vast::App::app_run(app);
 }

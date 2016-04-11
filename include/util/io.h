@@ -15,8 +15,8 @@ namespace Vast
 			OUTMODE_ERROR,
 			OUTMODE_FATAL,
 		};
-		
-		void output(char* msg,		enum OutMode mode = OUTMODE_DEBUG);
+
+		void output(const char* msg,		enum OutMode mode = OUTMODE_DEBUG);
 		void output(std::string msg,	enum OutMode mode = OUTMODE_DEBUG);
 	}
 }
