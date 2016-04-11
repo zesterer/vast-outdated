@@ -101,6 +101,7 @@ endif ()
 
 #Include the src directory (all the project code)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 #Add all directories that need to be added
 include_directories(${APPLICATION_SOURCE_DIRS})
