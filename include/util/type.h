@@ -1,6 +1,8 @@
 #ifndef VAST_UTIL_TYPE
 #define VAST_UTIL_TYPE
 
+#include "cstddef"
+
 namespace Vast
 {
 	typedef unsigned char	byte;
@@ -19,6 +21,9 @@ namespace Vast
 	typedef double		f64;
 	
 	typedef unsigned long	id;
+	
+	typedef void*		ptr;
+	typedef size_t		imem;
 }
 
 #endif
