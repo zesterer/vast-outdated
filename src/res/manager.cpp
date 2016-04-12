@@ -6,8 +6,8 @@ namespace Vast
 	{
 		id ResManager::gen_id()
 		{
-			this->id_count ++;
-			return this->id_count - 1;
+			this->_id_count ++;
+			return this->_id_count - 1;
 		}
 	}
 }
