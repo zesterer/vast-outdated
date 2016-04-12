@@ -10,14 +10,14 @@ namespace Vast
 		{
 			T _item;
 			bool _valid;
-			
+
 			Result(T item, bool valid)
 			{
 				this->_item = item;
 				this->_valid = valid;
 			}
-			
-			T value() { return this->_item; }
+
+			T val() { return this->_item; }
 			bool is_valid() { return this->_valid; }
 		};
 	}

@@ -4,7 +4,7 @@ namespace Vast
 {
 	namespace Res
 	{
-		id ResManager::gen_id()
+		id Manager::gen_id()
 		{
 			this->_id_count ++;
 			return this->_id_count - 1;
