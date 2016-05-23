@@ -7,7 +7,7 @@
 int main(int argc, char* argv[])
 {
 	Vast::Sys::App::App app;
-	Vast::Sys::App::app_build(app);
+	app.build();
 
 	Vast::Com::Resource::Manager manager;
 
@@ -28,5 +28,5 @@ int main(int argc, char* argv[])
 	else
 		printf("Invalid!\n");
 
-	return Vast::Sys::App::app_run(app);
+	return app.run();
 }

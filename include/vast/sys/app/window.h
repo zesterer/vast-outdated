@@ -20,13 +20,13 @@ namespace Vast
 				i32 _framelimit = 60;
 				bool _vsync = true;
 
+				i32 build();
+				i32 activate(bool activate = true);
+				i32 handle_events();
+				i32 tick();
+
 				bool is_open();
 			};
-
-			i32 window_build(Window& window);
-			i32 window_activate(Window& window, bool activate = true);
-			i32 window_handle_events(Window& window);
-			i32 window_tick(Window& window);
 		}
 	}
 }

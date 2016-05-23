@@ -8,25 +8,25 @@ namespace Vast
 	{
 		namespace App
 		{
-			i32 window_build(Window& window)
+			i32 Window::build()
 			{
-				window._intern_settings.depthBits =			24;
-				window._intern_settings.stencilBits =		8;
-				window._intern_settings.antialiasingLevel =	4;
-				window._intern_settings.majorVersion = 		3;
-				window._intern_settings.minorVersion = 		3;
-				window._intern_settings.attributeFlags = sf::ContextSettings::Attribute::Default | sf::ContextSettings::Attribute::Core;
+				this->_intern_settings.depthBits =			24;
+				this->_intern_settings.stencilBits =		8;
+				this->_intern_settings.antialiasingLevel =	4;
+				this->_intern_settings.majorVersion = 		3;
+				this->_intern_settings.minorVersion = 		3;
+				this->_intern_settings.attributeFlags = sf::ContextSettings::Attribute::Default | sf::ContextSettings::Attribute::Core;
 
-				window._intern_window.create(sf::VideoMode(640, 480), window._title, sf::Style::Default, window._intern_settings);
-				window._intern_window.setFramerateLimit(window._framelimit);
-				window._intern_window.setVerticalSyncEnabled(window._vsync);
+				this->_intern_window.create(sf::VideoMode(640, 480), this->_title, sf::Style::Default, this->_intern_settings);
+				this->_intern_window.setFramerateLimit(this->_framelimit);
+				this->_intern_window.setVerticalSyncEnabled(this->_vsync);
 
 				return 0; // No error
 			}
 
-			i32 window_activate(Window& window, bool activate)
+			i32 Window::activate(bool activate)
 			{
-				window._intern_window.setActive(activate);
+				this->_intern_window.setActive(activate);
 
 				return 0; // No error
 			}
@@ -36,15 +36,15 @@ namespace Vast
 				return this->_intern_window.isOpen();
 			}
 
-			i32 window_handle_events(Window& window)
+			i32 Window::handle_events()
 			{
 				sf::Event event;
-				while (window._intern_window.pollEvent(event))
+				while (this->_intern_window.pollEvent(event))
 				{
 					switch (event.type)
 					{
 					case sf::Event::Closed:
-						window._intern_window.close();
+						this->_intern_window.close();
 						Com::IO::output("Closed window");
 						break;
 
@@ -61,11 +61,11 @@ namespace Vast
 				return 0; // No error
 			}
 
-			i32 window_tick(Window& window)
+			i32 Window::tick()
 			{
-				window_handle_events(window);
+				this->handle_events();
 
-				window._intern_window.display();
+				this->_intern_window.display();
 
 				return 0; // No error
 			}

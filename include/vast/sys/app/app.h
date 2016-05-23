@@ -16,10 +16,11 @@ namespace Vast
 				bool _is_built = false;
 
 				Window _main_window;
+
+				i32 build();
+				i32 run();
 			};
 
-			i32 app_build(App& app);
-			i32 app_run(App& app);
 			id app_gen_id();
 		}
 	}
