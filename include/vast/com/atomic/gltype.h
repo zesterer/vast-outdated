@@ -1,7 +1,7 @@
-#ifndef VAST_UTIL_GLTYPE
-#define VAST_UTIL_GLTYPE
+#ifndef VAST_COM_ATOMIC_GLTYPE
+#define VAST_COM_ATOMIC_GLTYPE
 
-#include "util/mathtype.h"
+#include "vast/com/atomic/mathtype.h"
 
 #include "glbinding/gl/gl.h"
 #include "glbinding/Binding.h"

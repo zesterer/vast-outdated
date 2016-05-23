@@ -2,7 +2,8 @@
 #### Subdirectories ####
 ########################
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vast")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/app")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/base")
 
 #################
 #### SOURCES ####

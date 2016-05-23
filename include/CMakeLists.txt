@@ -1,12 +1,8 @@
-#######################
-#### CONFIGURATION ####
-#######################
+########################
+#### Subdirectories ####
+########################
 
-#settings.h header file
-configure_file(
-"buildconf.h.in"
-"buildconf.h"
-)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vast")
 
 #################
 #### SOURCES ####
@@ -15,7 +11,12 @@ configure_file(
 #Add the appropriate source directories
 set(APPLICATION_SOURCE_DIRS
 ${APPLICATION_SOURCE_DIRS}
-"${PROJECT_BINARY_DIR}/include"
 "${CMAKE_CURRENT_SOURCE_DIR}"
+PARENT_SCOPE
+)
+
+#Add the appropriate source files
+set(APPLICATION_SOURCE_FILES
+${APPLICATION_SOURCE_FILES}
 PARENT_SCOPE
 )
