@@ -7,6 +7,7 @@
 #include "list"
 #include "string"
 #include "typeinfo"
+#include "mutex"
 
 namespace Vast
 {
@@ -18,26 +19,35 @@ namespace Vast
 			{
 				std::list<Box<void>> _list;
 				id _id_count = 0;
+				std::mutex _mutex;
 
 				template<typename T>
 				Result<Box<T>*> get_box(id res_id, bool test_type = true)
 				{
+					this->_mutex.lock();
+
 					for (auto iter = this->_list.begin(); iter != this->_list.end(); iter ++)
 					{
 						if ((*iter).get_id() == res_id)
 						{
 							if (!test_type || typeid(T).hash_code() == (*iter)._type_hash)
+							{
+								this->_mutex.unlock();
 								return  Result<Box<T>*>((Box<T>*)(&*iter), true);
+							}
 							else
 							{
 								IO::output("Failed to cast resource with id '" +
 									std::to_string((*iter).get_id()) + "' because a type mismatch occured",
 									IO::OUTMODE_ERROR);
 
+								this->_mutex.unlock();
 								return Result<Box<T>*>(nullptr, false);
 							}
 						}
 					}
+
+					this->_mutex.unlock();
 
 					return Result<Box<T>*>(nullptr, false);
 				}
@@ -49,13 +59,7 @@ namespace Vast
 					return Result<T*>(res.val()->ptr(), res.is_valid());
 				}
 
-				i32 dealloc(id res_id)
-				{
-					Box<void>* res_box = this->get_box<void>(res_id, false).val();
-					res_box->dealloc();
-					this->_list.remove(*res_box);
-					return 0;
-				}
+				i32 dealloc(id res_id);
 
 				template<typename T>
 				Result<Box<T>*> alloc(bool construct = true)
@@ -82,9 +86,14 @@ namespace Vast
 					res_box._id = this->gen_id();
 					res_box._type_hash = typeid(T).hash_code();
 
-					this->_list.push_back(*(Box<void>*)(&res_box));
+					this->_mutex.lock();
 
-					return Result<Box<T>*>((Box<T>*)&this->_list.back(), true);
+					this->_list.push_back(*(Box<void>*)(&res_box));
+					Box<T>* res = (Box<T>*)&this->_list.back();
+
+					this->_mutex.unlock();
+
+					return Result<Box<T>*>(res, true);
 				}
 
 				template<typename T>
