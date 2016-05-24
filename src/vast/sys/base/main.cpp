@@ -12,19 +12,19 @@ int main(int argc, char* argv[])
 	Vast::Com::Resource::Manager manager;
 
 	Vast::Com::Resource::Box<int>* int_box = manager.add<int>(7).val();
-	*manager.get<int>(int_box->get_id()).val()->ptr() -= 3;
+	*manager.get<int>(int_box->get_id()).val() -= 3;
 
 	Vast::Com::Resource::Box<std::string>* str_box = manager.add<std::string>("Hello, ").val();
 	*str_box->ptr() += "Test ";
-	*manager.get<std::string>(str_box->get_id()).val()->ptr() += "World!";
+	*manager.get<std::string>(str_box->get_id()).val() += "World!";
 
 	//manager.dealloc(str_box->get_id());
 
-	printf("n = %i\n", *manager.get<int>(int_box->get_id()).val()->ptr());
+	printf("n = %i\n", *manager.get<int>(int_box->get_id()).val());
 
-	Vast::Result<Vast::Com::Resource::Box<std::string>*> v = manager.get<std::string>(str_box->get_id());
+	Vast::Result<std::string*> v = manager.get<std::string>(str_box->get_id());
 	if (v.is_valid())
-		printf("%s!\n", v.val()->ptr()->c_str());
+		printf("%s!\n", v.val()->c_str());
 	else
 		printf("Invalid!\n");
 

@@ -20,7 +20,7 @@ namespace Vast
 				id _id_count = 0;
 
 				template<typename T>
-				Result<Box<T>*> get(id res_id, bool test_type = true)
+				Result<Box<T>*> get_box(id res_id, bool test_type = true)
 				{
 					for (auto iter = this->_list.begin(); iter != this->_list.end(); iter ++)
 					{
@@ -42,9 +42,16 @@ namespace Vast
 					return Result<Box<T>*>(nullptr, false);
 				}
 
+				template<typename T>
+				Result<T*> get(id res_id, bool test_type = true)
+				{
+					Result<Box<T>*> res = this->get_box<T>(res_id, test_type);
+					return Result<T*>(res.val()->ptr(), res.is_valid());
+				}
+
 				i32 dealloc(id res_id)
 				{
-					Box<void>* res_box = this->get<void>(res_id, false).val();
+					Box<void>* res_box = this->get_box<void>(res_id, false).val();
 					res_box->dealloc();
 					this->_list.remove(*res_box);
 					return 0;
