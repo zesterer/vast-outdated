@@ -63,7 +63,7 @@ namespace Vast
 					Com::IO::output("Successfully created window");
 				else // An error occured
 				{
-					Com::IO::output("Failed to create window");
+					Com::IO::error("Failed to create window", __LINE__);
 					return 1;
 				}
 
@@ -74,7 +74,7 @@ namespace Vast
 					Com::IO::output("Successfully created OpenGL context");
 				else // An error occured
 				{
-					Com::IO::output("Failed to create OpenGL context");
+					Com::IO::error("Failed to create OpenGL context", __LINE__);
 					return 2;
 				}
 
@@ -82,7 +82,7 @@ namespace Vast
 				if (this->_vsync)
 					SDL_GL_SetSwapInterval(1);
 
-				this->finish_build();
+				this->finish_build("Window");
 
 				return 0; // No error
 			}

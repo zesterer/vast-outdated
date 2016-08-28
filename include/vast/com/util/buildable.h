@@ -14,7 +14,7 @@ namespace Vast
 			protected:
 				bool _is_built = false;
 
-				i32 finish_build();
+				i32 finish_build(std::string name = "<Unknown>");
 
 			public:
 				bool is_built();

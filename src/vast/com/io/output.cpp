@@ -10,28 +10,28 @@ namespace Vast
 		{
 			void output(const char* msg, enum OutMode mode)
 			{
-				if (mode == OUTMODE_DEBUG && !VAST_DEBUG_ENABLED)
+				if (mode == OutMode::DEBUG && !VAST_DEBUG_ENABLED)
 					return;
 
 				switch(mode)
 				{
-					case OUTMODE_DEBUG:
+				case OutMode::DEBUG:
 						printf("[ DEBUG ]  ");
 						break;
 
-					case OUTMODE_INFO:
+					case OutMode::INFO:
 						printf("[ INFO  ]  ");
 						break;
 
-					case OUTMODE_WARNING:
+					case OutMode::WARNING:
 						printf("[WARNING]  ");
 						break;
 
-					case OUTMODE_ERROR:
+					case OutMode::ERROR:
 						printf("[ ERROR ]  ");
 						break;
 
-					case OUTMODE_FATAL:
+					case OutMode::FATAL:
 						printf("[ FATAL ]  ");
 						break;
 
@@ -45,6 +45,23 @@ namespace Vast
 			void output(std::string msg, enum OutMode mode)
 			{
 				output(msg.c_str(), mode);
+			}
+
+			void error(const char* msg, i32 line)
+			{
+				if (line != -1)
+				{
+					output("Line " + std::to_string(line) + ": " + msg, OutMode::ERROR);
+				}
+				else
+				{
+					output(msg, OutMode::ERROR);
+				}
+			}
+
+			void error(std::string msg, i32 line)
+			{
+				error(msg.c_str(), line);
 			}
 		}
 	}

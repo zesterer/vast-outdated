@@ -22,7 +22,7 @@ namespace Vast
 			{
 				if (this->_is_built)
 				{
-					Com::IO::output("App[" + std::to_string(this->_id) + "] is already built. Skipping rebuild", Com::IO::OUTMODE_ERROR);
+					Com::IO::error("App[" + std::to_string(this->_id) + "] is already built. Skipping rebuild");
 					return 1;
 				}
 
@@ -38,10 +38,7 @@ namespace Vast
 				// Initiate glbinding
 				glbinding::Binding::initialize();
 
-				this->finish_build();
-
-				// Debug
-				Com::IO::output("Built new App instance");
+				this->finish_build("App");
 
 				return 0; // No error
 			}
@@ -53,11 +50,17 @@ namespace Vast
 
 				while (this->_main_window.is_active() && this->_fps_timer._ticker < 200)
 				{
+					// Reset FPS timer ready for the frame
 					this->_fps_timer.reset();
+
+					gl::glClearColor(0.0, 1.0, 0.0, 1.0);
 
 					this->_main_window.tick();
 
+					// Tick the FPS timer after this frame's execution
 					this->_fps_timer.tick();
+
+					// Wait for the syncronisation refresh
 					this->_fps_timer.wait();
 				}
 

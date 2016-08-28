@@ -37,7 +37,7 @@ namespace Vast
 						IO::output("Cannot deallocate resource with id '" +
 							std::to_string(this->get_id()) +
 							"' because it still has references",
-							IO::OUTMODE_ERROR);
+							IO::OutMode::ERROR);
 
 						return 1; // Error
 					}

@@ -39,7 +39,7 @@ namespace Vast
 							{
 								IO::output("Failed to cast resource with id '" +
 									std::to_string((*iter).get_id()) + "' because a type mismatch occured",
-									IO::OUTMODE_ERROR);
+									IO::OutMode::ERROR);
 
 								this->_mutex.unlock();
 								return Result<Box<T>*>(nullptr, false);
@@ -104,7 +104,7 @@ namespace Vast
 					if (box.is_valid())
 						*box.val()->ptr() = item;
 					else
-						IO::output("Invalid resource manager box could not be assigned value", IO::OUTMODE_ERROR);
+						IO::output("Invalid resource manager box could not be assigned value", IO::OutMode::ERROR);
 
 					return box;
 				}
