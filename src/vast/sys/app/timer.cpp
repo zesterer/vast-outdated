@@ -29,7 +29,7 @@ namespace Vast
 				this->_tick_delta = current_time - this->_time;
 
 				// Update the tick counter and display an update
-				if ((this->_ticker % (i32)this->_target_fps) == 0)
+				if ((this->_ticker % (i32)this->_target_fps) == 0 && this->_ticker > 0)
 					Com::IO::output("Ticked timer with FPS " + std::to_string(1000.0 / this->_tick_delta.count()));
 				this->_ticker ++;
 

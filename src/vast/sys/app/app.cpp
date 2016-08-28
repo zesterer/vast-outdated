@@ -48,12 +48,14 @@ namespace Vast
 				// Debug info
 				Com::IO::output("Running app");
 
-				while (this->_main_window.is_active() && this->_fps_timer._ticker < 200)
+				while (this->_main_window.is_active() && this->_fps_timer._ticker < 1000)
 				{
 					// Reset FPS timer ready for the frame
 					this->_fps_timer.reset();
 
-					gl::glClearColor(0.0, 1.0, 0.0, 1.0);
+					// Testing
+					gl::glClearColor(0.0, 0.8, 0.0, 1.0);
+					gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 					this->_main_window.tick();
 

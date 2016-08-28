@@ -21,7 +21,7 @@ namespace Vast
 
 				i32 _width = 640;
 				i32 _height = 480;
-				std::string _title = "";
+				std::string _title = "Vast";
 				bool _vsync = true;
 
 				i32 build(i32 width = 640, i32 height = 480);
