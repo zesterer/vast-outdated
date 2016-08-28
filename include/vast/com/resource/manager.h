@@ -109,7 +109,7 @@ namespace Vast
 					return box;
 				}
 
-				imem get_count() { return this->_list.size(); }
+				imem count() { return this->_list.size(); }
 
 				id gen_id();
 			};

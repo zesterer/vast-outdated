@@ -2,6 +2,7 @@
 #define VAST_COM_ATOMIC_TYPE
 
 #include "cstddef"
+#include "string"
 
 namespace Vast
 {

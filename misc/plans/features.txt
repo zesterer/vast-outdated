@@ -1,0 +1,38 @@
+Vast Features
+=============
+
+- Free-moving spacecraft
+- LoD planets
+- Galactic systems with sub-systems & planets
+- Player as separate entity from spacecraft
+- IVA activity within spacecraft
+- Alien AI-controlled ships
+- Alien being entities
+- Noise-based planet generation
+- Procedural ocean generation
+- Planetary biome generation
+- Civilisation generation
+- Civilisation simulation
+- Civilisation city generation
+- Civilisation-based simulated galactic economies
+- Voxel-based ship damage
+- Procedural ship function (i.e: power lines in ship get destroyed, ship stops working)
+- Ship combat modes (attempts to sync velocity vectors with target ships)
+- Component-based ship construction (i.e: a ship doesn't have to be space-worthy. You can build things like cars, bikes, hovercraft, submarines, 
+low-altitude planes, etc. just as easily)
+- Efficient management of voxel bodies (to enable things like large space stations and container ships)
+- Well-implemented jump / hyperdrive system
+- A lore / virtual science system that attempts to mirror close-future reality where possible (i.e: inter-system jumping is a form of quantum 
+tunnelling, ion-accelerated weapons, etc.)
+- Atmospheric scattering
+- (?) Voxel-based planets with cave systems (I don't think is realistically possible. We're starting to approach the physical limits of computers 
+here)
+- Realistic atmospheric physics (i.e: burn-up on re-entry causes problems if your ship is damaged)
+
+- Ship building
+- Station building
+- Vegetation on planets
+- FPS/TPS shooter action
+- 
+
+

@@ -42,13 +42,27 @@ add_definitions(-std=c++11 -Wall -g3)
 ########
 
 #Find SFML
-find_package(SFML 2 REQUIRED system window graphics network audio)
+#find_package(SFML 2 REQUIRED system window graphics network audio)
+#
+#if (SFML_FOUND)
+#	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${SFML_INCLUDE_DIR})
+#	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${SFML_LIBRARIES})
+#else ()
+#	message(FATAL_ERROR "SFML could not be found, and is required to build this application.")
+#endif ()
 
-if (SFML_FOUND)
-	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${SFML_INCLUDE_DIR})
-	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${SFML_LIBRARIES})
+########
+# SDL2 #
+########
+
+#Find SFML
+find_package(SDL2 REQUIRED)
+
+if (SDL2_FOUND)
+	set(APPLICATION_SOURCE_DIRS ${APPLICATION_SOURCE_DIRS} ${SDL2_INCLUDE_DIR})
+	set(APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${SDL2_LIBRARY})
 else ()
-	message(FATAL_ERROR "SFML could not be found, and is required to build this application.")
+	message(FATAL_ERROR "SDL2 could not be found, and is required to build this application.")
 endif ()
 
 #######

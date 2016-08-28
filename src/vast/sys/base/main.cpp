@@ -9,6 +9,7 @@ int main(int argc, char* argv[])
 	Vast::Sys::App::App app;
 	app.build();
 
+	/*
 	Vast::Com::Resource::Manager manager;
 
 	Vast::Com::Resource::Box<int>* int_box = manager.add<int>(7).val();
@@ -27,6 +28,7 @@ int main(int argc, char* argv[])
 		printf("%s!\n", v.val()->c_str());
 	else
 		printf("Invalid!\n");
+	*/
 
 	return app.run();
 }

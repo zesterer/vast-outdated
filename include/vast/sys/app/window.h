@@ -2,8 +2,9 @@
 #define VAST_APP_WINDOW
 
 #include "vast/com/atomic/type.h"
+#include "vast/com/util/buildable.h"
 
-#include "SFML/Window.hpp"
+#include "SDL2/SDL.h"
 
 namespace Vast
 {
@@ -11,21 +12,25 @@ namespace Vast
 	{
 		namespace App
 		{
-			struct Window
-			{
-				sf::ContextSettings _intern_settings;
-				sf::Window _intern_window;
+			i32 glob_init_window();
 
+			struct Window : Com::Util::Buildable
+			{
+				SDL_Window* _intern_window;
+				SDL_GLContext _intern_context;
+
+				i32 _width = 640;
+				i32 _height = 480;
 				std::string _title = "";
-				i32 _framelimit = 60;
 				bool _vsync = true;
 
-				i32 build();
+				i32 build(i32 width = 640, i32 height = 480);
 				i32 activate(bool activate = true);
 				i32 handle_events();
 				i32 tick();
+				i32 close();
 
-				bool is_open();
+				bool is_active();
 			};
 		}
 	}

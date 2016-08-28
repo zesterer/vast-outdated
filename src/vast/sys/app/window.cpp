@@ -8,37 +8,93 @@ namespace Vast
 	{
 		namespace App
 		{
-			i32 Window::build()
-			{
-				this->_intern_settings.depthBits =			24;
-				this->_intern_settings.stencilBits =		8;
-				this->_intern_settings.antialiasingLevel =	4;
-				this->_intern_settings.majorVersion = 		3;
-				this->_intern_settings.minorVersion = 		3;
-				this->_intern_settings.attributeFlags = sf::ContextSettings::Attribute::Default | sf::ContextSettings::Attribute::Core;
+			static bool glob_init_window_state = false;
 
-				this->_intern_window.create(sf::VideoMode(640, 480), this->_title, sf::Style::Default, this->_intern_settings);
-				this->_intern_window.setFramerateLimit(this->_framelimit);
-				this->_intern_window.setVerticalSyncEnabled(this->_vsync);
+			i32 init_windowing()
+			{
+				if (glob_init_window_state) // We've already initiated, so ignore
+					return 0;
+
+				i32 status = SDL_Init(SDL_INIT_VIDEO);
+
+				switch (status)
+				{
+				case 0:
+					Com::IO::output("Global windowing initiated");
+					break;
+
+				default:
+					Com::IO::output("Global windowing initiation failed: " + std::to_string(status));
+					break;
+				}
+
+				// We've already tried initiation
+				glob_init_window_state = true;
+
+				return status;
+			}
+
+			i32 Window::build(i32 width, i32 height)
+			{
+				if (this->_is_built) // The window is already built, so nothing to do
+					return 0;
+
+				this->_width = width;
+				this->_height = height;
+
+				// Initiate global windowing
+				init_windowing();
+
+				// Configure SDL with specific OpenGL attributes
+				SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); // Major version 3
+				SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3); // Minor version 3
+				SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // Enable double-buffering
+				SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // Specify a 24-bit depth buffer
+
+				// Attempt to create a window
+				this->_intern_window = SDL_CreateWindow(this->_title.c_str(),
+														SDL_WINDOWPOS_CENTERED,
+														SDL_WINDOWPOS_CENTERED,
+														this->_width,
+														this->_height,
+														SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+
+				if (this->_intern_window)
+					Com::IO::output("Successfully created window");
+				else // An error occured
+				{
+					Com::IO::output("Failed to create window");
+					return 1;
+				}
+
+				// Attempt to create a context
+				this->_intern_context = SDL_GL_CreateContext(this->_intern_window);
+
+				if (this->_intern_window)
+					Com::IO::output("Successfully created OpenGL context");
+				else // An error occured
+				{
+					Com::IO::output("Failed to create OpenGL context");
+					return 2;
+				}
+
+				// Enable vertical syncronisation (vsync)
+				if (this->_vsync)
+					SDL_GL_SetSwapInterval(1);
+
+				this->finish_build();
 
 				return 0; // No error
 			}
 
-			i32 Window::activate(bool activate)
+			bool Window::is_active()
 			{
-				this->_intern_window.setActive(activate);
-
-				return 0; // No error
-			}
-
-			bool Window::is_open()
-			{
-				return this->_intern_window.isOpen();
+				return this->_is_built;
 			}
 
 			i32 Window::handle_events()
 			{
-				sf::Event event;
+				/*sf::Event event;
 				while (this->_intern_window.pollEvent(event))
 				{
 					switch (event.type)
@@ -56,18 +112,28 @@ namespace Vast
 						break;
 					}
 
-				}
+				}*/
 
 				return 0; // No error
 			}
 
 			i32 Window::tick()
 			{
+				// Handle window events
 				this->handle_events();
 
-				this->_intern_window.display();
+				// Swap window buffer
+				SDL_GL_SwapWindow(this->_intern_window);
 
 				return 0; // No error
+			}
+
+			i32 Window::close()
+			{
+				SDL_GL_DeleteContext(this->_intern_context);
+				SDL_DestroyWindow(this->_intern_window);
+
+				return 0;
 			}
 		}
 	}
