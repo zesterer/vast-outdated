@@ -9,6 +9,8 @@ int main(int argc, char* argv[])
 	Vast::Sys::App::App app;
 	app.build();
 
+	//Vast::Com::IO::error("Error!", __FILE__, __LINE__, __func__);
+
 	/*
 	Vast::Com::Resource::Manager manager;
 

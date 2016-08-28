@@ -21,8 +21,8 @@ namespace Vast
 			void output(const char* msg,	enum OutMode mode = OutMode::DEBUG);
 			void output(std::string msg,	enum OutMode mode = OutMode::DEBUG);
 
-			void error(const char* msg, i32 line = -1);
-			void error(std::string msg, i32 line = -1);
+			void error(const char* msg, const char* file = nullptr, i32 line = -1, const char* func = nullptr);
+			void error(std::string msg, const char* file = nullptr, i32 line = -1, const char* func = nullptr);
 		}
 	}
 }

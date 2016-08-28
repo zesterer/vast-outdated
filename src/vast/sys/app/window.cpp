@@ -63,7 +63,7 @@ namespace Vast
 					Com::IO::output("Successfully created window");
 				else // An error occured
 				{
-					Com::IO::error("Failed to create window", __LINE__);
+					Com::IO::error("Failed to create window", __FILE__, __LINE__);
 					return 1;
 				}
 
@@ -74,7 +74,7 @@ namespace Vast
 					Com::IO::output("Successfully created OpenGL context");
 				else // An error occured
 				{
-					Com::IO::error("Failed to create OpenGL context", __LINE__);
+					Com::IO::error("Failed to create OpenGL context", __FILE__, __LINE__);
 					return 2;
 				}
 
@@ -94,25 +94,20 @@ namespace Vast
 
 			i32 Window::handle_events()
 			{
-				/*sf::Event event;
-				while (this->_intern_window.pollEvent(event))
+				SDL_Event event;
+				while (SDL_PollEvent(&event))
 				{
 					switch (event.type)
 					{
-					case sf::Event::Closed:
-						this->_intern_window.close();
+					case SDL_QUIT:
+						this->close();
 						Com::IO::output("Closed window");
-						break;
-
-					case sf::Event::Resized:
-						Com::IO::output("Resized window");
 						break;
 
 					default:
 						break;
 					}
-
-				}*/
+				}
 
 				return 0; // No error
 			}
@@ -132,6 +127,8 @@ namespace Vast
 			{
 				SDL_GL_DeleteContext(this->_intern_context);
 				SDL_DestroyWindow(this->_intern_window);
+
+				this->unbuild();
 
 				return 0;
 			}

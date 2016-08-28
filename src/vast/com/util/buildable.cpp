@@ -20,6 +20,12 @@ namespace Vast
 			{
 				return this->_is_built;
 			}
+
+			i32 Buildable::unbuild()
+			{
+				this->_is_built = false;
+				return 0;
+			}
 		}
 	}
 }
